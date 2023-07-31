@@ -10,10 +10,10 @@ const eventData = [{
     website: 'linktr.ee/sacrejojo69',
     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
     eventCover: '',
-    users: [{
+    users: {
         interUsers: ['001', '002', '003', '004'],
         partUsers: ['005', '006', '007', '008'],
-    }],
+    },
 }, {
 	creator: 'nico',
 	eventName: 'TacosMania',
@@ -26,10 +26,10 @@ const eventData = [{
     website: 'https://www.kebab-frites.com/kebab/uskudar-lyon-7.html',
     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
     eventCover: '',
-    users: [{
+    users: {
         interUsers: ['001', '002', '003', '004'],
         partUsers: ['005', '006', '007', '008','09','10'],
-    }],
+    },
 }, 
 {
 	creator: 'mich',
@@ -43,10 +43,10 @@ const eventData = [{
     website: 'https://www.mba-lyon.fr/fr',
     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
     eventCover: '',
-    users: [{
+    users: {
         interUsers: ['001', '002'],
         partUsers: ['003', '004','005', '009'],
-    }],
+    },
 }, {
 	creator: 'adri',
 	eventName: 'Marathon de Lyon',
@@ -59,10 +59,10 @@ const eventData = [{
     website: 'https://www.runinlyon.com/fr',
     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
     eventCover: '',
-    users: [{
+    users: {
         interUsers: ['001', '002'],
         partUsers: ['003', '004','005', '006', '008'],
-    }],
+    },
 }, {
 	creator: 'ines',
 	eventName: 'Les Matins de la Cartographie',
@@ -75,10 +75,10 @@ const eventData = [{
     website: 'https://www.planetariumvv.com/',
     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
     eventCover: '',
-    users: [{
+    users: {
         interUsers: ['001', '002'],
         partUsers: ['003', '004','005', '006'],
-    }],
+    },
 }, {
 	creator: 'tone',
 	eventName: 'La Pêche au Harpon',
@@ -91,10 +91,10 @@ const eventData = [{
     website: 'https://www.snsm.org/conseils/conseils-loisirs-nautiques/peche-sous-marine-pratique-et-reglementation',
     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
     eventCover: '',
-    users: [{
+    users: {
         interUsers: ['001', '002'],
         partUsers: ['003', '004','005', '006'],
-    }],
+    },
 }, {
 	creator: 'max',
 	eventName: 'DemodayBatch89-LaCapsuleGrooveCamp',
@@ -107,10 +107,10 @@ const eventData = [{
     website: 'https://now-coworking.com/',
     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
     eventCover: '',
-    users: [{
+    users: {
         interUsers: ['001', '002', '009', '010'],
         partUsers: ['003', '004','005', '006', '007', '008'],
-    }],
+    },
 }, 
 {
 	creator: 'user',
@@ -124,10 +124,10 @@ const eventData = [{
     website: '',
     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
     eventCover: '',
-    users: [{
+    users: {
         interUsers: ['003', '004','005', '006', '007', '008', '001', '002', '009', '010'],
         partUsers: [],
-    }],
+    },
 }, 
 {
 	creator: 'user',
@@ -141,10 +141,10 @@ const eventData = [{
     website: '',
     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
     eventCover: '',
-    users: [{
+    users: {
         interUsers: ['003', '004','005', '006', '007', '008', '001', '002', '009', '010'],
         partUsers: [],
-    }],
+    },
 }, 
 {
 	creator: 'user',
@@ -158,10 +158,10 @@ const eventData = [{
     website: '',
     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
     eventCover: '',
-    users: [{
+    users: {
         interUsers: ['003', '004','005', '006', '002', '009', '010'],
         partUsers: ['007', '008', '001'],
-    }],
+    },
 }];
 
 const userData = [
@@ -173,12 +173,11 @@ const userData = [
     password: "123",
     profilPic: "",
     coverPic: "",
-    events: [
+    events: 
       {
         interEvents: ["a0", "a1", "a3"],
         partEvents: ["a0", "a1", "a3"],
       },
-    ],
   },
   {
     id: "002",
@@ -188,12 +187,12 @@ const userData = [
     password: "123",
     profilPic: "",
     coverPic: "",
-    events: [
+    events: 
       {
         interEvents: ["a0", "a1", "a3"],
         partEvents: ["a0", "a1", "a3"],
       },
-    ],
+    
   },
   {
     id: "003",
@@ -203,12 +202,12 @@ const userData = [
     password: "123",
     profilPic: "",
     coverPic: "",
-    events: [
+    events: 
       {
         interEvents: ["a0", "a1", "a3"],
         partEvents: ["a0", "a1", "a3"],
       },
-    ],
+    
   },
   {
     id: "004",
@@ -218,12 +217,12 @@ const userData = [
     password: "123",
     profilPic: "",
     coverPic: "",
-    events: [
+    events: 
       {
         interEvents: ["a0", "a1", "a3"],
         partEvents: ["a0", "a1", "a3"],
       },
-    ],
+    
   },
   {
     id: "005",
@@ -233,12 +232,12 @@ const userData = [
     password: "123",
     profilPic: "",
     coverPic: "",
-    events: [
+    events: 
       {
         interEvents: ["a0", "a1", "a3"],
         partEvents: ["a0", "a1", "a3"],
       },
-    ],
+    
   },
   {
     id: "006",
@@ -248,12 +247,12 @@ const userData = [
     password: "123",
     profilPic: "",
     coverPic: "",
-    events: [
+    events: 
       {
         interEvents: ["a0", "a1", "a3"],
         partEvents: ["a0", "a1", "a3"],
       },
-    ],
+    
   },
   {
     id: "007",
@@ -263,12 +262,12 @@ const userData = [
     password: "123",
     profilPic: "",
     coverPic: "",
-    events: [
+    events: 
       {
         interEvents: ["a0", "a1", "a3"],
         partEvents: ["a0", "a1", "a3"],
       },
-    ],
+    
   },
   {
     id: "008",
@@ -278,12 +277,12 @@ const userData = [
     password: "123",
     profilPic: "",
     coverPic: "",
-    events: [
+    events: 
       {
         interEvents: ["a0", "a1", "a3"],
         partEvents: ["a0", "a1", "a3"],
       },
-    ],
+    
   },
   {
     id: "009",
@@ -293,12 +292,12 @@ const userData = [
     password: "123",
     profilPic: "",
     coverPic: "",
-    events: [
+    events: 
       {
         interEvents: ["a0", "a1", "a3"],
         partEvents: ["a0", "a1", "a3"],
       },
-    ],
+   
   },
   {
     id: "010",
@@ -308,11 +307,11 @@ const userData = [
     password: "123",
     profilPic: "",
     coverPic: "",
-    events: [
+    events: 
       {
         interEvents: ["a0", "a1", "a3"],
         partEvents: ["a0", "a1", "a3"],
       },
-    ],
+   
   },
 ];
