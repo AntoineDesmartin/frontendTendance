@@ -10,6 +10,7 @@ import PublishScreen from "./screens/PublishScreen";
 import TrendScreen from "./screens/TrendScreen";
 import SelectionScreen from "./screens/SelectionScreen.js";
 import ProfileScreen from "./screens/ProfileScreen";
+import ListScreen from "./screens/ListScreen";
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -33,14 +34,11 @@ const TabNavigator = () => {
             iconName = "bolt";
           } else if (route.name === "Map") {
             iconName = "compass";
-          }
-          else if (route.name === "Publish") {
+          } else if (route.name === "Publish") {
             iconName = "plus";
-          }
-          else if (route.name === "Trend") {
+          } else if (route.name === "Trend") {
             iconName = "star";
-          }
-          else if (route.name === "Profile") {
+          } else if (route.name === "Profile") {
             iconName = "user";
           }
           return <FontAwesome name={iconName} size={size} color={color} />;
@@ -65,9 +63,9 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          <Stack.Screen name="List" component={ListScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   );
 }
-
