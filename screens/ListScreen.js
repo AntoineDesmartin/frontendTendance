@@ -15,6 +15,8 @@ import {
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
+//data ------------------------
+
 const eventData = [
   {
     creator: "joan",
@@ -353,16 +355,23 @@ const userData = [
     },
   },
 ];
+//-------------------------------- début de la fonction
 
 export default function ListScreen({ navigation }) {
-  
-  const [research, setResearch] = useState('');
+
+  const [research, setResearch] = useState(""); // état pour initialiser la recherche en Input
 
   const handleSubmit = () => {
     navigation.navigate("TabNavigator", { screen: "TabNavigator" });
+    // constante pour rejoindre la map au onPress
+  };
+
+  const handleSearch = () => {
+    setResearch('');
   };
 
   const events = eventData.map((data, i) => {
+    //mapping des events
     return (
       <View key={i} style={styles.eventStyle}>
         <View>
@@ -372,19 +381,31 @@ export default function ListScreen({ navigation }) {
         </View>
         <View>
           <Text style={styles.textStyle}>
-            {data.address} Partcipants: {data.users.partUsers.length} Intérèssé(e)s: {data.users.interUsers.length} 
+            {data.address} Partcipants: {data.users.partUsers.length}{" "}
+            Intérèssé(e)s: {data.users.interUsers.length}
           </Text>
         </View>
       </View>
     );
   });
 
+  //return du composant principal----------------------------------------
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.mainContainer}
     >
-      <TextInput placeholder="Recherche" onChangeText={(value) => setResearch(value)} value={research} style={styles.input} />
+      <TextInput
+        placeholder="Recherche"
+        onChangeText={(value) => setResearch(value)}
+        value={research}
+        style={styles.input}
+      />
+      <TouchableOpacity onPress={() => handleSearch()} style={styles.searchButton}>
+        <FontAwesome name={"search"} size={30} color={"black"} />
+      </TouchableOpacity>
+
       <ScrollView>
         <View style={styles.scrollContainer}>
           <View>
@@ -404,7 +425,7 @@ export default function ListScreen({ navigation }) {
     </KeyboardAvoidingView>
   );
 }
-
+// style -------------------------------------------------------------------
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -414,11 +435,19 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    height: "5%",
-    padding: 20,
+    height: 50,
+    padding: 12,
+    
     margin: 40,
     borderRadius: 20,
     backgroundColor: "white",
+  },
+
+  searchButton: {
+    position: "absolute",
+    top: 38,
+    right: 45,
+    padding: 10,
   },
 
   scrollContainer: {
