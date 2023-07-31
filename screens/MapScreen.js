@@ -47,9 +47,9 @@ const displayEvents = () => {
     setNewPlace('');
   };
 
-const markers = user.places.map((data, i) => {
-    return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.name} />;
-  });
+// const markers = user.places.map((data, i) => {
+//     return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.name} />;
+//   });
 
   return (
     <View style={styles.container}>
@@ -57,9 +57,9 @@ const markers = user.places.map((data, i) => {
         {currentPosition && <Marker coordinate={currentPosition} title="My position" pinColor="#fecb2d" />}
         
       </MapView>
-      <Pressable onPress={() => handleSubmit()}>
-            <FontAwesome name={"bars"} size={100} color={'#b2b2b2'} />
-        </Pressable>
+      <TouchableOpacity onPress={() => handleSubmit()} style={styles.pressableButton}>
+            <FontAwesome name={"bars"} size={30} color={'#b2b2b2'} />
+        </TouchableOpacity>
     </View>
   );
 }
@@ -71,6 +71,15 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
   },
+  pressableButton: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    backgroundColor: "grey",
+    padding: 10,
+    borderRadius: 30,
+  },
+
 });
 
 
