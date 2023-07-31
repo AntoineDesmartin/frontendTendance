@@ -9,7 +9,7 @@ export const eventsSlice = createSlice({
   initialState,
   reducers: {
     displayIncomingEvents: (state, action) => {
-      state.value.events.push(action.payload);  
+      state.value.events(action.payload);  
     },
   },
 });
