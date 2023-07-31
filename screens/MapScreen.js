@@ -38,11 +38,11 @@ export default function MapScreen({navigation}) {
     <View style={styles.container}>
       <MapView style={styles.map}>
         {currentPosition && <Marker coordinate={currentPosition} title="My position" pinColor="#fecb2d" />}
-
-        <Pressable onPress={() => handleSubmit()}>
+        
+      </MapView>
+      <Pressable onPress={() => handleSubmit()}>
             <FontAwesome name={"bars"} size={100} color={'#b2b2b2'} />
         </Pressable>
-      </MapView>
     </View>
   );
 }
