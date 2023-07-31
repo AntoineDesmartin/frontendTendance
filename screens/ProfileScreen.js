@@ -16,7 +16,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import photoProfile from "../assets/photoProfile.jpg"
 import photoBack from "../assets/photoBack.jpg"
 
-import Event from './components/event';
+import Event from './components/Event';
+
+import { useDispatch } from 'react-redux';
+import { setEvent } from '../reducers/event';
+// import { Dispatch } from 'react';
+
 
 export default function ProfileScreen(props) {
     const eventData = [{
@@ -184,27 +189,30 @@ export default function ProfileScreen(props) {
             partUsers: ['007', '008', '001'],
         },
     }];
+    // todo Gerer AMIS/MESSAGERIE/FAVORIS/PARAMETRE
+    const dispatch = useDispatch();
 
-
-    const futurEvents = eventData.map(data=>{
+    const futurEvents = eventData.map((data,index)=>{
         let date = new Date(data.date);
         let now = new Date()
         
         if(date>now){
-            return <Pressable onPress={()=>handlePress()}><Event data={data} ></Event></Pressable>
+            return <Pressable onPress={()=>handlePress(data)}><Event data={data} key={index}></Event></Pressable>
         }
     })
-    const pastEvents = eventData.map(data=>{
+    const pastEvents = eventData.map((data,index)=>{
         let date = new Date(data.date);
         let now = new Date()
         
         if(date<now){
-            return <Pressable onPress={()=>handlePress()}><Event data={data} ></Event></Pressable>
+            return <Pressable onPress={()=>handlePress(data)}><Event data={data} key={index}></Event></Pressable>
         }
     })
 
-    const handlePress = ()=>{
-        props.navigation.navigate('EventScreen');
+    const handlePress = (data)=>{
+        props.navigation.navigate('Event', { screen: 'EventScreen' });
+        dispatch(setEvent(data))
+        // todo on ajoute tous dans le reducer EVENT
     }
 
 

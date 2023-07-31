@@ -11,13 +11,16 @@ import TrendScreen from "./screens/TrendScreen";
 import SelectionScreen from "./screens/SelectionScreen.js";
 import ProfileScreen from "./screens/ProfileScreen";
 import ListScreen from "./screens/ListScreen";
+import EventScreen from "./screens/EventScreen";
+
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import events from "./reducers/events";
+import event from "./reducers/event";
 const store = configureStore({
-  reducer: { user, events },
+  reducer: { event },
 });
 
 const Stack = createNativeStackNavigator();
@@ -64,6 +67,7 @@ export default function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="List" component={ListScreen} />
+          <Stack.Screen name="Event" component={EventScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
