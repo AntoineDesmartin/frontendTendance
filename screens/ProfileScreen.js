@@ -197,7 +197,9 @@ export default function ProfileScreen(props) {
         let now = new Date()
         
         if(date>now){
-            return <Pressable onPress={()=>handlePress(data)}><Event data={data} key={index}></Event></Pressable>
+            return <Pressable onPress={()=>handlePress(data)}>
+                <Event data={data} key={index}></Event>
+                </Pressable>
         }
     })
     const pastEvents = eventData.map((data,index)=>{
@@ -217,22 +219,6 @@ export default function ProfileScreen(props) {
 
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

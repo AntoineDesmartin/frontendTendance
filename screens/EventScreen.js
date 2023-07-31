@@ -18,16 +18,19 @@ import photoEvent from '../assets/event.jpg'
 import { useSelector,useDispatch } from 'react-redux';
 
 import { resetEvent } from '../reducers/event';
+import {addParticipant,removeParticipant,addInter,removeInter} from '../reducers/events';
 
 export default function EventScreen(props) {
 
 //todo ajouter les bonnes images de fond
 
-const [isParticiped,setIsParticiped]=useState(false);
-const [isInterrested,setIsInterrested]=useState(false);
+const [isParticiped,setIsParticiped]=useState(false); // todo Verifier si le user se trouve dans les particpant si oui mettre deja en true
+const [isInterrested,setIsInterrested]=useState(false); // todo Verifier si le user se trouve dans les interresé si oui mettre deja en true
 
 const dispatch=useDispatch();
 const dataEvent = useSelector((state) => state.event.value);
+// const user = useSelector((state) => state.user.value);
+const user = {id:"yessssssssssssssssss"}
 // console.log("data",dataEvent);
 
 
@@ -48,11 +51,13 @@ const date = dataEvent.date.slice(0,10)
             
             console.log("add parti");
 
-            // dispatch(addParti());
+            // dispatch(addParticipant(user.id));
+            // todo Fetch Post Modifier la data Base
         }else{
             
             console.log("delete parti");
-            // dispatch(deleteParti());
+            // dispatch(removeParticipant(user.id));
+            // todo Fetch Post Modifier la data Base
         }
         
     }
@@ -60,10 +65,12 @@ const date = dataEvent.date.slice(0,10)
         setIsInterrested(!isInterrested)
         if(isInterrested){
             console.log("add inter");
-            // dispatch(addInter());
+            // dispatch(addInter(user.id));
+            // todo Fetch Post Modifier la data Base
         }else{
             console.log("delete inter");
-            // dispatch(deleteInter());
+            // dispatch(removeInter(user.id));
+            // todo Fetch Post Modifier la data Base
         }
     }
 
