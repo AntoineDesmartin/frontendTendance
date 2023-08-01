@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   Image,
   ImageBackground,
@@ -12,13 +12,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import photoProfile from "../assets/photoProfile.jpg"
 import photoBack from "../assets/photoBack.jpg"
 
+
 import Event from './components/Event';
 
-import { useDispatch } from 'react-redux';
+//Modal
+import {setOpenModal} from "../reducers/openModal"
+import Modale from './components/Modale';
+import {login,logout} from "../reducers/user"
+
+import { useDispatch, useSelector } from 'react-redux';
 import { setEvent } from '../reducers/event';
 // import { Dispatch } from 'react';
 
@@ -189,11 +196,19 @@ export default function ProfileScreen(props) {
             partUsers: ['007', '008', '001'],
         },
     }];
+    
+    const dispatch = useDispatch();
     // todo Gerer AMIS/MESSAGERIE/FAVORIS/PARAMETRE
 
     // todo un useEffect qui fetch tous les events auxquelles le user participes avec un populate dans le back
 
-    const dispatch = useDispatch();
+// useEffect(() => {
+
+//     fetch("http://172.20.10.11:3000/user/mesEvents").then(res=>res.json()).then(data=>{
+//         console.log(data);
+//     })
+
+// }, []);
 
 //! Function _____________________________________________________________________________________________________________________________
 
@@ -203,24 +218,40 @@ export default function ProfileScreen(props) {
         let now = new Date()
         
         if(date>now){
-            return <Pressable onPress={()=>handlePress(data)}>
-                <Event data={data} key={index}></Event>
+            return <Pressable onPress={()=>handlePress(data)} key={`futur-${index}`}>
+                <Event data={data} ></Event>
                 </Pressable>
         }
     })
+
+    
     const pastEvents = eventData.map((data,index)=>{
         let date = new Date(data.date);
         let now = new Date()
         
         if(date<now){
-            return <Pressable onPress={()=>handlePress(data)}><Event data={data} key={index}></Event></Pressable>
+            return <Pressable key={`past-${index}`} onPress={()=>handlePress(data)}><Event data={data} ></Event></Pressable>
         }
     })
 
+
+
+
+
+//! Code qui permet de verifier si l'utilisateur est connecter si non on ouvre la modal
+     const user = useSelector((state)=>state.user.value); //? a decommmenter lorsque le reducer user fonctionne
+    // console.log(user);
+    console.log("profile Screen");
+    // console.error("profile screen")
+
+    const isModalOpen = useSelector((state)=>state.openModal.value)
     const handlePress = (data)=>{
-        props.navigation.navigate('Event', { screen: 'EventScreen' });
-        dispatch(setEvent(data))
-        
+        if(user===null){
+            dispatch(setOpenModal(!isModalOpen))
+        }else{
+            props.navigation.navigate('Event', { screen: 'EventScreen' });
+            dispatch(setEvent(data))
+        } 
     }
 
 
@@ -231,6 +262,13 @@ export default function ProfileScreen(props) {
 
     return (
         <View style={styles.container}>
+
+{/* ________________________Pour ouvrir la modale si nous sommes pas connecté_________________ */}
+            {isModalOpen && <Modale></Modale>} 
+{/* __________________________________________________________________________________________ */}
+
+
+
 
             {/* Photo de back------------------------------------------------------------------------ */}
             <View style={styles.viewPhotoBack}>
@@ -255,7 +293,11 @@ export default function ProfileScreen(props) {
             {/* Bar Icon---------------------------------------------------------------------------- */}
             <View style={styles.viewIcon}>
                 <View style={styles.icon}>
-                
+
+
+                <TouchableOpacity onPress={()=>console.log("nite")}><Text>LOGOUT</Text></TouchableOpacity>
+
+
                     <FontAwesome name="users" size={30} color={"#1e064e"} />
                     <Text style={styles.textIcon}>Mes amis</Text>
                 </View>

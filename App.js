@@ -19,8 +19,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import events from "./reducers/events";
 import event from "./reducers/event";
+import openModal from "./reducers/openModal";
 const store = configureStore({
-  reducer: { event },
+  reducer: { event,openModal,user },
 });
 
 const Stack = createNativeStackNavigator();
