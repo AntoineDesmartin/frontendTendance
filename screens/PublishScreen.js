@@ -4,26 +4,40 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  DatePickerIOS
 } from 'react-native';
 
+import DateTimePicker from '@react-native-community/datetimepicker'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function PublishScreen() {
 
+//todo style mieux !
+// todo Price gerer mieux mettre un input correct
+// todo Status Bar et KeyboardAvoidinView
+// todo ajouter Amis 
+// todo Acceder a la galerie
+// todo Publier 
+
+
+
+const [name,setName]=useState("");
 const [addresse,setAdresse]=useState("");
-const [hoursStart,setHoursStart]=useState("");
-const [hoursEnd,setHoursEnd]=useState("");
-const [date,setDate]=useState("");
+const [hourStart,setHourStart]=useState(new Date());
+const [hourEnd,setHourEnd]=useState(new Date());
+const [date,setDate]=useState(new Date());
 const [price,setPrice]=useState("");
 const [description,setDescription]=useState("");
 
 const [selectedOptionType, setSelectedOptionType] = useState(null);
 const [selectedOptionAccess, setSelectedOptionAccess] = useState(null);
-
+console.log(selectedOptionType);
     const optionsType = [
       { id: 1, label: 'Art' },
       { id: 2, label: 'Music' },
@@ -36,19 +50,106 @@ const [selectedOptionAccess, setSelectedOptionAccess] = useState(null);
         { id: 2, label: 'Public' },
         
       ];
-  
+ 
     const handleoptionsTypeSelect = (optionId) => {
         setSelectedOptionType(optionId);
     };
     const handleoptionsAccessSelect = (optionId) => {
         setSelectedOptionAccess(optionId);
     };
+ // ! dateeeeeeeeeeeeee
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+  
+    const handleDateChange = (event, selected) => {
+      if (selected) {
+        setDate(selected);
+      }
+    };
+  //! timeeeeeeeeeeeeeeeeeeeeeeeee
+
+    const handleTimeStartChange = (event, selected) => {
+      if (selected) {
+        setHourStart(selected);
+      }
+      
+    };
+
+    const handleTimeEndChange = (event, selected) => {
+      if (selected) {
+        setHourEnd(selected);
+      }
+      
+    };
+
+// publier 
+// creator: 'user',
+// 	eventName: 'GymTonic2000',
+//     type: 'sport',
+//     date: '2023-11-11',
+//     hourStart: '07:45',
+//     hourEnd: '08:45',
+//     address: 'rue de Sèze 69006 Lyon',
+//     price: '3',
+//     website: '',
+//     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
+//     eventCover: '',
+
+const handlePublish = ()=>{
+
+  let type;
+  switch (selectedOptionType) {
+    case 1:
+      type = 'Art';
+      break;
+    case 2:
+      type = 'Music';
+      break;
+    case 3:
+      type = 'Food';
+      break;
+    case 4:
+      type = 'Nature';
+      break;
+    case 5:
+      type = 'Science';
+      break;
+  }
+  let access;
+  switch (selectedOptionAccess) {
+    case 1:
+      access = 'Privée';
+      break;
+    case 2:
+      access = 'Public';
+      break;
+  }
+
+      let event = {
+        creator:user.id,
+        eventName:name,
+        type:type,
+        date:date,
+        hourStart:hourStart,
+        hourEnd:hourStart,
+        addresse:addresse,
+        price:price,
+        description:description,
+        eventCover:"",
+        amis:""
+      }
+
+      // todo fetch post pour publier dans la data ...
+}
+
+
 
     return (
-        <View style={styles.container}>
-            <Text>Creer un Event</Text>
-
-            <View style={styles.viewType} >
+        
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+      <StatusBar backgroundColor="#f1f1f1" barStyle="dark-content" />
+            <Text style={styles.title}>Creer un Event</Text>
+            <View style={styles.viewAccess} >
         {optionsAccess.map((option) => (
           <TouchableOpacity
             key={option.id}
@@ -82,6 +183,7 @@ const [selectedOptionAccess, setSelectedOptionAccess] = useState(null);
           </TouchableOpacity>
         ))}
       </View>
+      <Text>_________________________________</Text>
 
             <View style={styles.viewType} >
         {optionsType.map((option) => (
@@ -118,30 +220,46 @@ const [selectedOptionAccess, setSelectedOptionAccess] = useState(null);
         ))}
       </View>
       
-       
+      <TextInput 
+            placeholder="Name" 
+            onChangeText={(value) => setName(value)}
+            value={name}
+            style={styles.input} />
+
             <TextInput 
             placeholder="Adresse" 
             onChangeText={(value) => setAdresse(value)}
             value={addresse}
             style={styles.input} />
+            
+      <View  style={styles.date}>
+        <Text>Date : </Text>
+        <DateTimePicker
+          value={date}
+          mode="date"
+          display="default"
+          onChange={handleDateChange}
+        />
+      </View>
 
-            <TextInput 
-            placeholder="hoursStart" 
-            onChangeText={(value) => setHoursStart(value)}
-            value={hoursStart}
-            style={styles.input} />
-
-            <TextInput 
-            placeholder="hoursEnd" 
-            onChangeText={(value) => setHoursEnd(value)}
-            value={hoursEnd}
-            style={styles.input} />
-
-            <TextInput 
-            placeholder="date" 
-            onChangeText={(value) => setDate(value)}
-            value={date}
-            style={styles.input} />
+      <View  style={styles.time}>
+        <Text>Horraires : </Text>
+        <DateTimePicker
+          value={hourStart}
+          mode="time"
+          display="default"
+          onChange={handleTimeStartChange}
+        />
+         <DateTimePicker
+          value={hourEnd}
+          mode="time"
+          display="default"
+          onChange={handleTimeEndChange}
+        />
+      </View>
+        
+      
+      
 
             <TextInput 
             placeholder="price" 
@@ -155,8 +273,35 @@ const [selectedOptionAccess, setSelectedOptionAccess] = useState(null);
             value={description}
             style={styles.input} />
 
+
+
+            <View style={styles.viewAjout}>
+
+                <TouchableOpacity style={styles.btnAjout} >
+                  <View style={styles.plus}>
+                    <FontAwesome name="plus" size={15} color={"#1e064e"} />
+                  </View>
+                  
+                  <Text>Ajouter des amis</Text>
+                  
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.btnAjout} >
+                <View style={styles.plus}>
+                    <FontAwesome name="plus" size={15} color={"#1e064e"} />
+                  </View>
+                  <Text>Ajouter une photo</Text>
+                 
+                </TouchableOpacity>
+
+            </View>
+
+
+            <TouchableOpacity style={styles.btnPublier} onPress={()=>handlePublish()}>
+                  <Text>Publier</Text>
+            </TouchableOpacity>
             
-        </View>
+    </KeyboardAvoidingView>
     
     );
 }
@@ -167,63 +312,73 @@ const styles = StyleSheet.create({
       backgroundColor: "#f2f2f2",
       alignItems: "center",
     },
+    title:{
+      fontSize:25,
+      fontWeight:"bold",
+      color:"blue"
+    },
+    viewAccess:{
+      width:"100%",
+        flexDirection:"row",
+        margin:20,
+        justifyContent:"space-around",
+    },
     viewType:{
-        flexDirection:"row"
+        width:"100%",
+        flexDirection:"row",
+        margin:20,
+        justifyContent:"space-around",
+    },
+    input : {
+      margin:10,
+      padding:10,
+      backgroundColor:"red",
+    },
+    viewAjout:{
+      flexDirection:"row",
+      
+    },
+    btnAjout : {
+      // backgroundColor:"red",
+      margin:30,
+      padding:5,
+      alignItems:"center",
+      borderRadius:8
+    },
+    plus : {
+      backgroundColor:"red",
+      padding:10,
+      borderRadius:10
+    },
+    btnPublier:{
+      backgroundColor:"red",
+      // margin:30,
+      height:40,
+      width:100,
+      padding:10,
+      alignItems:"center",
+      borderRadius:8
+    },
+    time : {
+      width:"100%",
+      flexDirection:'row',
+      backgroundColor:"red",
+      alignContent:"center",
+      justifyContent:"space-around",
+      margin:10
+    },
+    date:{
+      width:"100%",
+      flexDirection:'row',
+      alignContent:"center",
+      justifyContent:"space-around",
+      margin:10
     }
+
+
+
 
 })
 
 
-// const RadioButton = () => {
-//     const [selectedOptionType, setSelectedOption] = useState(null);
-  
-//     const optionsType = [
-//       { id: 1, label: 'Option 1' },
-//       { id: 2, label: 'Option 2' },
-//       { id: 3, label: 'Option 3' },
-//     ];
-  
-//     const handleoptionsTypeelect = (optionId) => {
-//       setSelectedOption(optionId);
-//     };
-  
-//     return (
-    //   <View>
-    //     {optionsType.map((option) => (
-    //       <TouchableOpacity
-    //         key={option.id}
-    //         onPress={() => handleoptionsTypeelect(option.id)}
-    //         style={{ flexDirection: 'row', alignItems: 'center' }}
-    //       >
-    //         <View
-    //           style={{
-    //             height: 24,
-    //             width: 24,
-    //             borderRadius: 12,
-    //             borderWidth: 2,
-    //             borderColor: selectedOptionType === option.id ? '#007BFF' : '#000',
-    //             alignItems: 'center',
-    //             justifyContent: 'center',
-    //           }}
-    //         >
-    //           {selectedOptionType === option.id && (
-    //             <View
-    //               style={{
-    //                 height: 12,
-    //                 width: 12,
-    //                 borderRadius: 6,
-    //                 backgroundColor: '#007BFF',
-    //               }}
-    //             />
-    //           )}
-    //         </View>
-    //         <Text style={{ marginLeft: 8 }}>{option.label}</Text>
-    //       </TouchableOpacity>
-    //     ))}
-    //     <Text>Option sélectionnée : {selectedOptionType}</Text>
-    //   </View>
-//     );
-//   };
-  
-//   export default RadioButton;
   

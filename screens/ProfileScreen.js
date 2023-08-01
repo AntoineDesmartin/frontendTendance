@@ -190,7 +190,13 @@ export default function ProfileScreen(props) {
         },
     }];
     // todo Gerer AMIS/MESSAGERIE/FAVORIS/PARAMETRE
+
+    // todo un useEffect qui fetch tous les events auxquelles le user participes avec un populate dans le back
+
     const dispatch = useDispatch();
+
+//! Function _____________________________________________________________________________________________________________________________
+
 
     const futurEvents = eventData.map((data,index)=>{
         let date = new Date(data.date);
@@ -214,13 +220,14 @@ export default function ProfileScreen(props) {
     const handlePress = (data)=>{
         props.navigation.navigate('Event', { screen: 'EventScreen' });
         dispatch(setEvent(data))
-        // todo on ajoute tous dans le reducer EVENT
+        
     }
 
 
     
 
 
+// ! Return ___________________________________________________________________________________________________________________________
 
     return (
         <View style={styles.container}>
@@ -268,23 +275,7 @@ export default function ProfileScreen(props) {
 
                 <View style={styles.futurEvents}>
                     <Text style={styles.text}>Evenement a venir _____________________________</Text>
-                    {/* a dynamiser  */}
-{/* Components Event ! */}
-                    {/* <Event props={props}></Event> */}
-
                     {futurEvents}
-                    {/* <View style={styles.event}>
-                        <View>
-                            <Text style={styles.text}>Lake Beach Party</Text>
-                            <Text style={styles.text}>Laguna Club, 69007 Lyon</Text>
-                        </View>
-                        <View>
-                            <Text style={styles.text}>21:00 05:00</Text>
-                            <Text style={styles.text}>6,3k intérésse</Text>
-                        </View>
-                    </View> */}
-                    
-
                 </View>
 
                 <View style={styles.pastEvents}>
@@ -303,6 +294,10 @@ export default function ProfileScreen(props) {
         </View>
     );
 }
+
+
+
+//! Style __________________________________________________________________________________________________________________________
 
 
 const styles = StyleSheet.create({
