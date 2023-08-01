@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -11,52 +11,67 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import photoEvent from '../assets/event.jpg'
-
 import { useSelector,useDispatch } from 'react-redux';
-
 import { resetEvent } from '../reducers/event';
-import {addParticipant,removeParticipant,addInter,removeInter} from '../reducers/events';
+import {addParticipant,removeParticipant,addInter,removeInter} from '../reducers/user';
+
 
 export default function EventScreen(props) {
 
 //todo ajouter les bonnes images de fond
+// todo a verifier si les dispatch de user marche lorquon met en place le backEnds et les logins
+
+
+
+//! Constant __________________________________________________________________________________________________________________________
+//1 Verifie les dispatch
+//2 Use effect dans Event Screen
+
+const dataEvent = useSelector((state) => state.event.value);
+// const user = useSelector((state) => state.user.value); //? a decomm
+
+// On verifie si le user participe deja oui ou non a l'event
+//? useEffect(() => {
+
+// ?    if(user.events.interEvents.includes(dataEvent.id)){
+// ?        setIsInterrested(true)
+//  ?   }
+//  ?   if(user.events.partEvents.includes(dataEvent.id)){
+//  ?       setIsParticiped(true)
+// ?    }
+
+//?   }, []);
+
 
 const [isParticiped,setIsParticiped]=useState(false); // todo Verifier si le user se trouve dans les particpant si oui mettre deja en true
 const [isInterrested,setIsInterrested]=useState(false); // todo Verifier si le user se trouve dans les interresé si oui mettre deja en true
-
 const dispatch=useDispatch();
-const dataEvent = useSelector((state) => state.event.value);
-// const user = useSelector((state) => state.user.value);
-const user = {id:"yessssssssssssssssss"}
-// console.log("data",dataEvent);
+
 
 
 const date = dataEvent.date.slice(0,10)
 
 
 
-//! Function
+
+
+//! Function_________________________________________________________________________________________________________________________________
 
     const handleQuit = ()=>{
         dispatch(resetEvent())
         props.navigation.navigate('Profile', { screen: 'ProfileScreen' });
     }
     const handleParticipate = ()=>{
-        
         setIsParticiped(!isParticiped)
         if(isParticiped){
-            
             console.log("add parti");
-
-            // dispatch(addParticipant(user.id));
+            // dispatch(addParticipant(dataEvent.id));
             // todo Fetch Post Modifier la data Base
         }else{
-            
             console.log("delete parti");
-            // dispatch(removeParticipant(user.id));
+            // dispatch(removeParticipant(dataEvent.id));
             // todo Fetch Post Modifier la data Base
         }
         
@@ -65,14 +80,20 @@ const date = dataEvent.date.slice(0,10)
         setIsInterrested(!isInterrested)
         if(isInterrested){
             console.log("add inter");
-            // dispatch(addInter(user.id));
+            // dispatch(addInter(dataEvent.id));
             // todo Fetch Post Modifier la data Base
         }else{
             console.log("delete inter");
-            // dispatch(removeInter(user.id));
+            // dispatch(removeInter(dataEvent.id));
             // todo Fetch Post Modifier la data Base
         }
     }
+
+
+
+
+
+// ! Return_____________________________________________________________________________________________________________________________________
 
     return (
         <View style={styles.container}>
@@ -114,6 +135,9 @@ const date = dataEvent.date.slice(0,10)
     );
 }
 
+
+
+//! Style ___________________________________________________________________________________________________________________________________
 const styles = StyleSheet.create({
     container: {
       flex: 1,

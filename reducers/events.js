@@ -11,22 +11,10 @@ export const eventsSlice = createSlice({
     displayIncomingEvents: (state, action) => {
       state.value.events(action.payload);  
     },
-    //! add et remove particpant ou interressé
     setEvents:(state, action)=>{
       state.value=action.payload;
     },
-    // addParticipant :(state, action) =>  {
-    //   // console.log(action.payload);
-    //   // state.value.push(action.payload);
-    // },
-    // removeParticipant :(state, action) =>  {
-      
-    // },
-    // addInter :(state, action) =>  {
-
-    // },
-    // removeInter :(state, action) =>  {
-      
+   
     // }
   },
 });
