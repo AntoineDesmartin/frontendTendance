@@ -13,9 +13,12 @@ import {
   ScrollView,
 } from "react-native";
 
+import { useDispatch } from 'react-redux';
+import { setEvent } from '../reducers/event';
+
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-//ToDo 
+//ToDo
 //- function pour trier la data des events par Date et la classer dans des tableaux
 //- faire un mapping des tableaux des Date
 
@@ -360,12 +363,15 @@ const userData = [
   },
 ];
 //-------------------------------- début de la fonction
-const sortedEvents = eventData.sort((a, b) => new Date(a.date) - new Date(b.date));
-console.log(eventData);
+const sortedEvents = eventData.sort(
+  (a, b) => new Date(a.date) - new Date(b.date)
+);
+console.log(sortedEvents);
 
 export default function ListScreen({ navigation }) {
-
   const [research, setResearch] = useState(""); // état pour initialiser la recherche en Input
+
+  const dispatch = useDispatch();
 
   const handleSubmit = () => {
     navigation.navigate("TabNavigator", { screen: "TabNavigator" });
@@ -373,25 +379,33 @@ export default function ListScreen({ navigation }) {
   };
 
   const handleSearch = () => {
-    setResearch('');
+    setResearch("");
   };
 
+  const handlePress = (data)=>{
+    navigation.navigate('Event', { screen: 'EventScreen' });
+    dispatch(setEvent(data))
+    // todo on ajoute tous dans le reducer EVENT
+}
+
   const events = eventData.map((data, i) => {
+    
     //mapping des events
     return (
-      <View key={i} style={styles.eventStyle}>
-        <View>
-          <Text style={styles.textStyle}>
-            {data.eventName} {data.hourStart}-{data.hourEnd}
-          </Text>
+      <TouchableOpacity onPress={()=>handlePress(data)}>
+        <View key={i} style={styles.eventStyle}>
+          <View>
+            <Text style={styles.textStyle}>
+              {data.eventName} {data.hourStart}-{data.hourEnd}
+            </Text>
+            <Text style={styles.textStyle}>{data.address} </Text>
+            <Text style={styles.textStyle}>
+              Partcipants: {data.users.partUsers.length} Intéressés:{" "}
+              {data.users.interUsers.length}
+            </Text>
+          </View>
         </View>
-        <View>
-          <Text style={styles.textStyle}>
-            {data.address} Partcipants: {data.users.partUsers.length}{" "}
-            Intérèssé(e)s: {data.users.interUsers.length}
-          </Text>
-        </View>
-      </View>
+      </TouchableOpacity>
     );
   });
 
@@ -402,19 +416,21 @@ export default function ListScreen({ navigation }) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.mainContainer}
     >
-        <View><TextInput
-        placeholder="Recherche"
-        onChangeText={(value) => setResearch(value)}
-        value={research}
-        style={styles.input}
-      />
-      <TouchableOpacity onPress={() => handleSearch()} style={styles.searchButton}>
-        <FontAwesome name={"search"} size={30} color={"black"} />
-      </TouchableOpacity></View>
-    <ScrollView>
-      
-
-      
+      <View>
+        <TextInput
+          placeholder="Recherche"
+          onChangeText={(value) => setResearch(value)}
+          value={research}
+          style={styles.input}
+        />
+        <TouchableOpacity
+          onPress={() => handleSearch()}
+          style={styles.searchButton}
+        >
+          <FontAwesome name={"search"} size={30} color={"black"} />
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
         <View style={styles.scrollContainer}>
           <View>
             <Text style={styles.textStyle}>Lundi 31 Juillet 2023</Text>
@@ -475,7 +491,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 100,
     paddingLeft: 30,
-    paddingTop: 10,
+    paddingTop: 12,
     margin: 20,
   },
 
