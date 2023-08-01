@@ -5,7 +5,7 @@ const initialState = {
 };
 
 export const eventSlice = createSlice({
-  name: 'user',
+  name: 'event',
   initialState,
   reducers: {
     setEvent: (state, action) => {
