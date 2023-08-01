@@ -38,7 +38,9 @@ const isModalOpen = useSelector((state)=>state.openModal.value)
 
 const dataEvent = useSelector((state) => state.event.value);
 // const user = useSelector((state) => state.user.value); //? a decomm
-
+// console.log(user);
+console.log("Event Screen");
+// console.error("event screen")
 // On verifie si le user participe deja oui ou non a l'event
 //? useEffect(() => {
 

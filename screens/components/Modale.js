@@ -15,12 +15,14 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector,useDispatch } from 'react-redux';
 import {setOpenModal} from "../../reducers/openModal"
+import {login,logout} from "../../reducers/user"
 
 export default function Modale() {
-
+console.log("ModaleScreen");
+// console.error("modale screen")
 const isModalOpen = useSelector((state)=>state.openModal.value)
 const dispatch=useDispatch()
-// const [modalVisible, setModalVisible] = useState(false);
+
 const [mode,setMode]=useState("");
 const [email,setEmail]=useState("");
 const [username,setUsername]=useState("");
@@ -28,9 +30,42 @@ const [password,setPassword]=useState("");
 
 const handleSeConnecter = ()=>{
 
+    let newUser = {username:username,email:email,password:password};
+    fetch('http://172.20.10.11:3000/user/signin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newUser),
+    }).then(response => response.json()).then(data => {
+
+      console.log(data);
+      console.log("bite");
+
+      if(data.result){
+          dispatch(login(data));
+          dispatch(setOpenModal(false));
+      }
+      
+    })
+     
+
 }
 const handleSinscrire = ()=>{
-    
+  let newUser = {username:username,email:email,password:password};
+    fetch('http://172.20.10.11:3000/user/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newUser),
+    }).then(response => response.json()).then(data => {
+
+      console.log(data);
+      console.log("bite");
+      
+      if(data.result){
+          dispatch(login(data));
+          dispatch(setOpenModal(false));
+      }
+      
+    })
 }
 
 return (
@@ -99,7 +134,7 @@ return (
                     </TouchableOpacity>
                 </>}
                 
-                {/* <TextInput placeholder="New place" onChangeText={(value) => setNewPlace(value)} value={newPlace} style={styles.input} /> */}
+                
                 
 
 

@@ -366,7 +366,7 @@ const userData = [
 const sortedEvents = eventData.sort(
   (a, b) => new Date(a.date) - new Date(b.date)
 );
-console.log(sortedEvents);
+// console.log(sortedEvents);
 
 export default function ListScreen({ navigation }) {
   const [research, setResearch] = useState(""); // état pour initialiser la recherche en Input
