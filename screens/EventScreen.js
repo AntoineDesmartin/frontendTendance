@@ -10,11 +10,14 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Modal
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import photoEvent from '../assets/event.jpg'
 import { useSelector,useDispatch } from 'react-redux';
 import { resetEvent } from '../reducers/event';
+import {setOpenModal} from "../reducers/openModal"
+import Modale from './components/Modale';
 import {addParticipant,removeParticipant,addInter,removeInter} from '../reducers/user';
 
 
@@ -22,6 +25,10 @@ export default function EventScreen(props) {
 
 //todo ajouter les bonnes images de fond
 // todo a verifier si les dispatch de user marche lorquon met en place le backEnds et les logins
+
+const isModalOpen = useSelector((state)=>state.openModal.value)
+
+
 
 
 
@@ -101,12 +108,10 @@ const date = dataEvent.date.slice(0,10)
 
 
             <View style={styles.viewIcon}>
-            <FontAwesome name="user" size={30} color={"#1e064e"} />
-                
+            <FontAwesome name="user" size={30} color={"#1e064e"} /> 
                 <Pressable onPress={()=>handleQuit()}><FontAwesome name="times" size={30} color={"#1e064e"} /></Pressable> 
             </View>
-
-
+            
 
             <Image source={photoEvent} style={styles.photoEvent} />
 
@@ -207,5 +212,5 @@ const styles = StyleSheet.create({
         
         margin:10,
         borderRadius:10
-    }
+    },
 })

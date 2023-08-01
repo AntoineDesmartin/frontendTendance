@@ -10,7 +10,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  DatePickerIOS
+  DatePickerIOS,
+  Modal
 } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker'

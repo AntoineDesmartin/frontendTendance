@@ -12,13 +12,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import photoProfile from "../assets/photoProfile.jpg"
 import photoBack from "../assets/photoBack.jpg"
 
+
 import Event from './components/Event';
 
-import { useDispatch } from 'react-redux';
+//Modal
+import {setOpenModal} from "../reducers/openModal"
+import Modale from './components/Modale';
+
+
+import { useDispatch, useSelector } from 'react-redux';
 import { setEvent } from '../reducers/event';
 // import { Dispatch } from 'react';
 
@@ -189,12 +196,14 @@ export default function ProfileScreen(props) {
             partUsers: ['007', '008', '001'],
         },
     }];
+    
+    
     // todo Gerer AMIS/MESSAGERIE/FAVORIS/PARAMETRE
 
     // todo un useEffect qui fetch tous les events auxquelles le user participes avec un populate dans le back
 
     const dispatch = useDispatch();
-
+   
 //! Function _____________________________________________________________________________________________________________________________
 
 
@@ -217,10 +226,26 @@ export default function ProfileScreen(props) {
         }
     })
 
+
+
+
+
+//! Code qui permet de verifier si l'utilisateur est connecter si non on ouvre la modal
+     // const user = useSelector((state)=>state.user.value); //? a decommmenter lorsque le reducer user fonctionne
+
+     const user = null;
+     // const user ="notnull";
+    const isModalOpen = useSelector((state)=>state.openModal.value)
     const handlePress = (data)=>{
-        props.navigation.navigate('Event', { screen: 'EventScreen' });
-        dispatch(setEvent(data))
-        
+        if(user===null){
+            console.log("object");
+            dispatch(setOpenModal(!isModalOpen))
+            
+            
+        }else{
+            props.navigation.navigate('Event', { screen: 'EventScreen' });
+            dispatch(setEvent(data))
+        } 
     }
 
 
@@ -231,6 +256,13 @@ export default function ProfileScreen(props) {
 
     return (
         <View style={styles.container}>
+
+{/* ________________________Pour ouvrir la modale si nous sommes pas connecté_________________ */}
+            {isModalOpen && <Modale></Modale>} 
+{/* __________________________________________________________________________________________ */}
+
+
+
 
             {/* Photo de back------------------------------------------------------------------------ */}
             <View style={styles.viewPhotoBack}>
