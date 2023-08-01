@@ -18,8 +18,7 @@ import {setOpenModal} from "../../reducers/openModal"
 import {login,logout} from "../../reducers/user"
 
 export default function Modale() {
-console.log("ModaleScreen");
-// console.error("modale screen")
+
 const isModalOpen = useSelector((state)=>state.openModal.value)
 const dispatch=useDispatch()
 
@@ -31,17 +30,16 @@ const [password,setPassword]=useState("");
 const handleSeConnecter = ()=>{
 
     let newUser = {username:username,email:email,password:password};
-    fetch('http://172.20.10.11:3000/user/signin', {
+    fetch('https://backend-tendance.vercel.app/user/signin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newUser),
     }).then(response => response.json()).then(data => {
 
-      console.log(data);
-      console.log("bite");
+      
 
       if(data.result){
-          dispatch(login(data));
+          dispatch(login(data.data));
           dispatch(setOpenModal(false));
       }
       
@@ -51,7 +49,7 @@ const handleSeConnecter = ()=>{
 }
 const handleSinscrire = ()=>{
   let newUser = {username:username,email:email,password:password};
-    fetch('http://172.20.10.11:3000/user/signup', {
+    fetch('https://backend-tendance.vercel.app/user/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newUser),
@@ -59,9 +57,9 @@ const handleSinscrire = ()=>{
 
       console.log(data);
       console.log("bite");
-      
+
       if(data.result){
-          dispatch(login(data));
+          dispatch(login(data.data));
           dispatch(setOpenModal(false));
       }
       

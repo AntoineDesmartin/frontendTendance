@@ -27,7 +27,7 @@ import {login,logout} from "../reducers/user"
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setEvent } from '../reducers/event';
-// import { Dispatch } from 'react';
+
 
 
 export default function ProfileScreen(props) {
@@ -200,29 +200,63 @@ export default function ProfileScreen(props) {
     const dispatch = useDispatch();
     // todo Gerer AMIS/MESSAGERIE/FAVORIS/PARAMETRE
 
-    // todo un useEffect qui fetch tous les events auxquelles le user participes avec un populate dans le back
+    
+    const user = useSelector((state)=>state.user.value); 
 
-// useEffect(() => {
 
-//     fetch("http://172.20.10.11:3000/user/mesEvents").then(res=>res.json()).then(data=>{
-//         console.log(data);
-//     })
+ const [futurEvents, setFuturEvents] = useState([]);
+// const [pastEvents,setPastEvents] = useState([]);
 
-// }, []);
+useEffect(() => {
+  if (user) {
+    console.log("useEffect parti1");
+    fetch('https://backend-tendance.vercel.app/user/mesEvents', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idUser: user._id }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        //! on doit gerer ici les events selon leur date et creer comme en dessous past and futur EVENT
+
+      const eventsFutur = data.map((data, index) => (
+        <Pressable onPress={() => handlePress(data)} key={`futur-${index}`}>
+          <Event data={data} />
+        </Pressable>
+        
+      ));
+      setFuturEvents(eventsFutur);
+
+    //   const eventsPast = data.map((data, index) => (
+    //     <Pressable onPress={() => handlePress(data)} key={`past-${index}`}>
+    //       <Event data={data} />
+    //     </Pressable>
+    //   ));
+    //   setPastEvents(eventsPast);
+      
+    });
+  } else {
+    console.log("useEffect parti2");
+    dispatch(setOpenModal(true));
+  }
+}, [user]);
+
+
+        
 
 //! Function _____________________________________________________________________________________________________________________________
 
 
-    const futurEvents = eventData.map((data,index)=>{
-        let date = new Date(data.date);
-        let now = new Date()
+    // const futurEvents = eventData.map((data,index)=>{
+    //     let date = new Date(data.date);
+    //     let now = new Date()
         
-        if(date>now){
-            return <Pressable onPress={()=>handlePress(data)} key={`futur-${index}`}>
-                <Event data={data} ></Event>
-                </Pressable>
-        }
-    })
+    //     if(date>now){
+    //         return <Pressable onPress={()=>handlePress(data)} key={`futur-${index}`}>
+    //             <Event data={data} ></Event>
+    //             </Pressable>
+    //     }
+    // })
 
     
     const pastEvents = eventData.map((data,index)=>{
@@ -238,20 +272,17 @@ export default function ProfileScreen(props) {
 
 
 
-//! Code qui permet de verifier si l'utilisateur est connecter si non on ouvre la modal
-    //  const user = useSelector((state)=>state.user.value); //? a decommmenter lorsque le reducer user fonctionne
-    // console.log(user);
-    console.log("profile Screen");
-    // console.error("profile screen")
 
+   
     const isModalOpen = useSelector((state)=>state.openModal.value)
+    //! code pour les autres screen
     const handlePress = (data)=>{
-        // if(user===null){
+        if(user===null){
             dispatch(setOpenModal(!isModalOpen))
-        // }else{
+        }else{
             props.navigation.navigate('Event', { screen: 'EventScreen' });
             dispatch(setEvent(data))
-        // } 
+        } 
     }
 
 
@@ -259,18 +290,12 @@ export default function ProfileScreen(props) {
 
 
 // ! Return ___________________________________________________________________________________________________________________________
-
+    
     return (
-        <View style={styles.container}>
+        user?(<View style={styles.container}>
+            
 
-{/* ________________________Pour ouvrir la modale si nous sommes pas connecté_________________ */}
-            {/* {isModalOpen && <Modale></Modale>}  */}
-{/* __________________________________________________________________________________________ */}
-
-
-
-
-            {/* Photo de back------------------------------------------------------------------------ */}
+           
             <View style={styles.viewPhotoBack}>
                 <Image source={photoBack} style={styles.photoBack} size={100} />
                 <Image source={photoProfile} style={styles.photoProfile} size={100} />
@@ -278,7 +303,7 @@ export default function ProfileScreen(props) {
 
 
 
-            {/* Photo de Profile--------------------------------------------------------------------*/}
+           
             <View style={styles.viewParam}>
                 
                 <FontAwesome name="gears" size={30} color={"#1e064e"} />
@@ -290,12 +315,12 @@ export default function ProfileScreen(props) {
             
 
 
-            {/* Bar Icon---------------------------------------------------------------------------- */}
+            
             <View style={styles.viewIcon}>
                 <View style={styles.icon}>
 
 
-                <TouchableOpacity onPress={()=>console.log("nite")}><Text>LOGOUT</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>dispatch(logout())}><Text>LOGOUT</Text></TouchableOpacity>
 
 
                     <FontAwesome name="users" size={30} color={"#1e064e"} />
@@ -327,13 +352,13 @@ export default function ProfileScreen(props) {
 
                 
 
-                {/* <Text style={styles.text}>Aucun Events</Text> */}
+                
             </ScrollView>
             
 
             
             
-        </View>
+        </View>):(<View><Modale></Modale></View>)
     );
 }
 

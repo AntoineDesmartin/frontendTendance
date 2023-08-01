@@ -17,7 +17,8 @@ import photoEvent from '../assets/event.jpg'
 import { useSelector,useDispatch } from 'react-redux';
 import { resetEvent } from '../reducers/event';
 import {setOpenModal} from "../reducers/openModal"
-import Modale from './components/Modale';
+
+
 import {addParticipant,removeParticipant,addInter,removeInter} from '../reducers/user';
 
 
@@ -37,10 +38,9 @@ const isModalOpen = useSelector((state)=>state.openModal.value)
 //2 Use effect dans Event Screen
 
 const dataEvent = useSelector((state) => state.event.value);
-// const user = useSelector((state) => state.user.value); //? a decomm
-// console.log(user);
-console.log("Event Screen");
-// console.error("event screen")
+const user = useSelector((state) => state.user.value); //? a decomm
+
+
 // On verifie si le user participe deja oui ou non a l'event
 //? useEffect(() => {
 
@@ -72,29 +72,66 @@ const date = dataEvent.date.slice(0,10)
         dispatch(resetEvent())
         props.navigation.navigate('Profile', { screen: 'ProfileScreen' });
     }
+
+
+
     const handleParticipate = ()=>{
         setIsParticiped(!isParticiped)
         if(isParticiped){
-            console.log("add parti");
+
+
+            console.log("add parti court");
             // dispatch(addParticipant(dataEvent.id));
             // todo Fetch Post Modifier la data Base
+            fetch('https://backend-tendance.vercel.app/user/participated', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({idUser:user._id,idEvent:"64c8e88bc046aa4198d43b38"}),
+                }).then(response => response.json()).then(data => {
+                    //! gros temps de latence 
+                    console.log("add parti");
+                })
+
+
         }else{
-            console.log("delete parti");
+            console.log("delete parti court");
             // dispatch(removeParticipant(dataEvent.id));
-            // todo Fetch Post Modifier la data Base
+            fetch('https://backend-tendance.vercel.app/user/notParticipated', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({idUser:user._id,idEvent:"64c8e88bc046aa4198d43b38"}),
+                }).then(response => response.json()).then(data => {
+                    //! gros temps de latence 
+                    console.log("delete parti");
+                })
         }
         
     }
     const handleInterrested = ()=>{
         setIsInterrested(!isInterrested)
         if(isInterrested){
-            console.log("add inter");
+            console.log("add inter court");
             // dispatch(addInter(dataEvent.id));
-            // todo Fetch Post Modifier la data Base
+            fetch('https://backend-tendance.vercel.app/user/interested', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({idUser:user._id,idEvent:"64c8e88bc046aa4198d43b38"}),
+                }).then(response => response.json()).then(data => {
+                    //! gros temps de latence 
+                    console.log("add inte");
+                })
         }else{
-            console.log("delete inter");
+            console.log("delete inter court ");
             // dispatch(removeInter(dataEvent.id));
             // todo Fetch Post Modifier la data Base
+            fetch('https://backend-tendance.vercel.app/user/notInterested', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({idUser:user._id,idEvent:"64c8e88bc046aa4198d43b38"}),
+                }).then(response => response.json()).then(data => {
+                    //! gros temps de latence 
+                    console.log("delete inte");
+                })
         }
     }
 

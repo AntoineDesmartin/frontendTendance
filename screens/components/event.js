@@ -34,13 +34,7 @@ export default function Event(props) {
 
 
     return (
-                    // <View style={styles.event} >
-            <View style={{
-            ...styles.event, 
-            // color:"gray",
-            backgroundColor:color
-          }}
-        > 
+                    <View style={{...styles.event, backgroundColor:color}}> 
                         <View>
                             <Text style={styles.text}>{props.data.eventName}</Text>
                             <Text style={styles.text}>{props.data.address}</Text>
@@ -50,6 +44,8 @@ export default function Event(props) {
                             <Text style={styles.text}> {membreInterrested} intérésse</Text>
                         </View>
                     </View>
+                    
+
     )
 }
 
