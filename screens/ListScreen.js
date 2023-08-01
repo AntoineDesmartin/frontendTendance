@@ -15,6 +15,10 @@ import {
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
+//ToDo 
+//- function pour trier la data des events par Date et la classer dans des tableaux
+//- faire un mapping des tableaux des Date
+
 //data ------------------------
 
 const eventData = [
@@ -356,6 +360,8 @@ const userData = [
   },
 ];
 //-------------------------------- début de la fonction
+const sortedEvents = eventData.sort((a, b) => new Date(a.date) - new Date(b.date));
+console.log(eventData);
 
 export default function ListScreen({ navigation }) {
 
@@ -396,7 +402,7 @@ export default function ListScreen({ navigation }) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.mainContainer}
     >
-      <TextInput
+        <View><TextInput
         placeholder="Recherche"
         onChangeText={(value) => setResearch(value)}
         value={research}
@@ -404,9 +410,11 @@ export default function ListScreen({ navigation }) {
       />
       <TouchableOpacity onPress={() => handleSearch()} style={styles.searchButton}>
         <FontAwesome name={"search"} size={30} color={"black"} />
-      </TouchableOpacity>
+      </TouchableOpacity></View>
+    <ScrollView>
+      
 
-      <ScrollView>
+      
         <View style={styles.scrollContainer}>
           <View>
             <Text style={styles.textStyle}>Lundi 31 Juillet 2023</Text>
@@ -437,8 +445,10 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     padding: 12,
-    
-    margin: 40,
+    marginTop: 40,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 30,
     borderRadius: 20,
     backgroundColor: "white",
   },
@@ -446,7 +456,7 @@ const styles = StyleSheet.create({
   searchButton: {
     position: "absolute",
     top: 38,
-    right: 45,
+    right: 30,
     padding: 10,
   },
 

@@ -20,7 +20,7 @@ import eventData from "../data/data"
 
 export default function MapScreen({navigation}) {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.events.value);
+    //const user = useSelector((state) => state.events.value);
   
   const [currentPosition, setCurrentPosition] = useState(null);
 
