@@ -1,76 +1,164 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 
-const SelectionScreen = () => {
-  const data = [
-    {
-      id: 1,
-      title: 'Bloc 1',
-      image: require('../assets/sebastian-svenson-d2w-_1LJioQ-unsplash.jpg'), // Remplace par le chemin de ton image
-    },
-    {
-      id: 2,
-      title: 'Bloc 2',
-      image: require('../assets/marcela-laskoski-YrtFlrLo2DQ-unsplash.jpg'), // Remplace par le chemin de ton image
-    },
-    {
-        id: 2,
-        title: 'Bloc 2',
-        image: require('../assets/joseph-gonzalez-fdlZBWIP0aM-unsplash.jpg'), // Remplace par le chemin de ton image
-      },
-      {
-        id: 2,
-        title: 'Bloc 2',
-        image: require('../assets/tim-swaan-eOpewngf68w-unsplash.jpg'), // Remplace par le chemin de ton image
-      },
-      {
-        id: 2,
-        title: 'Bloc 2',
-        image: require('../assets/milad-fakurian-58Z17lnVS4U-unsplash.jpg'), // Remplace par le chemin de ton image
-      },
-  ];
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
+export default function SelectionScreen() {
   return (
-    <View style={styles.container}>
-      {data.map((item) => (
-        <TouchableOpacity
-          key={item.id}
-          style={styles.block}
-          activeOpacity={0.8}
-          onPress={() => {
-            // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
-          }}
+    <ScrollView contentContainerStyle={styles.container}>
+      <TouchableOpacity
+        style={[styles.block, { backgroundColor: 'purple' }]}
+        activeOpacity={0.8}
+        onPress={() => {
+          // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+        }}
+      >
+        <ImageBackground
+          source={require('../assets/sebastian-svenson-d2w-_1LJioQ-unsplash.jpg')}
+          style={[
+            styles.imageContainer,
+            { width: windowWidth * 0.9, height: windowWidth * 0.9 * (3 / 4) },
+          ]}
+          resizeMode="cover"
+          borderRadius={20}
         >
-          <ImageBackground
-            source={item.image}
-            style={styles.imageBackground}
-            resizeMode="cover"
-            borderRadius={20}
-          >
-            <Text style={styles.title}>{item.title}</Text>
-          </ImageBackground>
-        </TouchableOpacity>
-      ))}
-    </View>
+          <Text style={styles.title}>Art</Text>
+        </ImageBackground>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.block, { backgroundColor: 'blue' }]}
+        activeOpacity={0.8}
+        onPress={() => {
+          // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+        }}
+      >
+        <ImageBackground
+          source={require('../assets/marcela-laskoski-YrtFlrLo2DQ-unsplash.jpg')}
+          style={[
+            styles.imageContainer,
+            { width: windowWidth * 0.9, height: windowWidth * 0.9 * (3 / 4) },
+          ]}
+          resizeMode="cover"
+          borderRadius={20}
+        >
+          <Text style={styles.title}>Music</Text>
+        </ImageBackground>
+      </TouchableOpacity>
+
+      {/* 4 autres blocs */}
+      <TouchableOpacity
+        style={[styles.block, { backgroundColor: 'green' }]}
+        activeOpacity={0.8}
+        onPress={() => {
+          // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+        }}
+      >
+        <ImageBackground
+          source={require('../assets/joseph-gonzalez-fdlZBWIP0aM-unsplash.jpg')}
+          style={[
+            styles.imageContainer,
+            { width: windowWidth * 0.9, height: windowWidth * 0.9 * (3 / 4) },
+          ]}
+          resizeMode="cover"
+          borderRadius={20}
+        >
+          <Text style={styles.title}>Food</Text>
+        </ImageBackground>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.block, { backgroundColor: 'red' }]}
+        activeOpacity={0.8}
+        onPress={() => {
+          // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+        }}
+      >
+        <ImageBackground
+          source={require('../assets/tim-swaan-eOpewngf68w-unsplash.jpg')}
+          style={[
+            styles.imageContainer,
+            { width: windowWidth * 0.9, height: windowWidth * 0.9 * (3 / 4) },
+          ]}
+          resizeMode="cover"
+          borderRadius={20}
+        >
+          <Text style={styles.title}>Nature</Text>
+        </ImageBackground>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.block, { backgroundColor: 'orange' }]}
+        activeOpacity={0.8}
+        onPress={() => {
+          // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+        }}
+      >
+        <ImageBackground
+          source={require('../assets/milad-fakurian-58Z17lnVS4U-unsplash.jpg')}
+          style={[
+            styles.imageContainer,
+            { width: windowWidth * 0.9, height: windowWidth * 0.9 * (3 / 4) },
+          ]}
+          resizeMode="cover"
+          borderRadius={20}
+        >
+          <Text style={styles.title}>Science</Text>
+        </ImageBackground>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.block, { backgroundColor: 'yellow' }]}
+        activeOpacity={0.8}
+        onPress={() => {
+          // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+        }}
+      >
+        <ImageBackground
+          source={require('../assets/august-phlieger-CREqtqgBFcU-unsplash.jpg')}
+          style={[
+            styles.imageContainer,
+            { width: windowWidth * 0.9, height: windowWidth * 0.9 * (3 / 4) },
+          ]}
+          resizeMode="cover"
+          borderRadius={20}
+        >
+          <Text style={styles.title}>Sport</Text>
+        </ImageBackground>
+      </TouchableOpacity>
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexGrow: 1, // Ajout de flexGrow pour permettre le scrolling
     justifyContent: 'space-between',
-    padding: 10,
+    padding: 15,
   },
   block: {
-    width: '48%', // 2 blocs par ligne pour laisser un petit espace entre eux
-    height: 200,
-    marginBottom: 10,
+    width: windowWidth / 1.1,
+    height: windowHeight / 5,
+    marginBottom: 20,
     borderRadius: 20,
     overflow: 'hidden',
+    elevation: 10,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
   },
-  imageBackground: {
+  imageContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -80,10 +168,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     padding: 10,
     borderRadius: 20,
   },
 });
-
-export default SelectionScreen;
