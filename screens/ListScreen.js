@@ -13,14 +13,16 @@ import {
   ScrollView,
 } from "react-native";
 
-import { useDispatch } from "react-redux";
-import event, { setEvent } from "../reducers/event";
+import { useDispatch, useSelector } from "react-redux";
+import { setEvent } from "../reducers/event";
+import { storeResearch, resetResearch } from "../reducers/list";
 import dateList from "./components/dateList";
 import formatDate from "./components/formatDate";
 import formatDateToFrenchLocale from "./components/formatageList";
-
+import ForFilterCreator from "./components/ForFilterCreator";
+import ForFilterType from "./components/ForFilterType";
+import ForFilterEventName from "./components/ForFilterEventName";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
 
 //ToDo
 //- function pour trier la data des events par Date et la classer dans des tableaux
@@ -234,203 +236,90 @@ const eventData = [
   },
 ];
 
-const userData = [
-  {
-    id: "001",
-    token: "a01",
-    username: "joan",
-    mail: "jo123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
-    },
-  },
-  {
-    id: "002",
-    token: "a02",
-    username: "ines",
-    mail: "ines123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
-    },
-  },
-  {
-    id: "003",
-    token: "a03",
-    username: "aaron",
-    mail: "aaron123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
-    },
-  },
-  {
-    id: "004",
-    token: "a04",
-    username: "tone",
-    mail: "tone123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
-    },
-  },
-  {
-    id: "005",
-    token: "a05",
-    username: "user",
-    mail: "user123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
-    },
-  },
-  {
-    id: "006",
-    token: "a06",
-    username: "meh",
-    mail: "meh123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
-    },
-  },
-  {
-    id: "007",
-    token: "a07",
-    username: "max",
-    mail: "max123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
-    },
-  },
-  {
-    id: "008",
-    token: "a08",
-    username: "adri",
-    mail: "adri123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
-    },
-  },
-  {
-    id: "009",
-    token: "a09",
-    username: "mich",
-    mail: "mich123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
-    },
-  },
-  {
-    id: "010",
-    token: "a10",
-    username: "nico",
-    mail: "nico123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
-    },
-  },
-];
+
 //-------------------------------- début de la fonction
 
 export default function ListScreen({ navigation }) {
-  const [research, setResearch] = useState(""); // état pour initialiser la recherche en Input
-  const [dataDynamic, setdataDynamic] = useState(eventData); //
-  const [isResearch, setIsResearch] = useState(false);
+  const [research, setResearch] = useState(""); // état de la recherche en Input
+  const [dataDynamic, setdataDynamic] = useState(eventData); // état de la data en réception
+  const [isResearch, setIsResearch] = useState(false); // état recherche active/inactive
+  const [searchFilter, setSearchFilter] = useState("creator");
 
-  //console.log(dataDynamic);
-  //console.log(research.toLowerCase());
+  const dispatch = useDispatch();
+  const reduxResearch = useSelector((state) => state.list.value);
+  const researchLowerCase = reduxResearch.toLowerCase();
 
+  // Lance la recherhce ---------------------------------------
   const handleSearch = () => {
+    dispatch(storeResearch(research));
     setResearch("");
     setIsResearch(true);
-    console.log(isResearch);
+    //console.log(isResearch);
   };
 
+  // Initialise les filtres / Ferme la recherhe
   const handleCloseFilter = () => {
+    dispatch(resetResearch());
     setIsResearch(false);
     console.log(isResearch);
   };
 
-  //console.log(isResearch);
-
+  // constante pour rejoindre la map au onPress---------------------------------------------
   const handleSubmit = () => {
     navigation.navigate("TabNavigator", { screen: "TabNavigator" });
-    // constante pour rejoindre la map au onPress---------------------------------------------
   };
 
-  const dispatch = useDispatch();
-
+  // constante pour rejoindre l'évent sélectionné au onPress---------------------------------------------
   const handlePress = (data) => {
     navigation.navigate("Event", { screen: "EventScreen" });
     dispatch(setEvent(data));
   };
 
-  const researchLowerCase = research.toLowerCase();
+  const filterArray = ["creator", "eventName", "type"]; // filtre
+  
 
-  const newDataBase = []; //!fonction de recherche
-
-  for (let i = 0; i < dataDynamic.length; i++) {
-    if (dataDynamic[i].type === researchLowerCase) {
-      const newObject = {
-        creator: dataDynamic[i].creator,
-        eventName: dataDynamic[i].eventName,
-        type: dataDynamic[i].type,
-        date: dataDynamic[i].date,
-        hourStart: dataDynamic[i].hourStart,
-        hourEnd: dataDynamic[i].hourEnd,
-        address: dataDynamic[i].address,
-        price: dataDynamic[i].price,
-        website: dataDynamic[i].website,
-        description: dataDynamic[i].description,
-        eventCover: dataDynamic[i].eventCover,
-        users: {
-          interUsers: dataDynamic[i].users.interUsers,
-          partUsers: dataDynamic[i].users.partUsers,
-        },
-      };
-      newDataBase.push(newObject);
+  const handleFilter = () => {
+    if (searchFilter === "creator"){
+      setSearchFilter("type")
     }
+    if (searchFilter === "type"){
+      setSearchFilter("eventName")
+    }
+
+    if (searchFilter === "eventName"){
+      setSearchFilter("creator")
+    }
+    
+    console.log(searchFilter);
+  };
+
+
+
+  let finalDataBase;
+  let newDataBase 
+
+  
+  
+
+  if (!isResearch) {
+    finalDataBase = dataDynamic;
+  } else {
+
+    if (searchFilter === "creator") {
+      finalDataBase = ForFilterCreator(dataDynamic, researchLowerCase)
+    }
+    if (searchFilter === "type") {
+      finalDataBase = ForFilterType(dataDynamic, researchLowerCase)
+    } 
+    if (searchFilter === "eventName") {
+      finalDataBase = ForFilterEventName(dataDynamic, researchLowerCase)
+    }
+  
   }
 
-  console.log(newDataBase);
+  console.log(finalDataBase);
 
-  const sortedEvents = newDataBase.sort(
+  let sortedEvents = finalDataBase.sort(
     (a, b) => new Date(a.date) - new Date(b.date)
   );
 
@@ -448,17 +337,12 @@ export default function ListScreen({ navigation }) {
   // constante pour obtenir la date du jour
 
   const today = new Date();
-  //console.log(today);
 
   //renvoie toutes dates des évents à partir de la date du jour et élimine les doublons-------------------------------------------------------
 
   const dateEvents = [...new Set(dateAllEvent)].filter(
     (date) => date >= formatDate(today)
   );
-
-  //console.log(dateEvents);
-
-
 
   //fonction principale renvoie toute les views avec le bon style en fonction du type---------------------------------------------------------
 
@@ -523,12 +407,12 @@ export default function ListScreen({ navigation }) {
       </View>
     );
   });
-// style pour le times des filtres
+  // style pour le times des filtres
   if (isResearch) {
-    opacityChange = 1
+    opacityChange = 1;
   } else {
-    opacityChange = 0
-  };
+    opacityChange = 0;
+  }
 
   return (
     <KeyboardAvoidingView
@@ -550,7 +434,12 @@ export default function ListScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleCloseFilter()}
-          style={{ position: "absolute", top: 90, right: 40, opacity: opacityChange }}
+          style={{
+            position: "absolute",
+            top: 90,
+            right: 40,
+            opacity: opacityChange,
+          }}
         >
           <FontAwesome name={"times"} size={30} color={"white"} />
         </TouchableOpacity>
@@ -559,11 +448,15 @@ export default function ListScreen({ navigation }) {
         <View style={styles.scrollContainer}>{dayList}</View>
       </ScrollView>
 
+      <TouchableOpacity onPress={() => handleSubmit()} style={styles.mapButton}>
+        <FontAwesome name={"map"} size={40} color={"rgba(89, 215, 207, 1)"} />
+      </TouchableOpacity>
+
       <TouchableOpacity
-        onPress={() => handleSubmit()}
-        style={styles.pressableButton}
+        onPress={() => handleFilter()}
+        style={styles.filterButton}
       >
-        <FontAwesome name={"map"} size={40} color={"#b2b2b2"} />
+        <Text>{searchFilter}</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
@@ -572,6 +465,7 @@ export default function ListScreen({ navigation }) {
 // style -------------------------------------------------------------------
 const styles = StyleSheet.create({
   mainContainer: {
+    paddingTop: 10,
     flex: 1,
     height: "100%",
     width: "100%",
@@ -596,10 +490,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
-  closeFilterButton: {
-    //padding: 10,
-  },
-
   scrollContainer: {
     backgroundColor: "#1E064E",
     alignItems: "center",
@@ -609,12 +499,39 @@ const styles = StyleSheet.create({
     color: "white",
   },
 
-  pressableButton: {
+  mapButton: {
     position: "absolute",
-    bottom: 20,
-    right: 20,
-    backgroundColor: "grey",
+    bottom: 30,
+    right: 30,
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+
+  filterButton: {
+    position: "absolute",
+    top: 117,
+    left: 20,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
 });
