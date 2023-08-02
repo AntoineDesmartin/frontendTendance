@@ -204,7 +204,7 @@ const user = useSelector((state) => state.user.value);
     }
 
     let event = {
-      creator: user._id,
+      creatorName: user._id,
       eventName: name,
       type: type,
       access:access,
