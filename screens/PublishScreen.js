@@ -190,17 +190,17 @@ export default function PublishScreen() {
       <Text style={styles.title}>Créer un event</Text>
 
       {/* Bouton sélection date calendrier */}
-      <TouchableOpacity onPress={toggleDatePicker}>
+
+      <View style={styles.selectDate}>
+        <TouchableOpacity onPress={toggleDatePicker}>
+          <FontAwesome name="calendar" size={30} color={"#1e064e"} />
+        </TouchableOpacity>
         <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
-      </TouchableOpacity>
+      </View>
 
       {/* condition de rendu du date picker en fonction du système ios ou android */}
       {showDatePicker && Platform.OS === "ios" && (
-        <DateTimePicker 
-        value={selectedDate} 
-        mode="date" 
-        display="default" 
-        onChange={handleDateChange} />
+        <DateTimePicker value={selectedDate} mode="date" display="default" onChange={handleDateChange} />
       )}
 
       {showDatePicker && Platform.OS === "android" && (
@@ -213,26 +213,37 @@ export default function PublishScreen() {
         />
       )}
 
-      <TouchableOpacity onPress={toggleTimeStartPicker}>
-        
-      <Text>{hourStart ? `Heure de début : ${hourStart.getHours()}:${hourStart.getMinutes()}` : "Choisir l'heure de début"}</Text>
-      
-            </TouchableOpacity>
+      <View style={styles.selectTime}>
+        <TouchableOpacity onPress={toggleTimeStartPicker}>
+          {/* <FontAwesome name="clock" size={30} color={"#1e064e"} /> */}
+        </TouchableOpacity>
+        <Text>
+          {hourStart ? `Heure de début : ${hourStart.getHours()}:${hourStart.getMinutes()}` : "Choisir l'heure de début"}
+        </Text>
+      </View>
 
       {showTimeStartPicker && (
-          <DateTimePicker value={hourStart || new Date()} mode="time" display="default" onChange={handleTimeStartChange} />
+        <DateTimePicker
+          value={hourStart || new Date()}
+          mode="date"
+          display="default"
+          onChange={handleTimeStartChange}
+        />
       )}
-
-      <TouchableOpacity onPress={toggleTimeEndPicker}>
-    
-      <Text>{hourEnd ? `Heure de fin : ${hourEnd.getHours()}:${hourEnd.getMinutes()}` : "Choisir l'heure de fin"}</Text>
       
+      <View style={styles.selectTime}>
+      <TouchableOpacity onPress={toggleTimeEndPicker}>
+        {/* <FontAwesome name="clock" size={30} color={"#1e064e"} /> */}
       </TouchableOpacity>
+      <Text>
+          {hourEnd ? `Heure de fin : ${hourEnd.getHours()}:${hourEnd.getMinutes()}` : "Choisir l'heure de fin"}
+        </Text>
+      </View>
+
 
       {showTimeEndPicker && (
-          <DateTimePicker value={hourEnd || new Date()} mode="time" display="default" onChange={handleTimeEndChange} />
-           )}
-
+        <DateTimePicker value={hourEnd || new Date()} mode="time" display="default" onChange={handleTimeEndChange} />
+      )}
 
       {/* <View style={styles.viewAccess}>
         {optionsAccess.map((option) => (
