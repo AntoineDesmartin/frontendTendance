@@ -21,7 +21,7 @@ import events from "./reducers/events";
 import event from "./reducers/event";
 import openModal from "./reducers/openModal";
 const store = configureStore({
-  reducer: { event,openModal,user },
+  reducer: { event, openModal, user, events },
 });
 
 const Stack = createNativeStackNavigator();
