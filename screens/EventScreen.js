@@ -42,16 +42,16 @@ const user = useSelector((state) => state.user.value); //? a decomm
 
 
 // On verifie si le user participe deja oui ou non a l'event
-//? useEffect(() => {
+useEffect(() => {
+    
+   if(user.events.interEvents.includes(dataEvent._id)){
+       setIsInterrested(true)
+    }
+    if(user.events.partEvents.includes(dataEvent._id)){
+        setIsParticiped(true)
+   }
 
-// ?    if(user.events.interEvents.includes(dataEvent.id)){
-// ?        setIsInterrested(true)
-//  ?   }
-//  ?   if(user.events.partEvents.includes(dataEvent.id)){
-//  ?       setIsParticiped(true)
-// ?    }
-
-//?   }, []);
+  }, []);
 
 
 const [isParticiped,setIsParticiped]=useState(false); // todo Verifier si le user se trouve dans les particpant si oui mettre deja en true
@@ -74,36 +74,43 @@ const date = dataEvent.date.slice(0,10)
     }
 
 
-console.log("Event Screen");
+
 
     const handleParticipate = ()=>{
         setIsParticiped(!isParticiped)
-        if(isParticiped){
+        if(!isParticiped){
 
 
-            console.log("add parti court");
+            console.log('______________');
+            console.log("user._id",user._id);
+            console.log("dataEvent._id",dataEvent._id);
             // dispatch(addParticipant(dataEvent.id));
             // todo Fetch Post Modifier la data Base
             fetch('https://backend-tendance.vercel.app/user/participated', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({idUser:user._id,idEvent:"64c8e88bc046aa4198d43b38"}),
+                body: JSON.stringify({ idUser:user._id, idEvent:dataEvent._id }),
                 }).then(response => response.json()).then(data => {
-                    //! gros temps de latence 
-                    console.log(data); // je renvoie {"result": true}
+                    console.log("add participant ");
+                    console.log('______________');
                 })
 
 
         }else{
-            console.log("delete parti court");
-            // dispatch(removeParticipant(dataEvent.id));
+
+            console.log('______________');
+            console.log("user._id",user._id);
+            console.log("dataEvent._id",dataEvent._id);
+
             fetch('https://backend-tendance.vercel.app/user/notParticipated', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({idUser:user._id,idEvent:"64c8e88bc046aa4198d43b38"}),
+                body: JSON.stringify({ idUser:user._id, idEvent:dataEvent._id }),
                 }).then(response => response.json()).then(data => {
-                    //! gros temps de latence 
-                    console.log(data); // je renvoie {"result": true}
+
+                    console.log("delete participant ");
+                    console.log('______________');
+
                 })
         }
         
@@ -112,28 +119,33 @@ console.log("Event Screen");
 
     const handleInterrested = ()=>{
         setIsInterrested(!isInterrested)
-        if(isInterrested){
-            console.log("add inter court");
-            // dispatch(addInter(dataEvent.id));
+        if(!isInterrested){
+            console.log('______________');
+            console.log("user._id",user._id);
+            console.log("dataEvent._id",dataEvent._id);
+
             fetch('https://backend-tendance.vercel.app/user/interested', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({idUser:user._id,idEvent:"64c8e88bc046aa4198d43b38"}),
+                body: JSON.stringify({ idUser:user._id, idEvent:dataEvent._id }),
                 }).then(response => response.json()).then(data => {
-                    //! gros temps de latence 
-                    console.log("add inte");
+                   
+                    console.log("add intérresent ");
+                    console.log('______________');
                 })
         }else{
-            console.log("delete inter court ");
-            // dispatch(removeInter(dataEvent.id));
-            // todo Fetch Post Modifier la data Base
+            console.log('______________');
+            console.log("user._id",user._id);
+            console.log("dataEvent._id",dataEvent._id);
+
             fetch('https://backend-tendance.vercel.app/user/notInterested', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({idUser:user._id,idEvent:"64c8e88bc046aa4198d43b38"}),
+                body: JSON.stringify({ idUser:user._id, idEvent:dataEvent._id }),
                 }).then(response => response.json()).then(data => {
-                    //! gros temps de latence 
-                    console.log("delete inte");
+
+                    console.log("delete intérresent ");
+                    console.log('______________');
                 })
         }
     }
@@ -168,13 +180,13 @@ console.log("Event Screen");
             </View>
 
             <View style={styles.viewButton}>
-                <Pressable style={{ ...styles.button,backgroundColor: isParticiped ? '#1e064e' : 'white'}} onPress={()=>handleParticipate()}>
-                    <Text style={{color: isParticiped ? 'white' : '#1e064e',fontWeight:"bold",fontSize:20}}>Je participe</Text>
+                <Pressable style={{ ...styles.button,backgroundColor: isParticiped ? 'white' : '#1e064e'}} onPress={()=>handleParticipate()}>
+                    <Text style={{color: isParticiped ?  '#1e064e': 'white',fontWeight:"bold",fontSize:20}}>Je participe</Text>
                 </Pressable>
                 <View 
         ></View>
-                <Pressable style={{ ...styles.button,backgroundColor: isInterrested ? '#1e064e' : 'white'}} onPress={()=>handleInterrested()}>
-                    <Text style={{color: isInterrested ? 'white' : '#1e064e',fontWeight:"bold",fontSize:20}}>Interressé</Text>
+                <Pressable style={{ ...styles.button,backgroundColor: isInterrested ? 'white' : '#1e064e'}} onPress={()=>handleInterrested()}>
+                    <Text style={{color: isInterrested ?  '#1e064e': 'white',fontWeight:"bold",fontSize:20}}>Interressé</Text>
                 </Pressable>
             </View>
             

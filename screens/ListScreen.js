@@ -13,14 +13,16 @@ import {
   ScrollView,
 } from "react-native";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setEvent } from "../reducers/event";
+import { storeResearch, resetResearch } from "../reducers/list";
 import dateList from "./components/dateList";
 import formatDate from "./components/formatDate";
 import formatDateToFrenchLocale from "./components/formatageList";
-
+import ForFilterCreator from "./components/ForFilterCreator";
+import ForFilterType from "./components/ForFilterType";
+import ForFilterEventName from "./components/ForFilterEventName";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { string } from "prop-types";
 
 //ToDo
 //- function pour trier la data des events par Date et la classer dans des tableaux
@@ -28,383 +30,296 @@ import { string } from "prop-types";
 
 //data ------------------------
 
-
-
-const userData = [
+const eventData = [
   {
-    id: "001",
-    token: "a01",
-    username: "joan",
-    mail: "jo123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
+    creator: "joan",
+    eventName: "SJparty",
+    type: "music",
+    date: "2023-07-01",
+    hourStart: "22:45",
+    hourEnd: "01:45",
+    address: "35 rue de Marseille 69007 Lyon",
+    price: "Gratuit",
+    website: "linktr.ee/sacrejojo69",
+    description:
+      "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
+    eventCover: "",
+    users: {
+      interUsers: ["001", "002", "003", "004"],
+      partUsers: ["005", "006", "007", "008"],
     },
   },
   {
-    id: "002",
-    token: "a02",
-    username: "ines",
-    mail: "ines123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
+    creator: "nico",
+    eventName: "TacosMania",
+    type: "food",
+    date: "2023-08-09",
+    hourStart: "19:45",
+    hourEnd: "22:45",
+    address: "26 Rue de Marseille 69007 Lyon",
+    price: "10",
+    website: "https://www.kebab-frites.com/kebab/uskudar-lyon-7.html",
+    description:
+      "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
+    eventCover: "",
+    users: {
+      interUsers: ["001", "002", "003", "004"],
+      partUsers: ["005", "006", "007", "008", "09", "10"],
     },
   },
   {
-    id: "003",
-    token: "a03",
-    username: "aaron",
-    mail: "aaron123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
+    creator: "mich",
+    eventName: "ExpoMeme23",
+    type: "art",
+    date: "2023-08-01",
+    hourStart: "22:45",
+    hourEnd: "05:45",
+    address: "20 Place des Terreaux 69001 Lyon",
+    price: "5",
+    website: "https://www.mba-lyon.fr/fr",
+    description:
+      "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
+    eventCover: "",
+    users: {
+      interUsers: ["001", "002"],
+      partUsers: ["003", "004", "005", "009"],
     },
   },
   {
-    id: "004",
-    token: "a04",
-    username: "tone",
-    mail: "tone123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
+    creator: "adri",
+    eventName: "Marathon de Lyon",
+    type: "sport",
+    date: "2023-09-13",
+    hourStart: "05:45",
+    hourEnd: "22:45",
+    address: "Place Bellecour 69002 Lyon",
+    price: "25",
+    website: "https://www.runinlyon.com/fr",
+    description:
+      "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
+    eventCover: "",
+    users: {
+      interUsers: ["001", "002"],
+      partUsers: ["003", "004", "005", "006", "008"],
     },
   },
   {
-    id: "005",
-    token: "a05",
-    username: "user",
-    mail: "user123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
+    creator: "ines",
+    eventName: "Les Matins de la Cartographie",
+    type: "science",
+    date: "2023-09-13",
+    hourStart: "05:45",
+    hourEnd: "11:45",
+    address: "Place de la Nation, 69120 Vaulx-en-Velin",
+    price: "10",
+    website: "https://www.planetariumvv.com/",
+    description:
+      "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
+    eventCover: "",
+    users: {
+      interUsers: ["001", "002"],
+      partUsers: ["003", "004", "005", "006"],
     },
   },
   {
-    id: "006",
-    token: "a06",
-    username: "meh",
-    mail: "meh123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
+    creator: "tone",
+    eventName: "La Pêche au Harpon",
+    type: "nature",
+    date: "2023-08-24",
+    hourStart: "05:45",
+    hourEnd: "00:45",
+    address: "Rue de Créqui 69006 Lyon",
+    price: "55",
+    website:
+      "https://www.snsm.org/conseils/conseils-loisirs-nautiques/peche-sous-marine-pratique-et-reglementation",
+    description:
+      "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
+    eventCover: "",
+    users: {
+      interUsers: ["001", "002"],
+      partUsers: ["003", "004", "005", "006"],
     },
   },
   {
-    id: "007",
-    token: "a07",
-    username: "max",
-    mail: "max123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
+    creator: "max",
+    eventName: "DemodayBatch89-LaCapsuleGrooveCamp",
+    type: "science",
+    date: "2033-01-11",
+    hourStart: "14:45",
+    hourEnd: "16:45",
+    address: "35 rue de Marseille 69007 Lyon",
+    price: "10",
+    website: "https://now-coworking.com/",
+    description:
+      "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
+    eventCover: "",
+    users: {
+      interUsers: ["001", "002", "009", "010"],
+      partUsers: ["003", "004", "005", "006", "007", "008"],
     },
   },
   {
-    id: "008",
-    token: "a08",
-    username: "adri",
-    mail: "adri123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
+    creator: "user",
+    eventName: "???",
+    type: "science",
+    date: "2024-01-11",
+    hourStart: "00:45",
+    hourEnd: "03:45",
+    address: "35 rue de Marseille 69007 Lyon",
+    price: "Gratuit",
+    website: "",
+    description:
+      "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
+    eventCover: "",
+    users: {
+      interUsers: [
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "008",
+        "001",
+        "002",
+        "009",
+        "010",
+      ],
+      partUsers: [],
     },
   },
   {
-    id: "009",
-    token: "a09",
-    username: "mich",
-    mail: "mich123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
+    creator: "user",
+    eventName: "TekTek69event",
+    type: "music",
+    date: "2023-12-11",
+    hourStart: "21:45",
+    hourEnd: "03:45",
+    address: "rue de Sèze 69006 Lyon",
+    price: "3",
+    website: "",
+    description:
+      "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
+    eventCover: "",
+    users: {
+      interUsers: [
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "008",
+        "001",
+        "002",
+        "009",
+        "010",
+      ],
+      partUsers: [],
     },
   },
   {
-    id: "010",
-    token: "a10",
-    username: "nico",
-    mail: "nico123@g.com",
-    password: "123",
-    profilPic: "",
-    coverPic: "",
-    events: {
-      interEvents: ["a0", "a1", "a3"],
-      partEvents: ["a0", "a1", "a3"],
+    creator: "user",
+    eventName: "GymTonic2000",
+    type: "sport",
+    date: "2023-11-11",
+    hourStart: "07:45",
+    hourEnd: "08:45",
+    address: "rue de Sèze 69006 Lyon",
+    price: "3",
+    website: "",
+    description:
+      "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
+    eventCover: "",
+    users: {
+      interUsers: ["003", "004", "005", "006", "002", "009", "010"],
+      partUsers: ["007", "008", "001"],
     },
   },
 ];
+
+
 //-------------------------------- début de la fonction
 
 export default function ListScreen({ navigation }) {
-  const [research, setResearch] = useState(""); // état pour initialiser la recherche en Input
-
-  const handleSearch = () => {
-    setResearch("");
-  };
-
-  const handleSubmit = () => {
-    navigation.navigate("TabNavigator", { screen: "TabNavigator" });
-    // constante pour rejoindre la map au onPress
-  };
+  const [research, setResearch] = useState(""); // état de la recherche en Input
+  const [dataDynamic, setdataDynamic] = useState(eventData); // état de la data en réception
+  const [isResearch, setIsResearch] = useState(false); // état recherche active/inactive
+  const [searchFilter, setSearchFilter] = useState("creator");
 
   const dispatch = useDispatch();
+  const reduxResearch = useSelector((state) => state.list.value);
+  const researchLowerCase = reduxResearch.toLowerCase();
 
+  // Lance la recherhce ---------------------------------------
+  const handleSearch = () => {
+    dispatch(storeResearch(research));
+    setResearch("");
+    setIsResearch(true);
+    //console.log(isResearch);
+  };
+
+  // Initialise les filtres / Ferme la recherhe
+  const handleCloseFilter = () => {
+    dispatch(resetResearch());
+    setIsResearch(false);
+    console.log(isResearch);
+  };
+
+  // constante pour rejoindre la map au onPress---------------------------------------------
+  const handleSubmit = () => {
+    navigation.navigate("TabNavigator", { screen: "TabNavigator" });
+  };
+
+  // constante pour rejoindre l'évent sélectionné au onPress---------------------------------------------
   const handlePress = (data) => {
     navigation.navigate("Event", { screen: "EventScreen" });
     dispatch(setEvent(data));
   };
 
-  const eventData = [
-    {
-      creator: "joan",
-      eventName: "SJparty",
-      type: "music",
-      date: "2023-07-01",
-      hourStart: "22:45",
-      hourEnd: "01:45",
-      address: "35 rue de Marseille 69007 Lyon",
-      price: "Gratuit",
-      website: "linktr.ee/sacrejojo69",
-      description:
-        "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
-      eventCover: "",
-      users: {
-        interUsers: ["001", "002", "003", "004"],
-        partUsers: ["005", "006", "007", "008"],
-      },
-    },
-    {
-      creator: "nico",
-      eventName: "TacosMania",
-      type: "food",
-      date: "2023-08-09",
-      hourStart: "19:45",
-      hourEnd: "22:45",
-      address: "26 Rue de Marseille 69007 Lyon",
-      price: "10",
-      website: "https://www.kebab-frites.com/kebab/uskudar-lyon-7.html",
-      description:
-        "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
-      eventCover: "",
-      users: {
-        interUsers: ["001", "002", "003", "004"],
-        partUsers: ["005", "006", "007", "008", "09", "10"],
-      },
-    },
-    {
-      creator: "mich",
-      eventName: "ExpoMeme23",
-      type: "art",
-      date: "2023-08-01",
-      hourStart: "22:45",
-      hourEnd: "05:45",
-      address: "20 Place des Terreaux 69001 Lyon",
-      price: "5",
-      website: "https://www.mba-lyon.fr/fr",
-      description:
-        "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
-      eventCover: "",
-      users: {
-        interUsers: ["001", "002"],
-        partUsers: ["003", "004", "005", "009"],
-      },
-    },
-    {
-      creator: "adri",
-      eventName: "Marathon de Lyon",
-      type: "sport",
-      date: "2023-09-13",
-      hourStart: "05:45",
-      hourEnd: "22:45",
-      address: "Place Bellecour 69002 Lyon",
-      price: "25",
-      website: "https://www.runinlyon.com/fr",
-      description:
-        "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
-      eventCover: "",
-      users: {
-        interUsers: ["001", "002"],
-        partUsers: ["003", "004", "005", "006", "008"],
-      },
-    },
-    {
-      creator: "ines",
-      eventName: "Les Matins de la Cartographie",
-      type: "science",
-      date: "2023-09-13",
-      hourStart: "05:45",
-      hourEnd: "11:45",
-      address: "Place de la Nation, 69120 Vaulx-en-Velin",
-      price: "10",
-      website: "https://www.planetariumvv.com/",
-      description:
-        "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
-      eventCover: "",
-      users: {
-        interUsers: ["001", "002"],
-        partUsers: ["003", "004", "005", "006"],
-      },
-    },
-    {
-      creator: "tone",
-      eventName: "La Pêche au Harpon",
-      type: "nature",
-      date: "2023-08-24",
-      hourStart: "05:45",
-      hourEnd: "00:45",
-      address: "Rue de Créqui 69006 Lyon",
-      price: "55",
-      website:
-        "https://www.snsm.org/conseils/conseils-loisirs-nautiques/peche-sous-marine-pratique-et-reglementation",
-      description:
-        "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
-      eventCover: "",
-      users: {
-        interUsers: ["001", "002"],
-        partUsers: ["003", "004", "005", "006"],
-      },
-    },
-    {
-      creator: "max",
-      eventName: "DemodayBatch89-LaCapsuleGrooveCamp",
-      type: "science",
-      date: "2033-01-11",
-      hourStart: "14:45",
-      hourEnd: "16:45",
-      address: "35 rue de Marseille 69007 Lyon",
-      price: "10",
-      website: "https://now-coworking.com/",
-      description:
-        "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
-      eventCover: "",
-      users: {
-        interUsers: ["001", "002", "009", "010"],
-        partUsers: ["003", "004", "005", "006", "007", "008"],
-      },
-    },
-    {
-      creator: "user",
-      eventName: "???",
-      type: "science",
-      date: "2024-01-11",
-      hourStart: "00:45",
-      hourEnd: "03:45",
-      address: "35 rue de Marseille 69007 Lyon",
-      price: "Gratuit",
-      website: "",
-      description:
-        "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
-      eventCover: "",
-      users: {
-        interUsers: [
-          "003",
-          "004",
-          "005",
-          "006",
-          "007",
-          "008",
-          "001",
-          "002",
-          "009",
-          "010",
-        ],
-        partUsers: [],
-      },
-    },
-    {
-      creator: "user",
-      eventName: "TekTek69event",
-      type: "music",
-      date: "2023-12-11",
-      hourStart: "21:45",
-      hourEnd: "03:45",
-      address: "rue de Sèze 69006 Lyon",
-      price: "3",
-      website: "",
-      description:
-        "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
-      eventCover: "",
-      users: {
-        interUsers: [
-          "003",
-          "004",
-          "005",
-          "006",
-          "007",
-          "008",
-          "001",
-          "002",
-          "009",
-          "010",
-        ],
-        partUsers: [],
-      },
-    },
-    {
-      creator: "user",
-      eventName: "GymTonic2000",
-      type: "sport",
-      date: "2023-11-11",
-      hourStart: "07:45",
-      hourEnd: "08:45",
-      address: "rue de Sèze 69006 Lyon",
-      price: "3",
-      website: "",
-      description:
-        "Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.",
-      eventCover: "",
-      users: {
-        interUsers: ["003", "004", "005", "006", "002", "009", "010"],
-        partUsers: ["007", "008", "001"],
-      },
-    },
-  ];
-
-  let now = new Date();
-  //console.log(now);
-
-  const dates = [formatDate(now)];
-
-  for (let i = 1; i <= 100; i++) {
-    const nextDay = new Date(now);
-    nextDay.setDate(now.getDate() + i);
-    dates.push(formatDate(nextDay));
-  }
-
-  //console.log(dates);
+  const filterArray = ["creator", "eventName", "type"]; // filtre
   
 
+  const handleFilter = () => {
+    if (searchFilter === "creator"){
+      setSearchFilter("type")
+    }
+    if (searchFilter === "type"){
+      setSearchFilter("eventName")
+    }
 
-  const sortedEvents = eventData.sort(
+    if (searchFilter === "eventName"){
+      setSearchFilter("creator")
+    }
+    
+    console.log(searchFilter);
+  };
+
+
+
+  let finalDataBase;
+  let newDataBase 
+
+  
+  
+
+  if (!isResearch) {
+    finalDataBase = dataDynamic;
+  } else {
+
+    if (searchFilter === "creator") {
+      finalDataBase = ForFilterCreator(dataDynamic, researchLowerCase)
+    }
+    if (searchFilter === "type") {
+      finalDataBase = ForFilterType(dataDynamic, researchLowerCase)
+    } 
+    if (searchFilter === "eventName") {
+      finalDataBase = ForFilterEventName(dataDynamic, researchLowerCase)
+    }
+  
+  }
+
+  console.log(finalDataBase);
+
+  let sortedEvents = finalDataBase.sort(
     (a, b) => new Date(a.date) - new Date(b.date)
   );
 
@@ -412,53 +327,58 @@ export default function ListScreen({ navigation }) {
   //console.log(dates.includes(sortedEvents[0].date));
   //console.log(dates[0]);
   //console.log((sortedEvents[0].date));
-  
+
+  //!
   let dateAllEvent = [];
-
-  for (let i= 0; i < sortedEvents.length; i++) {
-    dateAllEvent.push(sortedEvents[i].date)
+  for (let i = 0; i < sortedEvents.length; i++) {
+    dateAllEvent.push(sortedEvents[i].date);
   }
-  
-  const today = new Date();
-  console.log(today);
-  const dateEvents = [...new Set(dateAllEvent)].filter(date => date >= formatDate(today));
 
-  console.log(dateEvents);
+  // constante pour obtenir la date du jour
+
+  const today = new Date();
+
+  //renvoie toutes dates des évents à partir de la date du jour et élimine les doublons-------------------------------------------------------
+
+  const dateEvents = [...new Set(dateAllEvent)].filter(
+    (date) => date >= formatDate(today)
+  );
+
+  //fonction principale renvoie toute les views avec le bon style en fonction du type---------------------------------------------------------
 
   const dayList = dateEvents.map((data, i) => {
-    
-     
-
-    
     return (
       <View style={styles.scrollContainer} key={i}>
         <Text style={styles.textStyle}>{formatDateToFrenchLocale(data)}</Text>
         <View>
           {dateList(sortedEvents, data).map((data, i) => {
-
-            if(data.type === "music") {
+            if (data.type === "music") {
               stringStyle = "rgba(89, 215, 207, 1)";
               colorFont = "white";
-            } if (data.type === "art") {
+            }
+            if (data.type === "art") {
               stringStyle = "rgba(255, 141, 141, 1)";
               colorFont = "white";
-            } if (data.type === "food") {
-              stringStyle = "rgba(243, 243, 243, 1)"
+            }
+            if (data.type === "food") {
+              stringStyle = "rgba(243, 243, 243, 1)";
               colorFont = "black";
-            } if (data.type === "nature") {
-              stringStyle = "rgba(133, 244, 150, 1)"
+            }
+            if (data.type === "nature") {
+              stringStyle = "rgba(133, 244, 150, 1)";
               colorFont = "black";
-            } if (data.type === "science") {
-              stringStyle = "rgba(140, 178, 255, 1)"
+            }
+            if (data.type === "science") {
+              stringStyle = "rgba(140, 178, 255, 1)";
               colorFont = "black";
-            } if (data.type === "sport") {
-              stringStyle = "rgba(250, 189, 132, 1)"
+            }
+            if (data.type === "sport") {
+              stringStyle = "rgba(250, 189, 132, 1)";
               colorFont = "black";
             }
             return (
               <TouchableOpacity key={i} onPress={() => handlePress(data)}>
                 <View
-                  
                   style={{
                     backgroundColor: stringStyle,
                     width: 350,
@@ -470,11 +390,11 @@ export default function ListScreen({ navigation }) {
                   }}
                 >
                   <View>
-                    <Text style={{color: colorFont}}>
+                    <Text style={{ color: colorFont }}>
                       {data.eventName} {data.hourStart}-{data.hourEnd}
                     </Text>
-                    <Text style={{color: colorFont}}>{data.address} </Text>
-                    <Text style={{color: colorFont}}>
+                    <Text style={{ color: colorFont }}>{data.address} </Text>
+                    <Text style={{ color: colorFont }}>
                       Partcipants: {data.users.partUsers.length} Intéressés:{" "}
                       {data.users.interUsers.length}
                     </Text>
@@ -487,6 +407,12 @@ export default function ListScreen({ navigation }) {
       </View>
     );
   });
+  // style pour le times des filtres
+  if (isResearch) {
+    opacityChange = 1;
+  } else {
+    opacityChange = 0;
+  }
 
   return (
     <KeyboardAvoidingView
@@ -506,23 +432,40 @@ export default function ListScreen({ navigation }) {
         >
           <FontAwesome name={"search"} size={30} color={"black"} />
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => handleCloseFilter()}
+          style={{
+            position: "absolute",
+            top: 90,
+            right: 40,
+            opacity: opacityChange,
+          }}
+        >
+          <FontAwesome name={"times"} size={30} color={"white"} />
+        </TouchableOpacity>
       </View>
       <ScrollView>
         <View style={styles.scrollContainer}>{dayList}</View>
       </ScrollView>
 
+      <TouchableOpacity onPress={() => handleSubmit()} style={styles.mapButton}>
+        <FontAwesome name={"map"} size={40} color={"rgba(89, 215, 207, 1)"} />
+      </TouchableOpacity>
+
       <TouchableOpacity
-        onPress={() => handleSubmit()}
-        style={styles.pressableButton}
+        onPress={() => handleFilter()}
+        style={styles.filterButton}
       >
-        <FontAwesome name={"map"} size={40} color={"#b2b2b2"} />
+        <Text>{searchFilter}</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 }
+
 // style -------------------------------------------------------------------
 const styles = StyleSheet.create({
   mainContainer: {
+    paddingTop: 10,
     flex: 1,
     height: "100%",
     width: "100%",
@@ -556,12 +499,39 @@ const styles = StyleSheet.create({
     color: "white",
   },
 
-  pressableButton: {
+  mapButton: {
     position: "absolute",
-    bottom: 20,
-    right: 20,
-    backgroundColor: "grey",
+    bottom: 30,
+    right: 30,
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+
+  filterButton: {
+    position: "absolute",
+    top: 117,
+    left: 20,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
 });
