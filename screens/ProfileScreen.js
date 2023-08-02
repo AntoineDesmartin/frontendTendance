@@ -18,7 +18,7 @@ import photoProfile from "../assets/photoProfile.jpg"
 import photoBack from "../assets/photoBack.jpg"
 
 
-import Event from './components/Event';
+import Event from './components/event';
 
 //Modal
 import {setOpenModal} from "../reducers/openModal"
