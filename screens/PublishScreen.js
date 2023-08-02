@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Image,
   ImageBackground,
@@ -12,9 +12,13 @@ import {
   View,
   ScrollView,
 } from "react-native";
+import { useDispatch,useSelector } from "react-redux";
 import { DatePickerAndroid } from "@react-native-community/datetimepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Modale from "./components/Modale";
+import {setOpenModal} from "../reducers/openModal"
+
 
 export default function PublishScreen() {
   //todo style mieux !
@@ -37,7 +41,37 @@ export default function PublishScreen() {
   const [showTimeEndPicker, setShowTimeEndPicker] = useState(false);
   const [selectedOptionType, setSelectedOptionType] = useState(null);
   const [selectedOptionAccess, setSelectedOptionAccess] = useState(null);
-  console.log(selectedOptionType);
+
+  // Afficher si event publish ou pas 
+  const [affiche,setAffiche]=useState(true);
+  
+
+const dispatch =useDispatch()
+// Afiiche Modale 
+useEffect(() => {
+  if (user) {
+    console.log("useEffect parti1");
+    
+  } else {
+    console.log("useEffect parti2");
+    dispatch(setOpenModal(true));
+  }
+}, [user]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const optionsType = [
     { id: 1, label: "Art" },
     { id: 2, label: "Music" },
@@ -138,6 +172,8 @@ export default function PublishScreen() {
   //     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
   //     eventCover: '',
 
+const user = useSelector((state) => state.user.value);
+
   const handlePublish = () => {
     let type;
     switch (selectedOptionType) {
@@ -168,39 +204,55 @@ export default function PublishScreen() {
     }
 
     let event = {
-      creator: user.id,
+      creator: user._id,
       eventName: name,
       type: type,
+      access:access,
       date: selectedDate,
       hourStart: hourStart,
       hourEnd: hourEnd,
-      addresse: addresse,
+      address: addresse,
       price: price,
       description: description,
       eventCover: "",
       amis: "",
+      latitude:null,
+      longitude:null
     };
-
+    // {"access": "Privée", "address": "Paris", "amis": "", "creator": "64c9035431ebd1b0f73873ee", "date": "2023-08-03T08:57:00.000Z", "description": "", "eventCover": "", "eventName": "a", "hourEnd": "2023-08-02T09:57:00.000Z", "hourStart": "2023-08-02T08:57:21.230Z", "price": "12", "type": "Food"}
+    console.log("event",event);
     // todo fetch post pour publier dans la data ...
+    setAffiche(false)
+    // /publishEvent
+    fetch('https://backend-tendance.vercel.app/events/publishEvent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(event),
+                }).then(response => response.json()).then(data => {
+                    console.log("pas mal",data); // je renvoie {"result": true}
+                })
+
+   
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.container}>
+    !user?(<View><Modale></Modale></View>):affiche?
+    (<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.container}>
       <StatusBar backgroundColor="#f1f1f1" barStyle="dark-content" />
       <Text style={styles.title}>Créer un event</Text>
 
       {/* Bouton sélection date calendrier */}
-      <TouchableOpacity onPress={toggleDatePicker}>
+
+      <View style={styles.selectDate}>
+        <TouchableOpacity onPress={toggleDatePicker}>
+          <FontAwesome name="calendar" size={30} color={"#1e064e"} />
+        </TouchableOpacity>
         <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
-      </TouchableOpacity>
+      </View>
 
       {/* condition de rendu du date picker en fonction du système ios ou android */}
       {showDatePicker && Platform.OS === "ios" && (
-        <DateTimePicker 
-        value={selectedDate} 
-        mode="date" 
-        display="default" 
-        onChange={handleDateChange} />
+        <DateTimePicker value={selectedDate} mode="date" display="default" onChange={handleDateChange} />
       )}
 
       {showDatePicker && Platform.OS === "android" && (
@@ -213,28 +265,39 @@ export default function PublishScreen() {
         />
       )}
 
-      <TouchableOpacity onPress={toggleTimeStartPicker}>
-        
-      <Text>{hourStart ? `Heure de début : ${hourStart.getHours()}:${hourStart.getMinutes()}` : "Choisir l'heure de début"}</Text>
-      
-            </TouchableOpacity>
+      <View style={styles.selectTime}>
+        <TouchableOpacity onPress={toggleTimeStartPicker}>
+          <FontAwesome name="rocket" size={30} color={"#1e064e"} />
+        </TouchableOpacity>
+        <Text>
+          {hourStart ? `Heure de début : ${hourStart.getHours()}:${hourStart.getMinutes()}` : "Choisir l'heure de début"}
+        </Text>
+      </View>
 
       {showTimeStartPicker && (
-          <DateTimePicker value={hourStart || new Date()} mode="time" display="default" onChange={handleTimeStartChange} />
+        <DateTimePicker
+          value={hourStart || new Date()}
+          mode="time"
+          display="default"
+          onChange={handleTimeStartChange}
+        />
       )}
-
-      <TouchableOpacity onPress={toggleTimeEndPicker}>
-    
-      <Text>{hourEnd ? `Heure de fin : ${hourEnd.getHours()}:${hourEnd.getMinutes()}` : "Choisir l'heure de fin"}</Text>
       
+      <View style={styles.selectTime}>
+      <TouchableOpacity onPress={toggleTimeEndPicker}>
+        <FontAwesome name="times" size={30} color={"#1e064e"} />
       </TouchableOpacity>
+      <Text>
+          {hourEnd ? `Heure de fin : ${hourEnd.getHours()}:${hourEnd.getMinutes()}` : "Choisir l'heure de fin"}
+        </Text>
+      </View>
+
 
       {showTimeEndPicker && (
-          <DateTimePicker value={hourEnd || new Date()} mode="time" display="default" onChange={handleTimeEndChange} />
-           )}
+        <DateTimePicker value={hourEnd || new Date()} mode="time" display="default" onChange={handleTimeEndChange} />
+      )}
 
-
-      {/* <View style={styles.viewAccess}>
+      <View style={styles.viewAccess}>
         {optionsAccess.map((option) => (
           <TouchableOpacity
             key={option.id}
@@ -303,7 +366,7 @@ export default function PublishScreen() {
             <Text>{option.label}</Text>
           </TouchableOpacity>
         ))}
-      </View> */}
+      </View>
 
       <TextInput placeholder="Name" onChangeText={(value) => setName(value)} value={name} style={styles.input} />
 
@@ -323,7 +386,7 @@ export default function PublishScreen() {
         style={styles.input}
       />
 
-      <View style={styles.viewAjout}>
+      {/* <View style={styles.viewAjout}>
         <TouchableOpacity style={styles.btnAjout}>
           <View style={styles.plus}>
             <FontAwesome name="plus" size={15} color={"#1e064e"} />
@@ -337,12 +400,15 @@ export default function PublishScreen() {
           </View>
           <Text>Ajouter une photo</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <TouchableOpacity style={styles.btnPublier} onPress={() => handlePublish()}>
         <Text> Publier</Text>
       </TouchableOpacity>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingView>):(<View style={styles.container}>
+          <Text>Evenement Publer !</Text>
+          <TouchableOpacity onPress={()=>setAffiche(true)} style={styles.btnPublier}><Text>Publier de nouveau !</Text></TouchableOpacity>
+      </View>)
   );
 }
 

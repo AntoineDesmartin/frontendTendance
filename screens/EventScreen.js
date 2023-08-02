@@ -74,6 +74,7 @@ const date = dataEvent.date.slice(0,10)
     }
 
 
+console.log("Event Screen");
 
     const handleParticipate = ()=>{
         setIsParticiped(!isParticiped)
@@ -89,7 +90,7 @@ const date = dataEvent.date.slice(0,10)
                 body: JSON.stringify({idUser:user._id,idEvent:"64c8e88bc046aa4198d43b38"}),
                 }).then(response => response.json()).then(data => {
                     //! gros temps de latence 
-                    console.log("add parti");
+                    console.log(data); // je renvoie {"result": true}
                 })
 
 
@@ -102,11 +103,13 @@ const date = dataEvent.date.slice(0,10)
                 body: JSON.stringify({idUser:user._id,idEvent:"64c8e88bc046aa4198d43b38"}),
                 }).then(response => response.json()).then(data => {
                     //! gros temps de latence 
-                    console.log("delete parti");
+                    console.log(data); // je renvoie {"result": true}
                 })
         }
         
     }
+
+
     const handleInterrested = ()=>{
         setIsInterrested(!isInterrested)
         if(isInterrested){
