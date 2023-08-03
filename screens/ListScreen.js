@@ -16,6 +16,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { setEvent } from "../reducers/event";
 import { storeResearch, resetResearch } from "../reducers/list";
+
 import dateList from "./components/dateList";
 import formatDate from "./components/formatDate";
 import formatDateToFrenchLocale from "./components/formatageList";
@@ -265,7 +266,7 @@ export default function ListScreen({ navigation }) {
   };
 
   // constante pour rejoindre la map au onPress---------------------------------------------
-  const handleSubmit = () => {
+  const handleMap = () => {
     navigation.navigate("TabNavigator", { screen: "TabNavigator" });
   };
 
@@ -376,6 +377,7 @@ export default function ListScreen({ navigation }) {
               stringStyle = "rgba(250, 189, 132, 1)";
               colorFont = "black";
             }
+            console.log({data});
             return (
               <TouchableOpacity key={i} onPress={() => handlePress(data)}>
                 <View
@@ -448,7 +450,7 @@ export default function ListScreen({ navigation }) {
         <View style={styles.scrollContainer}>{dayList}</View>
       </ScrollView>
 
-      <TouchableOpacity onPress={() => handleSubmit()} style={styles.mapButton}>
+      <TouchableOpacity onPress={() => handleMap()} style={styles.mapButton}>
         <FontAwesome name={"map"} size={40} color={"rgba(89, 215, 207, 1)"} />
       </TouchableOpacity>
 
