@@ -1,6 +1,6 @@
 export default function ForFilterCreator(data, researchLowerCase) {
-
-
+console.log('Error from DB')
+/*
 
     let newDataBase = []; //!fonction de filtrage
     
@@ -9,17 +9,17 @@ export default function ForFilterCreator(data, researchLowerCase) {
         let CompareData = data[i].creator.toLowerCase();
         if (CompareData.includes(researchLowerCase)) {
           const newObject = {
-            creator: data[i].creator,
-            eventName: data[i].eventName,
-            type: data[i].type,
-            date: data[i].date,
-            hourStart: data[i].hourStart,
-            hourEnd: data[i].hourEnd,
+            //creator: data[i].creator,
+            _id: data[i]._id,
             address: data[i].address,
+            date: data[i].date,
+            
+            //eventCover: data[i].eventCover,
+            eventName: data[i].eventName,
+            hourEnd: data[i].hourEnd,
+            hourStart: data[i].hourStart,
             price: data[i].price,
-            website: data[i].website,
-            description: data[i].description,
-            eventCover: data[i].eventCover,
+            type: data[i].type,
             users: {
               interUsers: data[i].users.interUsers,
               partUsers: data[i].users.partUsers,
@@ -30,7 +30,7 @@ export default function ForFilterCreator(data, researchLowerCase) {
         
       }
       return newDataBase
-    
+    */
     };
     
       
