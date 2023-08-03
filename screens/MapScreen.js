@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { setEvents } from '../reducers/events';
 import { setEvent } from "../reducers/event";
-import MapView, { Marker, Callout } from "react-native-maps";
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import eventData from "../data/data"
@@ -323,14 +323,15 @@ const mapStyle = [
       <Modale></Modale>
       <MapView 
         style={styles.map} 
+        provider={PROVIDER_GOOGLE}
         customMapStyle={mapStyle}
         zoomControlEnabled={true}
-        initialRegion={{
-          latitude: 46.00,
-          longitude: 1.80,
-          latitudeDelta: 13.5,
-          longitudeDelta: 13.5,
-        }}
+        initialRegion={currentPosition ? {
+          latitude: currentPosition.latitude,
+          longitude: currentPosition.longitude,
+          latitudeDelta: 0.2,
+          longitudeDelta: 0.2,
+        } : null}
         handleInitialRegion={handleInitialRegion}
       >
         {currentPosition && (
