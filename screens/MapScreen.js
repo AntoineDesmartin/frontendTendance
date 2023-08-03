@@ -53,7 +53,7 @@ export default function MapScreen(props) {
         if (data) {
           dispatch(setEvents(data));
         }
-        console.log("Fetch des events dans map screen au chargement de la page",data);
+       // console.log("Fetch des events dans map screen au chargement de la page",data);
       });
   }, []);
 
