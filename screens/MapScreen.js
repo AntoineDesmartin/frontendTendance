@@ -44,7 +44,7 @@ export default function MapScreen({navigation}) {
         if (data) {
           dispatch(setEvents(data));
         }
-        console.log(data);
+        console.log("Fetch des events dans map screen au chargement de la page",data);
       });
   }, []);
 
@@ -90,7 +90,7 @@ const handleCalloutPress = () => {
         >
         <Callout onPress={handleCalloutPress} style={styles.popup} title="Event">
               {/* Customize the content of the Callout */}
-              <View>
+              <View style={styles.viewCallOut}> 
                 <Text>Event</Text>
                 <Text>{event.eventName}</Text>
                 <Text>{event.type}</Text>
@@ -129,6 +129,9 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 30,
   },
+  viewCallOut:{
+    backgroundColor:"red"
+  }
 
 });
 
