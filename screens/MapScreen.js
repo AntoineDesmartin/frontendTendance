@@ -13,6 +13,7 @@ import {
   View,
 } from "react-native";
 import { setEvents } from '../reducers/events';
+import { setEvent } from "../reducers/event";
 import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -20,7 +21,11 @@ import eventData from "../data/data"
 
 const BACKEND_ADDRESS = 'https://backend-tendance.vercel.app';
 
-export default function MapScreen({navigation}) {
+import {setOpenModal} from "../reducers/openModal"
+import Modale from './components/Modale';
+
+
+export default function MapScreen(props) {
     const dispatch = useDispatch();
     const events = useSelector((state) => state.events.value);
   
@@ -49,7 +54,7 @@ export default function MapScreen({navigation}) {
   }, []);
 
   const handleSubmit = () => {
-    navigation.navigate('List', { screen: 'ListScreen' });
+    props.navigation.navigate('List', { screen: 'ListScreen' });
 };
 
 
@@ -58,10 +63,22 @@ const handleMarkerPress = (event) => {
 };
 
 
-const handleCalloutPress = () => {
-  navigation.navigate('EventDetails', { eventId: selectedEvent._id });
-};
 
+
+const user = useSelector((state)=>state.user.value); 
+const isModalOpen = useSelector((state)=>state.openModal.value)
+
+const handlePress = (data)=>{
+  
+    if(user===null){
+      console.log("null");
+        dispatch(setOpenModal(!isModalOpen))
+    }else{
+      console.log(data);
+        props.navigation.navigate('Event', { screen: 'EventScreen' });
+        dispatch(setEvent(data))
+    } 
+}
 
 
 // const displayEvents = () => {
@@ -78,6 +95,7 @@ const handleCalloutPress = () => {
 
   return (
     <View style={styles.container}>
+      <Modale></Modale>
       <MapView style={styles.map}>
         {currentPosition && (<Marker coordinate={currentPosition} title="My position" pinColor="#fecb2d" />)}
         {events.map((event, i) => (
@@ -88,7 +106,7 @@ const handleCalloutPress = () => {
           onPress={() => handleMarkerPress(event)}
           
         >
-        <Callout onPress={handleCalloutPress} style={styles.popup} title="Event">
+        <Callout onPress={()=>handlePress(event)} style={styles.popup} title="Event">
               {/* Customize the content of the Callout */}
               <View style={styles.viewCallOut}> 
                 <Text>Event</Text>

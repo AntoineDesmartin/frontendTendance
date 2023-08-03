@@ -4,11 +4,11 @@ import React,{useEffect,useState} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 
 
-
+//modale
 import {setOpenModal} from "../reducers/openModal"
 import Modale from './components/Modale';
-import {login,logout} from "../reducers/user"
 
+import {login,logout} from "../reducers/user"
 import { useDispatch, useSelector } from 'react-redux';
 import { setEvent } from '../reducers/event';
 
@@ -41,20 +41,22 @@ useEffect(() => { //! qui va trier les events 10 les plus cotés
 
   
   const sortedEvents = events.slice().sort(function (a, b) {
+    console.log("a :",a.users.interUsers.length);
+    console.log("b :",b.users.interUsers.length);
     return a.users.interUsers.length - b.users.interUsers.length;
   });
   
   // Garde les 10 premiers éléments triés
   const resultat = sortedEvents.slice(0, 10);
-  console.log("resultat",resultat);
+  // console.log("resultat",resultat);
   setTop(resultat);
   
   // Affiche la longueur de "partUsers" pour les 10 premiers éléments triés
   console.log("_______________________________");
-  console.log("bite");
-  sortedEvents.forEach(data => {
-    console.log(data.users.partUsers.length);
-  });
+ 
+  // sortedEvents.forEach(data => {
+  //   console.log(data.users.partUsers.length);
+  // });
 
 
     }, []);

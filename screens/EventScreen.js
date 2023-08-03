@@ -38,7 +38,9 @@ const [isInterrested,setIsInterrested]=useState(false); // todo Verifier si le u
 const dispatch=useDispatch();
 
 const dataEvent = useSelector((state) => state.event.value);
+
 const date = dataEvent.date.slice(0,10)
+// const date = "bite!"
 
 const user = useSelector((state) => state.user.value); 
 
