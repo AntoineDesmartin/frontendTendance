@@ -18,7 +18,7 @@ import photoProfile from "../assets/photoProfile.jpg"
 import photoBack from "../assets/photoBack.jpg"
 
 
-import Event from './components/event';
+import Event from './components/Event';
 
 //Modal
 import {setOpenModal} from "../reducers/openModal"
@@ -31,17 +31,14 @@ import { setEvent } from '../reducers/event';
 
 
 export default function ProfileScreen(props) {
-
+// todo Gerer AMIS/MESSAGERIE/FAVORIS/PARAMETRE
     
     const dispatch = useDispatch();
-    // todo Gerer AMIS/MESSAGERIE/FAVORIS/PARAMETRE
-
-    
     const user = useSelector((state)=>state.user.value); 
 
 
  const [futurEvents, setFuturEvents] = useState([]);
-// const [pastEvents,setPastEvents] = useState([]);
+
 
 useEffect(() => {
   if (user) {
@@ -53,18 +50,14 @@ useEffect(() => {
     })
     .then(response => response.json())
     .then(data => {
-        // console.log("data fetch profile event",data);
-      const eventsFutur = data.map((data, index) => (
         
+      const eventsFutur = data.map((data, index) => (
         <Pressable onPress={() => handlePress(data)} key={`futur-${index}`}>
           <Event data={data} />
         </Pressable>
-        
       ));
-      setFuturEvents(eventsFutur);
 
-    
-      
+      setFuturEvents(eventsFutur);
     });
   } else {
     console.log("useEffect parti2");
@@ -72,44 +65,13 @@ useEffect(() => {
   }
 }, [user]);
 
-//   const eventsPast = data.map((data, index) => (
-    //     <Pressable onPress={() => handlePress(data)} key={`past-${index}`}>
-    //       <Event data={data} />
-    //     </Pressable>
-    //   ));
-    //   setPastEvents(eventsPast);
+
         
 
 //! Function _____________________________________________________________________________________________________________________________
 
 
-    // const futurEvents = eventData.map((data,index)=>{
-    //     let date = new Date(data.date);
-    //     let now = new Date()
-        
-    //     if(date>now){
-    //         return <Pressable onPress={()=>handlePress(data)} key={`futur-${index}`}>
-    //             <Event data={data} ></Event>
-    //             </Pressable>
-    //     }
-    // })
-
-    
-    // const pastEvents = eventData.map((data,index)=>{
-    //     let date = new Date(data.date);
-    //     let now = new Date()
-        
-    //     if(date<now){
-    //         return <Pressable key={`past-${index}`} onPress={()=>handlePress(data)}><Event data={data} ></Event></Pressable>
-    //     }
-    // })
-
-
-
-
-
-
-   
+ 
     const isModalOpen = useSelector((state)=>state.openModal.value)
     //! code pour les autres screen
     const handlePress = (data)=>{
@@ -180,15 +142,6 @@ useEffect(() => {
                     <Text style={styles.text}> ____________________ Events ______________________</Text>
                     {futurEvents}
                 </View>
-
-                <View style={styles.pastEvents}>
-                {/* <Text style={styles.text}>Evenement Passée _____________________________</Text> */}
-                    {/* {pastEvents} */}
-                </View>
-
-                
-
-                
             </ScrollView>
             
 
@@ -207,7 +160,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: "#f2f2f2",
-    //   alignItems: "center",
+    
     },
     photoBack:{
         width:"100%",
@@ -219,7 +172,6 @@ const styles = StyleSheet.create({
         height:100,
         borderRadius:50,
         position:"absolute",
-        // bottom:80,
         top:145
 
     },
@@ -238,7 +190,6 @@ const styles = StyleSheet.create({
         marginTop:20
     },
     icon : {
-        // backgroundColor:"red",
         alignItems:"center",
         justifyContent:"center"
     },
@@ -248,8 +199,6 @@ const styles = StyleSheet.create({
     // ! EVENTS
 
     events:{
-        // alignItems:"center",
-        // justifyContent:"center",
         width:"100%",
         height:"auto",
         backgroundColor:"#1e064e",
@@ -257,8 +206,6 @@ const styles = StyleSheet.create({
     },
     event:{
         backgroundColor:"blue",
-        // width:"80%",
-        // width:300,
         height:50,
         borderRadius:20,
         flexDirection:"row",

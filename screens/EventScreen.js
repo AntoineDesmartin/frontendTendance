@@ -27,40 +27,41 @@ export default function EventScreen(props) {
 //todo ajouter les bonnes images de fond
 // todo a verifier si les dispatch de user marche lorquon met en place le backEnds et les logins
 
-const isModalOpen = useSelector((state)=>state.openModal.value)
-
-
-
 
 
 //! Constant __________________________________________________________________________________________________________________________
-//1 Verifie les dispatch
-//2 Use effect dans Event Screen
 
-const dataEvent = useSelector((state) => state.event.value);
-const user = useSelector((state) => state.user.value); //? a decomm
-
-
-// On verifie si le user participe deja oui ou non a l'event
-useEffect(() => {
-    
-   if(user.events.interEvents.includes(dataEvent._id)){
-       setIsInterrested(true)
-    }
-    if(user.events.partEvents.includes(dataEvent._id)){
-        setIsParticiped(true)
-   }
-
-  }, []);
-
+const isModalOpen = useSelector((state)=>state.openModal.value)
 
 const [isParticiped,setIsParticiped]=useState(false); // todo Verifier si le user se trouve dans les particpant si oui mettre deja en true
 const [isInterrested,setIsInterrested]=useState(false); // todo Verifier si le user se trouve dans les interresé si oui mettre deja en true
 const dispatch=useDispatch();
 
-
+const dataEvent = useSelector((state) => state.event.value);
 
 const date = dataEvent.date.slice(0,10)
+// const date = "bite!"
+
+const user = useSelector((state) => state.user.value); 
+
+// On verifie si le user participe deja oui ou non a l'event
+    useEffect(() => {
+    
+    if(user.events.interEvents.includes(dataEvent._id)){
+        setIsInterrested(true)
+    }
+    if(user.events.partEvents.includes(dataEvent._id)){
+        setIsParticiped(true)
+    }
+
+    }, []);
+
+
+
+
+
+
+
 
 
 
@@ -74,43 +75,25 @@ const date = dataEvent.date.slice(0,10)
     }
 
 
-
-
     const handleParticipate = ()=>{
         setIsParticiped(!isParticiped)
         if(!isParticiped){
-
-
-            console.log('______________');
-            console.log("user._id",user._id);
-            console.log("dataEvent._id",dataEvent._id);
-            // dispatch(addParticipant(dataEvent.id));
-            // todo Fetch Post Modifier la data Base
+            // todo dispatch(addParticipant(dataEvent.id));
             fetch('https://backend-tendance.vercel.app/user/participated', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idUser:user._id, idEvent:dataEvent._id }),
                 }).then(response => response.json()).then(data => {
                     console.log("add participant ");
-                    console.log('______________');
                 })
-
-
         }else{
-
-            console.log('______________');
-            console.log("user._id",user._id);
-            console.log("dataEvent._id",dataEvent._id);
-
+            // todo dispatch(addParticipant(dataEvent.id))
             fetch('https://backend-tendance.vercel.app/user/notParticipated', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idUser:user._id, idEvent:dataEvent._id }),
                 }).then(response => response.json()).then(data => {
-
                     console.log("delete participant ");
-                    console.log('______________');
-
                 })
         }
         
@@ -120,32 +103,20 @@ const date = dataEvent.date.slice(0,10)
     const handleInterrested = ()=>{
         setIsInterrested(!isInterrested)
         if(!isInterrested){
-            console.log('______________');
-            console.log("user._id",user._id);
-            console.log("dataEvent._id",dataEvent._id);
-
             fetch('https://backend-tendance.vercel.app/user/interested', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idUser:user._id, idEvent:dataEvent._id }),
                 }).then(response => response.json()).then(data => {
-                   
                     console.log("add intérresent ");
-                    console.log('______________');
                 })
         }else{
-            console.log('______________');
-            console.log("user._id",user._id);
-            console.log("dataEvent._id",dataEvent._id);
-
             fetch('https://backend-tendance.vercel.app/user/notInterested', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idUser:user._id, idEvent:dataEvent._id }),
                 }).then(response => response.json()).then(data => {
-
                     console.log("delete intérresent ");
-                    console.log('______________');
                 })
         }
     }
