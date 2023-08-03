@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -315,11 +316,22 @@ const mapStyle = [
 
     return (
     <View style={styles.container}>
+      <StatusBar
+        barStyle="dark-content" // Change to "light-content" if you need white status bar content
+        backgroundColor="white" // Set the background color of the status bar
+      />
       <Modale></Modale>
       <MapView 
         style={styles.map} 
         customMapStyle={mapStyle}
         zoomControlEnabled={true}
+        initialRegion={{
+          latitude: 46.00,
+          longitude: 1.80,
+          latitudeDelta: 13.5,
+          longitudeDelta: 13.5,
+        }}
+        handleInitialRegion={handleInitialRegion}
       >
         {currentPosition && (
         <Marker 
@@ -382,7 +394,7 @@ const styles = StyleSheet.create({
   pressableButton: {
     position: "absolute",
     bottom: 20,
-    right: 20,
+    right: 70,
     backgroundColor: "white",
     padding: 10,
     borderRadius: 30,
