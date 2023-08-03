@@ -267,7 +267,8 @@ const user = useSelector((state) => state.user.value);
 
       <View style={styles.selectTime}>
         <TouchableOpacity onPress={toggleTimeStartPicker}>
-          <FontAwesome name="rocket" size={30} color={"#1e064e"} />
+          {/* <FontAwesome name="rocket" size={30} color={"#1e064e"} /> */}
+          <Text>Test</Text>
         </TouchableOpacity>
         <Text>
           {hourStart ? `Heure de début : ${hourStart.getHours()}:${hourStart.getMinutes()}` : "Choisir l'heure de début"}

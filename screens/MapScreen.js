@@ -134,6 +134,3 @@ const styles = StyleSheet.create({
   }
 
 });
-
-
-

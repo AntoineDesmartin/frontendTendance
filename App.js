@@ -20,8 +20,10 @@ import user from "./reducers/user";
 import events from "./reducers/events";
 import event from "./reducers/event";
 import openModal from "./reducers/openModal";
+import list from "./reducers/list";
+
 const store = configureStore({
-  reducer: { event, openModal, user, events },
+  reducer: { event, openModal, user, events, list },
 });
 
 const Stack = createNativeStackNavigator();
