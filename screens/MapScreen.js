@@ -88,9 +88,9 @@ const handleCalloutPress = () => {
           onPress={() => handleMarkerPress(event)}
           
         >
-        <Callout onPress={handleCalloutPress} style={styles.popup} title="Event">
+        <Callout onPress={handleCalloutPress}  title="Event">
               {/* Customize the content of the Callout */}
-              <View>
+              <View style={styles.popup}>
                 <Text>Event</Text>
                 <Text>{event.eventName}</Text>
                 <Text>{event.type}</Text>
@@ -129,5 +129,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 30,
   },
+  popup: {
+    borderRadius: 20,
+    backgroundColor: "orange",
+    padding: 30,
+  }
 
 });
