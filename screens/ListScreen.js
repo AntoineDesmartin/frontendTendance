@@ -435,7 +435,7 @@ export default function ListScreen({ navigation }) {
   
   else {
     if (searchFilter === "creator") {
-      //finalDataBase = ForFilterCreator(dataDynamic, researchLowerCase);
+      finalDataBase = ForFilterCreator(dataDynamic, researchLowerCase);
     }
     if (searchFilter === "type") {
       finalDataBase = ForFilterType(dataDynamic, researchLowerCase);

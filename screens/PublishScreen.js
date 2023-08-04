@@ -202,7 +202,7 @@ const user = useSelector((state) => state.user.value);
         access = "Public";
         break;
     }
-
+    console.log(user._id)
     let event = {
       creatorName: user._id,
       eventName: name,

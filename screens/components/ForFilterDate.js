@@ -15,7 +15,7 @@ export default function ForFilterDate(data, timeToFilter) {
         //console.log("Actif")
         if (CompareData === DateSliced) {
           const newObject = {
-            //creator: data[i].creator,
+            //creatorName: data[i].creatorName,
             _id: data[i]._id,
             address: data[i].address,
             date: data[i].date,

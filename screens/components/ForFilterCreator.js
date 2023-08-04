@@ -1,20 +1,20 @@
 export default function ForFilterCreator(data, researchLowerCase) {
-console.log('Error from DB')
-/*
+//console.log('CREATOR NAMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMME!')
+
 
     let newDataBase = []; //!fonction de filtrage
     
     
       for (let i = 0; i < data.length; i++) {
-        let CompareData = data[i].creator.toLowerCase();
+        console.log({objetFilterCreator: data[i].creatorName.username})
+        let CompareData = data[i].creatorName.username.toLowerCase();
         if (CompareData.includes(researchLowerCase)) {
           const newObject = {
-            //creator: data[i].creator,
+            creatorName: data[i].creatorName,
             _id: data[i]._id,
             address: data[i].address,
             date: data[i].date,
-            
-            //eventCover: data[i].eventCover,
+            eventCover: data[i].eventCover,
             eventName: data[i].eventName,
             hourEnd: data[i].hourEnd,
             hourStart: data[i].hourStart,
@@ -30,7 +30,7 @@ console.log('Error from DB')
         
       }
       return newDataBase
-    */
+    
     };
     
       
