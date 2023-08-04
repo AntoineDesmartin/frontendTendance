@@ -1,19 +1,25 @@
-export default function ForFilterCreator(data, researchLowerCase) {
-//console.log('CREATOR NAMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMME!')
+export default function ForFilterDate(data, timeToFilter) {
 
+//console.log('Start');
+//console.log(timeToFilter);
+//console.log(data);
 
     let newDataBase = []; //!fonction de filtrage
     
-    
+     
       for (let i = 0; i < data.length; i++) {
-        console.log({objetFilterCreator: data[i].creatorName.username})
-        let CompareData = data[i].creatorName.username.toLowerCase();
-        if (CompareData.includes(researchLowerCase)) {
+        let CompareData = data[i].date.slice(0,10);
+        let DateSliced = timeToFilter.toString().slice(0,10);
+        //console.log(CompareData);
+        //console.log(DateSliced);
+        //console.log("Actif")
+        if (CompareData === DateSliced) {
           const newObject = {
             creatorName: data[i].creatorName,
             _id: data[i]._id,
             address: data[i].address,
             date: data[i].date,
+            
             eventCover: data[i].eventCover,
             eventName: data[i].eventName,
             hourEnd: data[i].hourEnd,
@@ -29,6 +35,7 @@ export default function ForFilterCreator(data, researchLowerCase) {
         }
         
       }
+      console.log(newDataBase);
       return newDataBase
     
     };

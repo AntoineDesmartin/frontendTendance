@@ -185,7 +185,7 @@ export default function PublishScreen() {
         access = "Public";
         break;
     }
-
+    console.log(user._id)
     let event = {
       creatorName: user._id,
       eventName: name,

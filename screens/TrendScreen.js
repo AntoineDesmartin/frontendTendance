@@ -2,11 +2,13 @@
 
 import React,{useEffect,useState} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
-
+import format from 'date-fns/format';
+import fr from 'date-fns/locale';
 
 //modale
 import {setOpenModal} from "../reducers/openModal"
 import Modale from './components/Modale';
+import formatDateToFrenchLocale from './components/formatageList';
 
 import {login,logout} from "../reducers/user"
 import { useDispatch, useSelector } from 'react-redux';
@@ -60,7 +62,7 @@ useEffect(() => { //! qui va trier les events 10 les plus cotés
 
 
     }, []);
-
+    
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Modale></Modale>
@@ -68,9 +70,9 @@ useEffect(() => { //! qui va trier les events 10 les plus cotés
 
         <TouchableOpacity onPress={()=>handlePress(event)} key={index} style={styles.eventBlock}>
           <Image source={require('../assets/campusfrance2017-21.jpg')} style={styles.eventImage} />
-          <Text style={styles.eventDate}>{event.date}</Text>
+          <Text style={styles.eventDate}>{formatDateToFrenchLocale(event.date.slice(0, 10))}</Text>
           <Text style={styles.eventTime}>
-            {event.hourStart} - {event.hourEnd}
+            {format(new Date (event.hourStart), "HH'h'mm")} - {format(new Date (event.hourEnd), "HH'h'mm")}
           </Text>
           <Text style={styles.eventName}>{event.eventName}</Text>
           <Text style={styles.eventCreator}>Par {event.creator}</Text>
