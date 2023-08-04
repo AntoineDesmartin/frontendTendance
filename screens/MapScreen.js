@@ -357,20 +357,23 @@ const mapStyle = [
           source={getMarkerIconByType(event.type)}
           style={styles.markerImage}/>
 
-        <Callout onPress={()=>handlePress(event)} style={styles.popup} title="Event">
+        <Callout tooltip onPress={()=>handlePress(event)} title="Event">
               {/* Customize the content of the Callout */}
-              <View style={styles.viewCallOut}> 
-                <Text>Event</Text>
-                <Text>{event.eventName}</Text>
-                <Text>{event.type}</Text>
+              <View>
+              <View style={styles.bubble}> 
+                <Text style={styles.eventName}>{event.eventName}</Text>
+                <Text style={styles.typeEvent}>{event.type}</Text>
                 {/* <Text>{event.website}</Text> */}
-                <Text>{event.date}</Text>
-                <Text>{event.hourStart}</Text>
-                <Text>{event.houEnd}</Text>
-                <Text>{event.description}</Text>
-                <Text>{event.price}</Text>
-                <Text>{event.address}</Text>
+                <Text style={styles.eventDate}>{event.date}</Text>
+                <Text style={styles.hourStart}>{event.hourStart}</Text>
+                <Text style={styles.hourEnd}>{event.hourEnd}</Text>
+                <Text style={styles.descriptionEvent}>{event.description}</Text>
+                <Text style={styles.priceEvent}>{event.price}</Text>
+                <Text style={styles.addressEvent}>{event.address}</Text>
                 {/* Add any additional information you want to show in the Callout */}
+              </View>
+              <View style={styles.arrowBorder}/>
+              <View style={styles.arrow} />
               </View>
             </Callout>
             </Marker>
@@ -400,9 +403,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 30,
   },
-  viewCallOut:{
-    backgroundColor:"red"
-  },
+
   markerImage: {
     width: 30,
     height: 30,
@@ -411,6 +412,42 @@ const styles = StyleSheet.create({
   currentPositionIcon: {
     width: 30,
     height: 30,
-  }
+  },
+  bubble:{
+    flexDirection: 'column',
+    alignSelf: 'flex-start',
+    width: 170,
+    height: 200,
+    backgroundColor: '#fff',
+    borderRadius: 6,
+    borderColor: '#ccc',
+    borderWidth: 0.5,
+    padding: 15,
+  },
+  eventName: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  typeEvent: {
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  arrow: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderTopColor: '#fff',
+    borderWidth: 16,
+    alignSelf: 'center',
+    marginTop: -32,
+  },
+  arrowBorder: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderTopColor: '#007a87',
+    borderWidth: 16,
+    alignSelf: 'center',
+    marginTop: -0.5,
+    // marginBottom: -15
+  },
 });
 
