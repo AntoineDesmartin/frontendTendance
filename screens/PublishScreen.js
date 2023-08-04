@@ -185,7 +185,7 @@ export default function PublishScreen() {
         access = "Public";
         break;
     }
-    console.log(user._id)
+    console.log(user._id);
     let event = {
       creatorName: user._id,
       eventName: name,
@@ -228,7 +228,7 @@ export default function PublishScreen() {
       style={styles.container}
     >
       <StatusBar backgroundColor="#f1f1f1" barStyle="dark-content" />
-    <ScrollView></ScrollView>
+      <ScrollView></ScrollView>
       <Text style={styles.title}>Créer un event</Text>
 
       <View style={styles.viewAccess}>
@@ -321,79 +321,82 @@ export default function PublishScreen() {
             style={styles.input}
           />
         </View>
+
         <View style={styles.containerDate}>
+          <View style={styles.containerDateOne}>
+            {/* Bouton sélection date calendrier */}
 
-                     {/* Bouton sélection date calendrier */}
+            <View style={styles.selectDate}>
+              <TouchableOpacity onPress={toggleDatePicker}>
+                <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
+              </TouchableOpacity>
+            </View>
 
-      <View style={styles.selectDate}>
-        <TouchableOpacity onPress={toggleDatePicker}>
-          <FontAwesome name="calendar" size={20} color={"#1e064e"} />
-        </TouchableOpacity>
-        <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
-      </View>
+            {showDatePicker && Platform.OS === "ios" && (
+              <DateTimePicker
+              style={styles.datePicker}
+                value={selectedDate}
+                mode="date"
+                display="default"
+                onChange={handleDateChange}
+              />
+            )}
 
-      {/* condition de rendu du date picker en fonction du système ios ou android */}
+            {showDatePicker && Platform.OS === "android" && (
+              <DateTimePicker
+              style={styles.datePicker}
+                value={selectedDate}
+                mode="date"
+                display="calendar"
+                onChange={handleDateChange}
+                onDismiss={hideDatePicker}
+              />
+            )}
 
-      {showDatePicker && Platform.OS === "ios" && (
-        <DateTimePicker
-          value={selectedDate}
-          mode="date"
-          display="default"
-          onChange={handleDateChange}
-        />
-      )}
+            <View style={styles.containerDateTwo}>
+              <View style={styles.selectTime}>
+                <TouchableOpacity onPress={toggleTimeStartPicker}>
+                  <Text>
+                    {hourStart
+                      ? `Heure de début : ${hourStart.getHours()}:${hourStart.getMinutes()}`
+                      : "Choisir l'heure de début"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-      {showDatePicker && Platform.OS === "android" && (
-        <DateTimePicker
-          value={selectedDate}
-          mode="date"
-          display="calendar"
-          onChange={handleDateChange}
-          onDismiss={hideDatePicker}
-        />
-      )}
+              {showTimeStartPicker && (
+                <DateTimePicker
+                style={styles.datePickerStart}
+                  value={hourStart || new Date()}
+                  mode="time"
+                  display="default"
+                  onChange={handleTimeStartChange}
+                />
+              )}
 
-      <View style={styles.selectTime}>
-        <TouchableOpacity onPress={toggleTimeStartPicker}>
-          {/* <FontAwesome name="rocket" size={30} color={"#1e064e"} /> */}
-          <Text>Test</Text>
-        </TouchableOpacity>
-        <Text>
-          {hourStart
-            ? `Heure de début : ${hourStart.getHours()}:${hourStart.getMinutes()}`
-            : "Choisir l'heure de début"}
-        </Text>
-      </View>
+              <View style={styles.selectTime}>
+                <TouchableOpacity onPress={toggleTimeEndPicker}>
+                  <Text>
+                    {hourEnd
+                      ? `Heure de fin : ${hourEnd.getHours()}:${hourEnd.getMinutes()}`
+                      : "Choisir l'heure de fin"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-      {showTimeStartPicker && (
-        <DateTimePicker
-          value={hourStart || new Date()}
-          mode="time"
-          display="default"
-          onChange={handleTimeStartChange}
-        />
-      )}
-
-      <View style={styles.selectTime}>
-        <TouchableOpacity onPress={toggleTimeEndPicker}>
-          <FontAwesome name="times" size={30} color={"#1e064e"} />
-        </TouchableOpacity>
-        <Text>
-          {hourEnd
-            ? `Heure de fin : ${hourEnd.getHours()}:${hourEnd.getMinutes()}`
-            : "Choisir l'heure de fin"}
-        </Text>
-      </View>
-
-      {showTimeEndPicker && (
-        <DateTimePicker
-          value={hourEnd || new Date()}
-          mode="time"
-          display="default"
-          onChange={handleTimeEndChange}
-        />
-      )}
+              {showTimeEndPicker && (
+                <DateTimePicker
+                style={styles.datePickerEnd}
+                  value={hourEnd || new Date()}
+                  mode="time"
+                  display="default"
+                  onChange={handleTimeEndChange}
+                />
+              )}
+            </View>
+          </View>
         </View>
+
         <View>
           <TextInput
             placeholder="price"
@@ -408,7 +411,6 @@ export default function PublishScreen() {
             placeholder="description"
             onChangeText={(value) => setDescription(value)}
             value={description}
-            
           />
         </View>
       </View>
@@ -460,9 +462,49 @@ const styles = StyleSheet.create({
   },
 
   containerDate: {
- flexDirection: 'row',
- width: 200,
- justifyContent: 'space-around',
+  },
+
+  containerDateOne: {
+  },
+
+  containerDateTwo: {
+    flexDirection: 'row',
+    marginTop: 10,
+    justifyContent: 'space-between',
+  },
+
+  datePicker: {
+    backgroundColor: 'rgba(155, 130, 255, 1)',
+    position: 'absolute',
+    borderRadius: 5,
+    borderColor: '#C5C5C5',
+    borderWidth: 1,
+    height: 30,
+    width:100,
+  },
+
+  datePickerStart: {
+    backgroundColor: 'rgba(155, 130, 255, 1)',
+    position: 'absolute',
+    borderRadius: 5,
+    borderColor: '#C5C5C5',
+    borderWidth: 1,
+    height: 30,
+    marginLeft: 110,
+    marginTop: -7,
+    width:70,
+  },
+
+  datePickerEnd: {
+    backgroundColor: 'rgba(155, 130, 255, 1)',
+    position: 'absolute',
+    borderRadius: 5,
+    borderColor: '#C5C5C5',
+    borderWidth: 1,
+    height: 30,
+    marginLeft: 250,
+    marginTop: -7,
+    width:70,
   },
 
   title: {
@@ -473,20 +515,18 @@ const styles = StyleSheet.create({
   viewAccess: {
     width: "100%",
     flexDirection: "row",
-    margin: 20,
+    margin: 10,
     justifyContent: "space-around",
   },
   viewType: {
     width: "100%",
     flexDirection: "row",
-    margin: 20,
+    margin: 10,
     justifyContent: "space-around",
   },
-  containerInput: {
-    flexDirection: "wrap",
-  },
+
   input: {
-    width: 200,
+    width: 300,
     margin: 10,
     padding: 10,
     backgroundColor: "grey",
@@ -494,11 +534,11 @@ const styles = StyleSheet.create({
   },
 
   description: {
-    height: 100,
-    width: 200,
+    height: 70,
+    width: 300,
     margin: 10,
     padding: 10,
-    border: 'solid',
+    border: "solid",
     border: 100,
     borderRadius: 5,
     borderColor: "black",
@@ -506,11 +546,9 @@ const styles = StyleSheet.create({
   },
   viewAjout: {
     flexDirection: "row",
-    marginLeft: "auto",
   },
   btnAjout: {
-    // backgroundColor:"red",
-    margin: 30,
+    margin: 5,
     padding: 5,
     alignItems: "center",
     borderRadius: 8,
