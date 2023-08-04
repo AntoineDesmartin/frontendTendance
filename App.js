@@ -12,7 +12,8 @@ import SelectionScreen from "./screens/SelectionScreen.js";
 import ProfileScreen from "./screens/ProfileScreen";
 import ListScreen from "./screens/ListScreen";
 import EventScreen from "./screens/EventScreen";
-
+import AmisScreen from "./screens/AmisScreen";
+import MessageScreen from "./screens/MessageScreen";
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -71,6 +72,8 @@ export default function App() {
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="List" component={ListScreen} />
           <Stack.Screen name="Event" component={EventScreen} />
+          <Stack.Screen name="Amis" component={AmisScreen} />
+          <Stack.Screen name="Message" component={MessageScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

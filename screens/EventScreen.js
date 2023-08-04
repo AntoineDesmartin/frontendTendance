@@ -22,7 +22,7 @@ import {setOpenModal} from "../reducers/openModal"
 import {addParticipant,removeParticipant,addInter,removeInter} from '../reducers/user';
 
 
-export default function EventScreen(props) {
+export default function EventScreen({ navigation: { goBack } }) {
 
 //todo ajouter les bonnes images de fond
 // todo a verifier si les dispatch de user marche lorquon met en place le backEnds et les logins
@@ -53,14 +53,7 @@ const user = useSelector((state) => state.user.value);
     if(user.events.partEvents.includes(dataEvent._id)){
         setIsParticiped(true)
     }
-
     }, []);
-
-
-
-
-
-
 
 
 
@@ -71,7 +64,7 @@ const user = useSelector((state) => state.user.value);
 
     const handleQuit = ()=>{
         dispatch(resetEvent())
-        props.navigation.navigate('Profile', { screen: 'ProfileScreen' });
+        goBack();
     }
 
 

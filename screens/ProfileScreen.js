@@ -74,6 +74,7 @@ useEffect(() => {
  
     const isModalOpen = useSelector((state)=>state.openModal.value)
     //! code pour les autres screen
+
     const handlePress = (data)=>{
         if(user===null){
             dispatch(setOpenModal(!isModalOpen))
@@ -81,6 +82,10 @@ useEffect(() => {
             props.navigation.navigate('Event', { screen: 'EventScreen' });
             dispatch(setEvent(data))
         } 
+    }
+
+    const handleMesAmis = ()=>{
+        props.navigation.navigate('Amis', { screen: 'AmisScreen' });
     }
 
 
@@ -115,15 +120,15 @@ useEffect(() => {
 
             
             <View style={styles.viewIcon}>
-                <View style={styles.icon}>
 
+                <TouchableOpacity onPress={()=>dispatch(logout())}>
+                    <Text>LOGOUT</Text>
+                </TouchableOpacity>
 
-                <TouchableOpacity onPress={()=>dispatch(logout())}><Text>LOGOUT</Text></TouchableOpacity>
-
-
+                <TouchableOpacity style={styles.icon} onPress={()=>handleMesAmis()}>
                     <FontAwesome name="users" size={30} color={"#1e064e"} />
                     <Text style={styles.textIcon}>Mes amis</Text>
-                </View>
+                </TouchableOpacity>
             
                 <View style={styles.icon}>
                     <FontAwesome name="rocket" size={30} color={"#1e064e"} />
