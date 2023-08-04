@@ -1,13 +1,19 @@
-export default function ForFilterType(data, researchLowerCase) {
+export default function ForFilterDate(data, timeToFilter) {
 
-
+//console.log('Start');
+//console.log(timeToFilter);
+//console.log(data);
 
     let newDataBase = []; //!fonction de filtrage
     
      
       for (let i = 0; i < data.length; i++) {
-        let CompareData = data[i].type.toLowerCase()
-        if (CompareData.includes(researchLowerCase)) {
+        let CompareData = data[i].date.slice(0,10);
+        let DateSliced = timeToFilter.toString().slice(0,10);
+        //console.log(CompareData);
+        //console.log(DateSliced);
+        //console.log("Actif")
+        if (CompareData === DateSliced) {
           const newObject = {
             //creator: data[i].creator,
             _id: data[i]._id,
@@ -29,6 +35,7 @@ export default function ForFilterType(data, researchLowerCase) {
         }
         
       }
+      console.log(newDataBase);
       return newDataBase
     
     };
