@@ -16,6 +16,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { setEvent } from "../reducers/event";
 import { storeResearch, resetResearch } from "../reducers/list";
+import { format } from 'date-fns'
 
 import dateList from "./components/dateList";
 import formatDate from "./components/formatDate";
@@ -507,6 +508,8 @@ export default function ListScreen({ navigation }) {
               stringStyle = "rgba(250, 189, 132, 1)";
               colorFont = "black";
             }
+
+            // const DateStart = formatDate(data.hourStart);
             
             return (
               <TouchableOpacity key={i} onPress={() => handlePress(data)}>
@@ -523,7 +526,7 @@ export default function ListScreen({ navigation }) {
                 >
                   <View>
                     <Text style={{ color: colorFont }}>
-                      {data.eventName} {data.hourStart}-{data.hourEnd}
+                      {data.eventName} {format(new Date (data.hourStart), "hh'h'mm")}-{format(new Date (data.hourEnd), "hh'h'mm")}
                     </Text>
                     <Text style={{ color: colorFont }}>{data.address} </Text>
                     <Text style={{ color: colorFont }}>
