@@ -657,6 +657,7 @@ console.log({MesDates: dateAllEvent});
             position: "absolute",
             flexDirection: "row",
             alignItems: "center",
+            borderWidth: 1,
             bottom: 35,
             left: 20,
             backgroundColor: "white",
@@ -712,6 +713,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
+    borderWidth: 2,
     height: 50,
     padding: 12,
     marginTop: 40,
