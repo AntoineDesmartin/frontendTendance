@@ -44,6 +44,22 @@ export default function PublishScreen() {
   // Afficher si event publish ou pas
   const [affiche, setAffiche] = useState(true);
 
+  //ResetAll
+  const handleResetAll = () => {
+    setAffiche(true);
+    setName('');
+    setAdresse('');
+    setHourStart(new Date());
+    setHourEnd(new Date());
+    setShowDatePicker(false);
+    setShowTimeStartPicker(false);
+    setShowTimeEndPicker(false);
+    setPrice('');
+    setDescription('');
+    setSelectedOptionType(null);
+    setSelectedOptionAccess(null);
+  }
+
   const dispatch = useDispatch();
   // Afiiche Modale
   useEffect(() => {
@@ -240,12 +256,12 @@ export default function PublishScreen() {
           >
             <View
               style={{
-                height: 24,
-                width: 24,
+                height: 18,
+                width: 18,
                 borderRadius: 12,
                 borderWidth: 2,
                 borderColor:
-                  selectedOptionAccess === option.id ? "#007BFF" : "#000",
+                  selectedOptionAccess === option.id ? "#007BFF" : "rgba(30, 6, 78, 1)",
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -266,7 +282,7 @@ export default function PublishScreen() {
           </TouchableOpacity>
         ))}
       </View>
-      <Text>_________________________________</Text>
+      <Text style={styles.textStyleLine}>_________________________________</Text>
 
       <View style={styles.viewType}>
         {optionsType.map((option) => (
@@ -277,12 +293,12 @@ export default function PublishScreen() {
           >
             <View
               style={{
-                height: 24,
-                width: 24,
+                height: 18,
+                width: 18,
                 borderRadius: 12,
                 borderWidth: 2,
                 borderColor:
-                  selectedOptionType === option.id ? "#007BFF" : "#000",
+                  selectedOptionType === option.id ? "#007BFF" : "rgba(30, 6, 78, 1)",
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -418,14 +434,14 @@ export default function PublishScreen() {
       <View style={styles.viewAjout}>
         <TouchableOpacity style={styles.btnAjout}>
           <View style={styles.plus}>
-            <FontAwesome name="plus" size={15} color={"#1e064e"} />
+            <FontAwesome name="plus" size={15} color={"white"} />
           </View>
           <Text>Ajouter des amis</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.btnAjout}>
           <View style={styles.plus}>
-            <FontAwesome name="plus" size={15} color={"#1e064e"} />
+            <FontAwesome name="plus" size={15} color={"white"} />
           </View>
           <Text>Ajouter une photo</Text>
         </TouchableOpacity>
@@ -435,17 +451,17 @@ export default function PublishScreen() {
         style={styles.btnPublier}
         onPress={() => handlePublish()}
       >
-        <Text> Publier</Text>
+        <Text style={styles.textStylePublish}>Publier</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   ) : (
     <View style={styles.container}>
-      <Text>Evenement Publer !</Text>
+      <Text>Événement créé d^_^b</Text>
       <TouchableOpacity
-        onPress={() => setAffiche(true)}
-        style={styles.btnPublier}
+        onPress={() => handleResetAll()}
+        style={styles.btnRePublier}
       >
-        <Text>Publier de nouveau !</Text>
+        <Text style={styles.textStylePublish}>Publier de nouveau !</Text>
       </TouchableOpacity>
     </View>
   );
@@ -508,18 +524,18 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#1e064e",
   },
   viewAccess: {
-    width: "100%",
+    width: "80%",
     flexDirection: "row",
-    margin: 10,
+    marginTop: 10,
     justifyContent: "space-around",
   },
   viewType: {
-    width: "100%",
+    width: "90%",
     flexDirection: "row",
     margin: 10,
     justifyContent: "space-around",
@@ -529,7 +545,8 @@ const styles = StyleSheet.create({
     width: 300,
     margin: 10,
     padding: 10,
-    backgroundColor: "grey",
+    borderWidth: 2,
+    borderColor: 'rgba(30, 6, 78, 1)',
     borderRadius: 5,
   },
 
@@ -538,11 +555,9 @@ const styles = StyleSheet.create({
     width: 300,
     margin: 10,
     padding: 10,
-    border: "solid",
-    border: 100,
+    borderWidth: 2,
     borderRadius: 5,
-    borderColor: "black",
-    backgroundColor: "grey",
+    borderColor: "rgba(30, 6, 78, 1)",
   },
   viewAjout: {
     flexDirection: "row",
@@ -554,27 +569,67 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   plus: {
-    backgroundColor: "grey",
+    backgroundColor: "rgba(30, 6, 78, 1)",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   btnPublier: {
-    backgroundColor: "grey",
+    backgroundColor: "rgba(30, 6, 78, 1)",
     marginBottom: 30,
     height: 40,
-    width: 100,
+    width: 120,
     padding: 10,
     alignItems: "center",
     borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
-  time: {
-    width: "100%",
-    flexDirection: "row",
-    backgroundColor: "red",
-    alignContent: "center",
-    justifyContent: "space-around",
-    margin: 10,
+
+  btnRePublier: {
+    backgroundColor: "rgba(30, 6, 78, 1)",
+    marginTop: 10,
+    marginBottom: 30,
+    height: 40,
+    width: 150,
+    padding: 10,
+    alignItems: "center",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
+
+  textStylePublish: {
+    color: '#ffffff',
+  },
+
+  textStyleLine: {
+    color: 'rgba(30, 6, 78, 1)',
+  },
+
+
   date: {
     width: "100%",
     flexDirection: "row",
