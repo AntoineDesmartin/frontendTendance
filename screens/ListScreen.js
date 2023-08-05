@@ -372,8 +372,10 @@ export default function ListScreen({ navigation }) {
     //console.log(isResearch);
   };
 
-  const handleFilterType = () => {
-    setSearchFilter("type")
+  const handleFilterType = (data) => {
+    setSearchFilter("type");
+    dispatch(storeResearch(data.type));
+    setIsResearch(true);
   }
 
   // constante pour rejoindre la map au onPress---------------------------------------------
@@ -521,7 +523,7 @@ console.log({MesDates: dateAllEvent});
                   backgroundColor: 'white',
                   borderWidth: 3,
                   width: 300,
-                  height: 380,
+                  height: 'auto',
                   borderRadius: 20,
                   padding: 20,
                   margin: 20,
@@ -534,7 +536,7 @@ console.log({MesDates: dateAllEvent});
               >
                 <Image source={imageType} style={styles.eventImage} />
                 <View style={styles.containerTop}>
-                  <Text style={styles.eventName}><TouchableOpacity><FontAwesome name={"circle"} size={20} color={stringStyle} /></TouchableOpacity> {data.eventName}</Text>
+                <TouchableOpacity onPress={() => handleFilterType(data)}><Text style={styles.eventName}><FontAwesome name={"circle"} size={20} color={stringStyle} /> {data.eventName}</Text></TouchableOpacity>
                 </View>
 
                 <View style={styles.eventView}>
@@ -648,6 +650,7 @@ console.log({MesDates: dateAllEvent});
         style={styles.filterButton}
       >
         <Text>{searchFilter}</Text>
+        {/* <FontAwesome name={"circle"} size={20} color={stringStyle} /> for filter*/}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={toggleDatePicker}>
@@ -723,7 +726,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "white",
   },
-
+  dataHide: {
+    opacity: 0,
+  },
   searchButton: {
     position: "absolute",
     top: 38,
