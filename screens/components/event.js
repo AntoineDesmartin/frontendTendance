@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 
+import format from 'date-fns/format';
 
 export default function Event(props) {
     
@@ -40,7 +41,7 @@ export default function Event(props) {
                             <Text style={styles.text}>{props.data.address}</Text>
                         </View>
                         <View>
-                            <Text style={styles.text}>{props.data.hourStart} {props.data.hourEnd}</Text>
+                            <Text style={styles.text}>{format(new Date (props.data.hourStart), "HH'h'mm")} {format(new Date (props.data.hourEnd), "HH'h'mm")}</Text>
                             <Text style={styles.text}> {membreInterrested} intérésse</Text>
                         </View>
                     </View>

@@ -9,7 +9,7 @@ export default function ForFilterType(data, researchLowerCase) {
         let CompareData = data[i].type.toLowerCase()
         if (CompareData.includes(researchLowerCase)) {
           const newObject = {
-            //creator: data[i].creator,
+            creatorName: data[i].creatorName,
             _id: data[i]._id,
             address: data[i].address,
             date: data[i].date,
