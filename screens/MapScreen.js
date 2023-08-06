@@ -16,19 +16,25 @@ import {
 import { setEvents } from '../reducers/events';
 import { setEvent } from "../reducers/event";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
+
 import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import eventData from "../data/data"
+import { format } from 'date-fns'
 
 const BACKEND_ADDRESS = 'https://backend-tendance.vercel.app';
 
 import {setOpenModal} from "../reducers/openModal"
 import Modale from './components/Modale';
 
+import formatDateToFrenchLocale from "./components/formatageList";
+
+
 
 export default function MapScreen(props) {
     const dispatch = useDispatch();
     const events = useSelector((state) => state.events.value);
+    console.log(events)
   
   const [currentPosition, setCurrentPosition] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -63,6 +69,7 @@ export default function MapScreen(props) {
 };
 
 const handleMarkerPress = (event) => {
+  if (event.date >= Date.now())
   setSelectedEvent(event);
 };
 
@@ -325,7 +332,8 @@ const mapStyle = [
         style={styles.map} 
         provider={PROVIDER_GOOGLE}
         customMapStyle={mapStyle}
-        zoomControlEnabled={true}
+        // zoomControlEnabled={true}
+        // showsMyLocationButton={true}
         initialRegion={currentPosition ? {
           latitude: currentPosition.latitude,
           longitude: currentPosition.longitude,
@@ -337,12 +345,11 @@ const mapStyle = [
         {currentPosition && (
         <Marker 
           coordinate={currentPosition} 
-          title="My position"  
-        >
-        <Image
-          source={currentPositionMarker}
-          style={styles.currentPositionIcon}/>
-        </Marker>
+          title="My position" 
+          pinColor="#fecb2d"
+        />
+        
+        
         )}
 
         {events.map((event, i) => (
@@ -358,19 +365,19 @@ const mapStyle = [
           style={styles.markerImage}/>
 
         <Callout tooltip onPress={()=>handlePress(event)} title="Event">
-              {/* Customize the content of the Callout */}
+              
               <View>
               <View style={styles.bubble}> 
                 <Text style={styles.eventName}>{event.eventName}</Text>
+                <Text style={styles.descriptionEvent}>{event.description}</Text>
                 <Text style={styles.typeEvent}>{event.type}</Text>
                 {/* <Text>{event.website}</Text> */}
-                <Text style={styles.eventDate}>{event.date}</Text>
-                <Text style={styles.hourStart}>{event.hourStart}</Text>
-                <Text style={styles.hourEnd}>{event.hourEnd}</Text>
-                <Text style={styles.descriptionEvent}>{event.description}</Text>
-                <Text style={styles.priceEvent}>{event.price}</Text>
-                <Text style={styles.addressEvent}>{event.address}</Text>
-                {/* Add any additional information you want to show in the Callout */}
+                <Text style={styles.textStyle}>{formatDateToFrenchLocale(event.date)}</Text> 
+                <Text style={styles.hours}>{format(new Date (event.hourStart), "hh'h'mm")}-{format(new Date (event.hourEnd), "hh'h'mm")}</Text>
+                <Text style={styles.priceEvent}>Prix : {event.price} €</Text>
+                <TouchableOpacity style={styles.goToEvent}>
+                  <Text>Voir les détails</Text>
+                  </TouchableOpacity>
               </View>
               <View style={styles.arrowBorder}/>
               <View style={styles.arrow} />
@@ -382,6 +389,10 @@ const mapStyle = [
       <TouchableOpacity onPress={() => handleSubmit()} style={styles.pressableButton}>
             <FontAwesome name={"bars"} size={30} color={'#b2b2b2'} />
         </TouchableOpacity>
+
+      <View>
+
+      </View>
     </View>
   );
 }
@@ -398,10 +409,10 @@ const styles = StyleSheet.create({
   pressableButton: {
     position: "absolute",
     bottom: 20,
-    right: 70,
+    right: 20,
     backgroundColor: "white",
     padding: 10,
-    borderRadius: 30,
+    borderRadius: 50,
   },
 
   markerImage: {
@@ -416,8 +427,8 @@ const styles = StyleSheet.create({
   bubble:{
     flexDirection: 'column',
     alignSelf: 'flex-start',
-    width: 170,
-    height: 200,
+    width: 250,
+    height: 250,
     backgroundColor: '#fff',
     borderRadius: 6,
     borderColor: '#ccc',
@@ -425,12 +436,15 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   eventName: {
-    fontSize: 16,
-    marginBottom: 5,
+    fontSize: 20,
+    color: "#1E064E",
+    textAlign:"center",
+
   },
   typeEvent: {
     fontSize: 14,
     marginBottom: 5,
+    alignItems: 'center',
   },
   arrow: {
     backgroundColor: 'transparent',
@@ -449,5 +463,14 @@ const styles = StyleSheet.create({
     marginTop: -0.5,
     // marginBottom: -15
   },
+  goToEvent: {
+      textAlign:"center",
+        alignContent:"center",
+        justifyContent:"center",
+        width:130,
+        height:40,
+        margin:10,
+        borderRadius:10
+  }
 });
 
