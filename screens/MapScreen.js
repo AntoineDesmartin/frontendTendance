@@ -89,7 +89,7 @@ const handleMarkerPress = (event) => {
 
 
   mapRef.current.animateToRegion({
-    latitude: event.latitude,
+    latitude: event.latitude + 0.05,
     longitude: event.longitude,
     latitudeDelta: 0.2,
     longitudeDelta: 0.2,})
@@ -175,18 +175,26 @@ const handlePress = (data)=>{
   const handleFilter = () => {
     if (searchFilter === "creator") {
       setSearchFilter("type");
+      dispatch(resetResearch());
+      setIsResearch(false);
     }
     if (searchFilter === "type") {
       setSearchFilter("eventName");
+      dispatch(resetResearch());
+      setIsResearch(false);
     }
 
     if (searchFilter === "eventName") {
       setSearchFilter("date");
+      dispatch(resetResearch());
+      setIsResearch(false);
       Opaque = 1;
     }
 
     if (searchFilter === "date") {
       setSearchFilter("creator");
+      dispatch(resetResearch());
+      setIsResearch(false);
       setTimeToFilter("today");
       Opaque = 0;
     }
@@ -480,11 +488,12 @@ const handlePress = (data)=>{
   const scienceImg = require("../assets/milad-fakurian-58Z17lnVS4U-unsplash.jpg");
   const artImg = require("../assets/sebastian-svenson-d2w-_1LJioQ-unsplash.jpg");
   const sportImg = require("../assets/august-phlieger-CREqtqgBFcU-unsplash.jpg");
+  
 
   const getImageByType = (eventType) => {
     switch (eventType) {
       case 'Food':
-        return foodImg; 
+        return foodImg;
       case 'Music':
         return musicImg;
       case 'Nature':
@@ -495,6 +504,30 @@ const handlePress = (data)=>{
         return artImg;
       case 'Sport':
         return sportImg;
+    }
+  };
+
+  const foodColor = "rgba(243, 200, 243, 1)";
+  const musicColor = "rgba(89, 215, 207, 1)";
+  const natureColor = "rgba(133, 244, 150, 1)";
+  const scienceColor = "rgba(140, 178, 255, 1)";
+  const artColor = "rgba(255, 141, 141, 1)";
+  const sportColor = "rgba(250, 189, 132, 1)";
+
+  const getColorIconByType = (eventType) => {
+    switch (eventType) {
+      case 'Food':
+        return foodColor;
+      case 'Music':
+        return musicColor;
+      case 'Nature':
+        return natureColor;
+      case 'Science':
+        return scienceColor;
+      case 'Art':
+        return artColor;
+      case 'Sport':
+        return sportColor;
     }
   };
 
@@ -610,6 +643,7 @@ const handlePress = (data)=>{
           </Marker>} 
 
         {finalDataBase.map((event, i) => (
+
           <Marker
             key={i}
             coordinate={{ latitude: event.latitude, longitude: event.longitude }}
@@ -622,16 +656,20 @@ const handlePress = (data)=>{
               <View>
               <View style={styles.bubble}> 
                 <Image source={getImageByType(event.type)} style={styles.bubbleImage}/>
-                <Text style={styles.eventName}>{event.eventName}</Text>
-                <Text style={styles.descriptionEvent}>{event.description}</Text>
-                <Text style={styles.typeEvent}>{event.type}</Text>
+                <Text style={styles.eventName}>
+                      {event.eventName}
+                    </Text>
+                  
+                <Text style={styles.typeEvent}>{event.type} <FontAwesome
+                        name={"circle"}
+                        size={15}
+                        color={getColorIconByType(event.type)}
+                      /></Text>
                 {/* <Text>{event.website}</Text> */}
                 <Text style={styles.textStyle}>{formatDateToFrenchLocale(event.date)}</Text> 
                 <Text style={styles.hours}>{format(new Date (event.hourStart), "HH'h'mm")}-{format(new Date (event.hourEnd), "HH'h'mm")}</Text>
                 <Text style={styles.priceEvent}>Prix : {event.price} €</Text>
-                <TouchableOpacity style={styles.goToEvent}>
-                  <Text>Voir les détails</Text>
-                  </TouchableOpacity>
+                <TouchableOpacity style={styles.goToEvent}></TouchableOpacity>
               </View>
               {/* <View style={styles.arrowBorder}/>
               <View style={styles.arrow} /> */}
@@ -776,20 +814,22 @@ const styles = StyleSheet.create({
     //alignSelf: 'flex-start',
     width: 250,
     height: 'auto',
+    minHeight: 250,
     backgroundColor: '#fff',
     borderRadius: 20,
     borderColor: '#ccc',
     borderWidth: 0.5,
     paddingBottom: 10,
-    paddingTop: 5,
     marginBottom: 20,
     borderWidth: 2,
   },
   bubbleImage: {
-    width: 240,
-    height: 50,
+    width: 250,
+    height: 'auto',
+    minHeight: 130,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+    marginBottom: 10,
   },
   eventName: {
     fontSize: 20,
