@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ForFilterCreator from "./components/ForFilterCreator";
 import ForFilterType from "./components/ForFilterType";
@@ -56,6 +56,7 @@ export default function MapScreen(props) {
   const [currentPosition, setCurrentPosition] = useState(null);
   const currentPositionMarker = require("../assets/photoProfile.jpg");
   const [initialRegion, setInitialRegion] = useState(null);
+  const mapRef = useRef(null); //! constante pour utiliser handleMarkerPress et se centrer sur l'event qui pop up
 
   useEffect(() => {
     (async () => {
@@ -63,6 +64,7 @@ export default function MapScreen(props) {
 
       if (status === "granted") {
         Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
+          //console.log({testLocation: location.coords});
           setCurrentPosition(location.coords);
         });
       }
@@ -80,6 +82,18 @@ export default function MapScreen(props) {
   }, []);
 
 
+//se centrer sur l'event qui pop up
+const handleMarkerPress = (event) => { 
+
+  console.log({result: event});
+
+
+  mapRef.current.animateToRegion({
+    latitude: event.latitude,
+    longitude: event.longitude,
+    latitudeDelta: 0.2,
+    longitudeDelta: 0.2,})
+};
   //Barre de recherche
 
   const toggleDatePicker = () => {
@@ -135,6 +149,17 @@ export default function MapScreen(props) {
     setIsResearch(true);
   };
 
+const handlePress = (data)=>{
+  
+    if(user===null){
+      //console.log("null");
+        dispatch(setOpenModal(!isModalOpen))
+    }else{
+      //console.log(data);
+        props.navigation.navigate('Event', { screen: 'EventScreen' });
+        dispatch(setEvent(data))
+    } 
+}
   const handleCloseFilter = () => {
     dispatch(resetResearch());
     setIsResearch(false);
@@ -166,8 +191,6 @@ export default function MapScreen(props) {
       Opaque = 0;
     }
   }
-
-  let newDataBase;
 
   if (!isResearch || searchFilter !== "date") {
     finalDataBase = events;
@@ -207,24 +230,19 @@ export default function MapScreen(props) {
     props.navigation.navigate("List", { screen: "ListScreen" });
   };
 
- 
-  const handleMarkerPress = (event) => {
-    setSelectedEvent(event);
-  };
-
   const user = useSelector((state) => state.user.value);
   const isModalOpen = useSelector((state) => state.openModal.value);
 
-  const handlePress = (data) => {
-    if (user === null) {
-      console.log("null");
-      dispatch(setOpenModal(!isModalOpen));
-    } else {
-      console.log(data);
-      props.navigation.navigate("Event", { screen: "EventScreen" });
-      dispatch(setEvent(data));
-    }
-  };
+  // const handlePress = (data) => {
+  //   if (user === null) {
+  //     console.log("null");
+  //     dispatch(setOpenModal(!isModalOpen));
+  //   } else {
+  //     console.log(data);
+  //     props.navigation.navigate("Event", { screen: "EventScreen" });
+  //     dispatch(setEvent(data));
+  //   }
+  // };
 
   const handleInitialRegion = (region) => {
     if (!initialRegion) {
@@ -455,6 +473,31 @@ export default function MapScreen(props) {
     }
   };
 
+  
+  const foodImg = require("../assets/marcela-laskoski-YrtFlrLo2DQ-unsplash.jpg");
+  const musicImg = require("../assets/marcela-laskoski-YrtFlrLo2DQ-unsplash.jpg");
+  const natureImg = require("../assets/tim-swaan-eOpewngf68w-unsplash.jpg");
+  const scienceImg = require("../assets/milad-fakurian-58Z17lnVS4U-unsplash.jpg");
+  const artImg = require("../assets/sebastian-svenson-d2w-_1LJioQ-unsplash.jpg");
+  const sportImg = require("../assets/august-phlieger-CREqtqgBFcU-unsplash.jpg");
+
+  const getImageByType = (eventType) => {
+    switch (eventType) {
+      case 'Food':
+        return foodImg; 
+      case 'Music':
+        return musicImg;
+      case 'Nature':
+        return natureImg;
+      case 'Science':
+        return scienceImg;
+      case 'Art':
+        return artImg;
+      case 'Sport':
+        return sportImg;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -462,7 +505,7 @@ export default function MapScreen(props) {
         backgroundColor="white" // Set the background color of the status bar
       />
       <Modale></Modale>
-      <View style={styles.researchContainer}>
+        <View style={styles.researchContainer}>
           <TextInput
             placeholder="Recherche"
             onChangeText={(value) => setResearch(value)}
@@ -541,8 +584,8 @@ export default function MapScreen(props) {
         />
       )}
 
-  
       <MapView
+      ref={mapRef} //!_______________________________________________
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         customMapStyle={mapStyle}
@@ -562,38 +605,49 @@ export default function MapScreen(props) {
       >
  
 
+ {/* {events.map((event, i) => (
+          
+          <Marker 
+          key={i} 
+          coordinate={{ latitude: event.latitude, longitude: event.longitude }}
+          title={event.eventName}
+          onPress={() => handleMarkerPress(event)}
+          
+        >
+          <Image
+          source={getMarkerIconByType(event.type)}
+          style={styles.markerImage}/>
         {currentPosition && 
         <Marker coordinate={currentPosition} title="My position" anchor={{ x: 0.5, y: 0.5 }} >
            <Image source={currentPositionMarker} style={styles.currentPositionIcon} />
-          </Marker>}
+          </Marker>} */}
 
         {finalDataBase.map((event, i) => (
           <Marker
             key={i}
             coordinate={{ latitude: event.latitude, longitude: event.longitude }}
             title={event.eventName}
-            onMarkerPress={() => handleMarkerPress(event)}
+            onPress={() => handleMarkerPress(event)}
           >
             <Image source={getMarkerIconByType(event.type)} style={styles.markerImage} />
 
             <Callout tooltip onPress={() => handlePress(event)} title="Event">
               <View>
-                <View style={styles.bubble}>
-                  <Text style={styles.eventName}>{event.eventName}</Text>
-                  <Text style={styles.descriptionEvent}>{event.description}</Text>
-                  <Text style={styles.typeEvent}>{event.type}</Text>
-                  {/* <Text>{event.website}</Text> */}
-                  <Text style={styles.textStyle}>{formatDateToFrenchLocale(event.date)}</Text>
-                  <Text style={styles.hours}>
-                    {format(new Date(event.hourStart), "hh'h'mm")}-{format(new Date(event.hourEnd), "hh'h'mm")}
-                  </Text>
-                  <Text style={styles.priceEvent}>Prix : {event.price} €</Text>
-                  <TouchableOpacity style={styles.goToEvent}>
-                    <Text>Voir les détails</Text>
+              <View style={styles.bubble}> 
+                <Image source={getImageByType(event.type)} style={styles.bubbleImage}/>
+                <Text style={styles.eventName}>{event.eventName}</Text>
+                <Text style={styles.descriptionEvent}>{event.description}</Text>
+                <Text style={styles.typeEvent}>{event.type}</Text>
+                {/* <Text>{event.website}</Text> */}
+                <Text style={styles.textStyle}>{formatDateToFrenchLocale(event.date)}</Text> 
+                <Text style={styles.hours}>{format(new Date (event.hourStart), "HH'h'mm")}-{format(new Date (event.hourEnd), "HH'h'mm")}</Text>
+                <Text style={styles.priceEvent}>Prix : {event.price} €</Text>
+                <TouchableOpacity style={styles.goToEvent}>
+                  <Text>Voir les détails</Text>
                   </TouchableOpacity>
-                </View>
-                <View style={styles.arrowBorder} />
-                <View style={styles.arrow} />
+              </View>
+              {/* <View style={styles.arrowBorder}/>
+              <View style={styles.arrow} /> */}
               </View>
             </Callout>
           </Marker>
@@ -728,16 +782,27 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "white",
   },
-  bubble: {
-    flexDirection: "column",
-    alignSelf: "flex-start",
+  bubble:{
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    //alignSelf: 'flex-start',
     width: 250,
-    height: 250,
-    backgroundColor: "#fff",
-    borderRadius: 6,
-    borderColor: "#ccc",
+    height: 'auto',
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    borderColor: '#ccc',
     borderWidth: 0.5,
-    padding: 15,
+    paddingBottom: 10,
+    paddingTop: 5,
+    marginBottom: 20,
+    borderWidth: 2,
+  },
+  bubbleImage: {
+    width: 240,
+    height: 50,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
   },
   eventName: {
     fontSize: 20,
@@ -750,12 +815,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   arrow: {
-    backgroundColor: "transparent",
-    borderColor: "transparent",
-    borderTopColor: "#fff",
-    borderWidth: 16,
-    alignSelf: "center",
-    marginTop: -32,
+    // backgroundColor: 'transparent',
+    // borderColor: 'transparent',
+    // borderTopColor: '#fff',
+    // borderWidth: 16,
+    // alignSelf: 'center',
+    // marginTop: -32,
   },
   arrowBorder: {
     backgroundColor: "transparent",
@@ -767,12 +832,12 @@ const styles = StyleSheet.create({
     // marginBottom: -15
   },
   goToEvent: {
-    textAlign: "center",
-    alignContent: "center",
-    justifyContent: "center",
-    width: 130,
-    height: 40,
-    margin: 10,
-    borderRadius: 10,
-  },
+      //textAlign:"center",
+        alignContent:"center",
+        justifyContent:"center",
+        // width:130,
+        // height:40,
+        // margin:10,
+        // borderRadius:10
+  }
 });
