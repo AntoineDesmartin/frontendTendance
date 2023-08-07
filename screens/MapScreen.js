@@ -622,7 +622,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 40,
     padding: 12,
-    marginTop: 20,
+    marginTop: 24,
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 12,
@@ -630,7 +630,7 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     position: "absolute",
-    top: 6,
+    top: 12,
     right: 30,
     padding: 10,
   },
