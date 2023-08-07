@@ -96,7 +96,7 @@ export default function TrendScreen(props) {
                 {" "}{format(new Date(event.hourEnd), "HH'h'mm")} 
               </Text>
               <Text style={styles.eventAddress}>
-                Point de rdv: {event.address}</Text>
+                Point de rdv : {event.address}</Text>
             </View>
 
             <Text style={styles.eventCreator}>
@@ -106,7 +106,7 @@ export default function TrendScreen(props) {
             
 
             <View style={styles.partUsers}>
-              <Text style={styles.eventCreator}>Interresé.e.s : {event.users.interUsers.length} </Text>
+              <Text style={styles.eventCreator}>Intéressé.e.s : {event.users.interUsers.length} </Text>
               <Text style={styles.eventCreator}>Participant.e.s : {event.users.partUsers.length}</Text>
             </View>
           </TouchableOpacity>
