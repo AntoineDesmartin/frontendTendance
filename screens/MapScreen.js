@@ -604,19 +604,6 @@ const handlePress = (data)=>{
         handleInitialRegion={handleInitialRegion}
       >
  
-
- {/* {events.map((event, i) => (
-          
-          <Marker 
-          key={i} 
-          coordinate={{ latitude: event.latitude, longitude: event.longitude }}
-          title={event.eventName}
-          onPress={() => handleMarkerPress(event)}
-          
-        >
-          <Image
-          source={getMarkerIconByType(event.type)}
-          style={styles.markerImage}/>*/}
         {currentPosition && 
         <Marker coordinate={currentPosition} title="My position" anchor={{ x: 0.5, y: 0.5 }} >
            <Image source={currentPositionMarker} style={styles.currentPositionIcon} />
