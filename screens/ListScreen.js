@@ -398,18 +398,26 @@ export default function ListScreen({ navigation }) {
   const handleFilter = () => {
     if (searchFilter === "creator") {
       setSearchFilter("type");
+      dispatch(resetResearch());
+    setIsResearch(false);
     }
     if (searchFilter === "type") {
       setSearchFilter("eventName");
+      dispatch(resetResearch());
+    setIsResearch(false);
     }
 
     if (searchFilter === "eventName") {
       setSearchFilter("date");
+      dispatch(resetResearch());
+    setIsResearch(false);
       Opaque = 1;
     }
 
     if (searchFilter === "date") {
       setSearchFilter("creator");
+      dispatch(resetResearch());
+    setIsResearch(false);
       setTimeToFilter("today");
       Opaque = 0;
     }
