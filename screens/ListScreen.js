@@ -566,7 +566,7 @@ console.log({MesDates: dateAllEvent});
 
                 <View style={styles.partUsers}>
                   <Text style={styles.eventCreator}>
-                    Interresé.e.s : {data.users.interUsers.length}{" "}
+                    Intéressé.e.s : {data.users.interUsers.length}{" "}
                   </Text>
                   <Text style={styles.eventCreator}>
                     Participant.e.s : {data.users.partUsers.length}

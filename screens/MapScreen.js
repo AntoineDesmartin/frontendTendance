@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
+import ForFilterCreator from "./components/ForFilterCreator";
+import ForFilterType from "./components/ForFilterType";
+import ForFilterEventName from "./components/ForFilterEventName";
+import ForFilterDate from "./components/ForFilterDate";
 import {
   Image,
   ImageBackground,
@@ -13,34 +17,44 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { setEvents } from '../reducers/events';
+import { setEvents } from "../reducers/events";
 import { setEvent } from "../reducers/event";
+import { storeResearch, resetResearch } from "../reducers/list";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
-
+import { DatePickerAndroid } from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import eventData from "../data/data"
-import { format } from 'date-fns'
+import eventData from "../data/data";
+import { format } from "date-fns";
+import formatDate from "./components/formatDate";
 
-const BACKEND_ADDRESS = 'https://backend-tendance.vercel.app';
 
-import {setOpenModal} from "../reducers/openModal"
-import Modale from './components/Modale';
+const BACKEND_ADDRESS = "https://backend-tendance.vercel.app";
+
+import { setOpenModal } from "../reducers/openModal";
+import Modale from "./components/Modale";
 
 import formatDateToFrenchLocale from "./components/formatageList";
 
-
-
 export default function MapScreen(props) {
-    const dispatch = useDispatch();
-    const events = useSelector((state) => state.events.value);
-    console.log({eventsMapScreen: events})
-  
+  const dispatch = useDispatch();
+  const events = useSelector((state) => state.events.value);
+  console.log(events);
+  const reduxResearch = useSelector((state) => state.list.value);
+  const researchLowerCase = reduxResearch.toLowerCase();
+
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [research, setResearch] = useState(""); // état de la recherche en Input
+  const [isResearch, setIsResearch] = useState(false); // état recherche active/inactive
+  const [searchFilter, setSearchFilter] = useState("creator");
+  const [timeToFilter, setTimeToFilter] = useState("today");
+  const [dateText, setDateText] = useState("");
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const [currentPosition, setCurrentPosition] = useState(null);
-  const [selectedMarker, setSelectedMarker] = useState(null);
-
-  const currentPositionMarker = require('../assets/current_location_icon.png')
-
+  const currentPositionMarker = require("../assets/photoProfile.jpg");
   const [initialRegion, setInitialRegion] = useState(null);
   const mapRef = useRef(null); //! constante pour utiliser handleMarkerPress et se centrer sur l'event qui pop up
 
@@ -60,15 +74,13 @@ export default function MapScreen(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data) {
-          dispatch(setEvents(data));
+          const filteredEvents = data.filter((event) => new Date(event.date) >= new Date());
+          dispatch(setEvents(filteredEvents));
         }
-       // console.log("Fetch des events dans map screen au chargement de la page",data);
+        //console.log("Fetch des events dans map screen au chargement de la page",data);
       });
   }, []);
 
-  const handleSubmit = () => {
-    props.navigation.navigate('List', { screen: 'ListScreen' });
-};
 
 //se centrer sur l'event qui pop up
 const handleMarkerPress = (event) => { 
@@ -82,10 +94,60 @@ const handleMarkerPress = (event) => {
     latitudeDelta: 0.2,
     longitudeDelta: 0.2,})
 };
+  //Barre de recherche
+
+  const toggleDatePicker = () => {
+    setShowDatePicker(true);
+  };
+
+  const handleDateChange = (event, selected) => {
+    if (selected) {
+      setSelectedDate(selected);
+      const Formatage = formatDate(selected);
+      console.log(Formatage);
+      setTimeToFilter(Formatage);
+
+      const formattedDate = selected.toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      setDateText(formattedDate);
+      setShowDatePicker(false);
+      //console.log(dateText);
+      //console.log(selected)
+    }
+  };
+  // let Log = timeToFilter.slice(0,10);
+  // console.log(Log);
+  //Affichage du calendrier en Android
+  const showAndroidDatePicker = async () => {
+    try {
+      const { action, year, month, day } = await DatePickerAndroid.open({
+        date: selectedDate,
+        mode: "calendar",
+      });
+      if (action !== DatePickerAndroid.dismissedAction) {
+        const selectedDate = new Date(year, month, day);
+        handleDateChange(null, selectedDate);
+      }
+    } catch ({ code, message }) {
+      console.warn("Cannot open date picker", message);
+    }
+  };
+
+  const hideDatePicker = () => {
+    setShowDatePicker(false);
+
+    //!filtre actif ---------------------------------------------------------------------------------------------------
+  };
 
 
-const user = useSelector((state)=>state.user.value); 
-const isModalOpen = useSelector((state)=>state.openModal.value)
+  const handleSearch = () => {
+    dispatch(storeResearch(research));
+    setResearch("");
+    setIsResearch(true);
+  };
 
 const handlePress = (data)=>{
   
@@ -98,239 +160,320 @@ const handlePress = (data)=>{
         dispatch(setEvent(data))
     } 
 }
+  const handleCloseFilter = () => {
+    dispatch(resetResearch());
+    setIsResearch(false);
+    //console.log(isResearch);
+  };
 
-const handleInitialRegion = (region) => {
-  if (!initialRegion) {
-    setInitialRegion(region);
-  }
-}
-
-// const displayEvents = () => {
-    
-//     dispatch(displayIncomingEvents({ name: newPlace, latitude: tempCoordinates.latitude, longitude: tempCoordinates.longitude }));
-//     setModalVisible(false);
-//     setNewPlace('');
-//   };
-
-
-// const markers = events.map((data, i) => {
-//   return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.eventName} />;
-// });
-
-
-//Fond de carte personnalisé
-const mapStyle = [
-  {
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#212121"
-      }
-    ]
-  },
-  {
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#757575"
-      }
-    ]
-  },
-  {
-    "elementType": "labels.text.stroke",
-    "stylers": [
-      {
-        "color": "#212121"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#757575"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative.country",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#9e9e9e"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative.land_parcel",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative.locality",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#bdbdbd"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#757575"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#181818"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#616161"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "labels.text.stroke",
-    "stylers": [
-      {
-        "color": "#1b1b1b"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#2c2c2c"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#8a8a8a"
-      }
-    ]
-  },
-  {
-    "featureType": "road.arterial",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#373737"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#3c3c3c"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway.controlled_access",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#4e4e4e"
-      }
-    ]
-  },
-  {
-    "featureType": "road.local",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#616161"
-      }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#757575"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#000000"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#3d3d3d"
-      }
-    ]
+  const handleFilterType = (data) => {
+    setSearchFilter("type");
+    dispatch(storeResearch(data.type));
+    setIsResearch(true);
   }
 
-]
+  const handleFilter = () => {
+    if (searchFilter === "creator") {
+      setSearchFilter("type");
+    }
+    if (searchFilter === "type") {
+      setSearchFilter("eventName");
+    }
 
-  const foodIcon = require('../assets/food_icon.png');
-  const musicIcon = require('../assets/music_icon.png');
-  const natureIcon = require('../assets/nature_icon.png');
-  const scienceIcon = require('../assets/science_icon.png');
-  const artIcon = require('../assets/art_icon.png');
-  const sportIcon = require('../assets/sport_icon.png');
+    if (searchFilter === "eventName") {
+      setSearchFilter("date");
+      Opaque = 1;
+    }
 
-  const getMarkerIconByType = (eventType) => {
-    switch (eventType) {
-      case 'Food':
-        return foodIcon; 
-      case 'Music':
-        return musicIcon;
-      case 'Nature':
-        return natureIcon;
-      case 'Science':
-        return scienceIcon;
-      case 'Art':
-        return artIcon;
-      case 'Sport':
-        return sportIcon;
+    if (searchFilter === "date") {
+      setSearchFilter("creator");
+      setTimeToFilter("today");
+      Opaque = 0;
     }
   }
 
+  if (!isResearch || searchFilter !== "date") {
+    finalDataBase = events;
+    console.log({NewDatabase: events});
+  }
+  if (!isResearch || searchFilter === "date") {
+    if (timeToFilter === "today") {
+      finalDataBase = events;
+    } else {
+      finalDataBase = ForFilterDate(events, timeToFilter);
+    }
+  } else {
+    if (searchFilter === "creator") {
+      finalDataBase = ForFilterCreator(events, researchLowerCase);
+    }
+    if (searchFilter === "type") {
+      finalDataBase = ForFilterType(events, researchLowerCase);
+    }
+    if (searchFilter === "eventName") {
+      finalDataBase = ForFilterEventName(events, researchLowerCase);
+    }
+
+  }
+  if (isResearch) {
+    opacityChange = 1;
+  } else {
+    opacityChange = 0;
+  }
+  if (searchFilter === "date") {
+    opacityValue = 1;
+  } else {
+    opacityValue = 0;
+  }
+
+  //Bouton vers screen list
+  const handleSubmit = () => {
+    props.navigation.navigate("List", { screen: "ListScreen" });
+  };
+
+  const user = useSelector((state) => state.user.value);
+  const isModalOpen = useSelector((state) => state.openModal.value);
+
+  // const handlePress = (data) => {
+  //   if (user === null) {
+  //     console.log("null");
+  //     dispatch(setOpenModal(!isModalOpen));
+  //   } else {
+  //     console.log(data);
+  //     props.navigation.navigate("Event", { screen: "EventScreen" });
+  //     dispatch(setEvent(data));
+  //   }
+  // };
+
+  const handleInitialRegion = (region) => {
+    if (!initialRegion) {
+      setInitialRegion(region);
+    }
+  };
+
+  // const displayEvents = () => {
+
+  //     dispatch(displayIncomingEvents({ name: newPlace, latitude: tempCoordinates.latitude, longitude: tempCoordinates.longitude }));
+  //     setModalVisible(false);
+  //     setNewPlace('');
+  //   };
+
+  // const markers = events.map((data, i) => {
+  //   return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.eventName} />;
+  // });
+
+  //Fond de carte personnalisé
+  const mapStyle = [
+    {
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#212121",
+        },
+      ],
+    },
+    {
+      elementType: "labels.icon",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      elementType: "labels.text.fill",
+      stylers: [
+        {
+          color: "#757575",
+        },
+      ],
+    },
+    {
+      elementType: "labels.text.stroke",
+      stylers: [
+        {
+          color: "#212121",
+        },
+      ],
+    },
+    {
+      featureType: "administrative",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#757575",
+        },
+      ],
+    },
+    {
+      featureType: "administrative.country",
+      elementType: "labels.text.fill",
+      stylers: [
+        {
+          color: "#9e9e9e",
+        },
+      ],
+    },
+    {
+      featureType: "administrative.land_parcel",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "administrative.locality",
+      elementType: "labels.text.fill",
+      stylers: [
+        {
+          color: "#bdbdbd",
+        },
+      ],
+    },
+    {
+      featureType: "poi",
+      elementType: "labels.text.fill",
+      stylers: [
+        {
+          color: "#757575",
+        },
+      ],
+    },
+    {
+      featureType: "poi.park",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#181818",
+        },
+      ],
+    },
+    {
+      featureType: "poi.park",
+      elementType: "labels.text.fill",
+      stylers: [
+        {
+          color: "#616161",
+        },
+      ],
+    },
+    {
+      featureType: "poi.park",
+      elementType: "labels.text.stroke",
+      stylers: [
+        {
+          color: "#1b1b1b",
+        },
+      ],
+    },
+    {
+      featureType: "road",
+      elementType: "geometry.fill",
+      stylers: [
+        {
+          color: "#2c2c2c",
+        },
+      ],
+    },
+    {
+      featureType: "road",
+      elementType: "labels.text.fill",
+      stylers: [
+        {
+          color: "#8a8a8a",
+        },
+      ],
+    },
+    {
+      featureType: "road.arterial",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#373737",
+        },
+      ],
+    },
+    {
+      featureType: "road.highway",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#3c3c3c",
+        },
+      ],
+    },
+    {
+      featureType: "road.highway.controlled_access",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#4e4e4e",
+        },
+      ],
+    },
+    {
+      featureType: "road.local",
+      elementType: "labels.text.fill",
+      stylers: [
+        {
+          color: "#616161",
+        },
+      ],
+    },
+    {
+      featureType: "transit",
+      elementType: "labels.text.fill",
+      stylers: [
+        {
+          color: "#757575",
+        },
+      ],
+    },
+    {
+      featureType: "water",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#000000",
+        },
+      ],
+    },
+    {
+      featureType: "water",
+      elementType: "labels.text.fill",
+      stylers: [
+        {
+          color: "#3d3d3d",
+        },
+      ],
+    },
+  ];
+
+  const foodIcon = require("../assets/food_icon.png");
+  const musicIcon = require("../assets/music_icon.png");
+  const natureIcon = require("../assets/nature_icon.png");
+  const scienceIcon = require("../assets/science_icon.png");
+  const artIcon = require("../assets/art_icon.png");
+  const sportIcon = require("../assets/sport_icon.png");
+
+  const getMarkerIconByType = (eventType) => {
+    switch (eventType) {
+      case "Food":
+        return foodIcon;
+      case "Music":
+        return musicIcon;
+      case "Nature":
+        return natureIcon;
+      case "Science":
+        return scienceIcon;
+      case "Art":
+        return artIcon;
+      case "Sport":
+        return sportIcon;
+    }
+  };
+
+  
   const foodImg = require("../assets/marcela-laskoski-YrtFlrLo2DQ-unsplash.jpg");
   const musicImg = require("../assets/marcela-laskoski-YrtFlrLo2DQ-unsplash.jpg");
   const natureImg = require("../assets/tim-swaan-eOpewngf68w-unsplash.jpg");
@@ -353,42 +496,116 @@ const mapStyle = [
       case 'Sport':
         return sportImg;
     }
-  }
+  };
 
-
-    return (
+  return (
     <View style={styles.container}>
       <StatusBar
         barStyle="dark-content" // Change to "light-content" if you need white status bar content
         backgroundColor="white" // Set the background color of the status bar
       />
       <Modale></Modale>
-      <MapView 
-        ref={mapRef} //!_______________________________________________
-        style={styles.map} 
+        <View style={styles.researchContainer}>
+          <TextInput
+            placeholder="Recherche"
+            onChangeText={(value) => setResearch(value)}
+            value={research}
+            style={styles.input}
+          />
+          <TouchableOpacity onPress={() => handleSearch()} style={styles.searchButton}>
+            <FontAwesome name={"search"} size={30} color={"black"} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleCloseFilter()}
+            style={{
+              position: "absolute",
+              top: 90,
+              right: 40,
+              opacity: opacityChange,
+            }}
+          >
+            <FontAwesome name={"times"} size={30} color={"white"} />
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+        onPress={() => handleFilter()}
+        style={styles.filterButton}
+      >
+        <Text>{searchFilter}</Text>
+        {/* <FontAwesome name={"circle"} size={20} color={stringStyle} /> for filter*/}
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={toggleDatePicker}>
+        <View
+          style={{
+            opacity: opacityValue,
+            position: "absolute",
+            flexDirection: "row",
+            alignItems: "center",
+            borderWidth: 1,
+            bottom: -485,
+            left: 15,
+            backgroundColor: "white",
+            padding: 10,
+            borderRadius: 30,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+
+            elevation: 5,
+          }}
+        >
+          <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
+        </View>
+      </TouchableOpacity>
+      {/* condition de rendu du date picker en fonction du système ios ou android */}
+      {showDatePicker && Platform.OS === "ios" && (
+        <DateTimePicker
+          style={styles.datePicker}
+          value={selectedDate}
+          mode="date"
+          display="default"
+          onChange={handleDateChange}
+        />
+      )}
+
+      {showDatePicker && Platform.OS === "android" && (
+        <DateTimePicker
+          style={styles.datePicker}
+          value={selectedDate}
+          mode="date"
+          display="calendar"
+          onChange={handleDateChange}
+          onDismiss={hideDatePicker}
+        />
+      )}
+
+      <MapView
+      ref={mapRef} //!_______________________________________________
+        style={styles.map}
         provider={PROVIDER_GOOGLE}
         customMapStyle={mapStyle}
         // zoomControlEnabled={true}
         // showsMyLocationButton={true}
-        initialRegion={currentPosition ? {
-          latitude: currentPosition.latitude,
-          longitude: currentPosition.longitude,
-          latitudeDelta: 0.2,
-          longitudeDelta: 0.2,
-        } : null}
+        initialRegion={
+          currentPosition
+            ? {
+                latitude: currentPosition.latitude,
+                longitude: currentPosition.longitude,
+                latitudeDelta: 0.2,
+                longitudeDelta: 0.2,
+              }
+            : null
+        }
         handleInitialRegion={handleInitialRegion}
       >
-        {currentPosition && (
-        <Marker 
-          coordinate={currentPosition} 
-          title="My position" 
-          pinColor="#fecb2d"
-        />
-        
-        
-        )}
+ 
 
-        {events.map((event, i) => (
+ {/* {events.map((event, i) => (
           
           <Marker 
           key={i} 
@@ -400,9 +617,21 @@ const mapStyle = [
           <Image
           source={getMarkerIconByType(event.type)}
           style={styles.markerImage}/>
+        {currentPosition && 
+        <Marker coordinate={currentPosition} title="My position" anchor={{ x: 0.5, y: 0.5 }} >
+           <Image source={currentPositionMarker} style={styles.currentPositionIcon} />
+          </Marker>} */}
 
-        <Callout tooltip onPress={()=>handlePress(event)} title="Event">
-              
+        {finalDataBase.map((event, i) => (
+          <Marker
+            key={i}
+            coordinate={{ latitude: event.latitude, longitude: event.longitude }}
+            title={event.eventName}
+            onPress={() => handleMarkerPress(event)}
+          >
+            <Image source={getMarkerIconByType(event.type)} style={styles.markerImage} />
+
+            <Callout tooltip onPress={() => handlePress(event)} title="Event">
               <View>
               <View style={styles.bubble}> 
                 <Image source={getImageByType(event.type)} style={styles.bubbleImage}/>
@@ -421,16 +650,14 @@ const mapStyle = [
               <View style={styles.arrow} /> */}
               </View>
             </Callout>
-            </Marker>
+          </Marker>
         ))}
       </MapView>
       <TouchableOpacity onPress={() => handleSubmit()} style={styles.pressableButton}>
-            <FontAwesome name={"bars"} size={30} color={'#b2b2b2'} />
-        </TouchableOpacity>
+        <FontAwesome name={"bars"} size={30} color={"#b2b2b2"} />
+      </TouchableOpacity>
 
-      <View>
-
-      </View>
+      <View></View>
     </View>
   );
 }
@@ -443,7 +670,25 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+    zIndex: -1,
   },
+  input: {
+    borderWidth: 2,
+    height: 40,
+    padding: 12,
+    marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 12,
+    borderRadius: 20,
+  },
+  searchButton: {
+    position: "absolute",
+    top: 6,
+    right: 30,
+    padding: 10,
+  },
+
   pressableButton: {
     position: "absolute",
     bottom: 20,
@@ -452,15 +697,90 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 50,
   },
+  selectDate: {
+    borderWidth: 3,
+    position: "absolute",
+    flexDirection: "row",
+    alignItems: "center",
+    bottom: 35,
+    left: 20,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
 
+    elevation: 5,
+  },
+
+  ButtonDate: {
+    borderWidth: 1,
+    position: "absolute",
+    flexDirection: "row",
+    alignItems: "center",
+    top: 110,
+    right: 30,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+
+  datePicker: {
+    backgroundColor: "rgba(155, 130, 255, 1)",
+    borderRadius: 5,
+    borderColor: "#C5C5C5",
+    borderWidth: 1,
+    left: 20,
+    top: 400,
+    opacity: 1,
+    height: 40,
+    width: 100,
+  },
+
+  filterButton: {
+    borderWidth: 1,
+    position: "absolute",
+    top: 80,
+    left: 15,
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
   markerImage: {
     width: 30,
     height: 30,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   currentPositionIcon: {
     width: 30,
     height: 30,
+    borderRadius: 50,
+    resizeMode: "contain",
+    borderWidth: 3,
+    borderColor: "white",
   },
   bubble:{
     flexDirection: 'column',
@@ -487,13 +807,12 @@ const styles = StyleSheet.create({
   eventName: {
     fontSize: 20,
     color: "#1E064E",
-    textAlign:"center",
-
+    textAlign: "center",
   },
   typeEvent: {
     fontSize: 14,
     marginBottom: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   arrow: {
     // backgroundColor: 'transparent',
@@ -504,11 +823,11 @@ const styles = StyleSheet.create({
     // marginTop: -32,
   },
   arrowBorder: {
-    backgroundColor: 'transparent',
-    borderColor: 'transparent',
-    borderTopColor: '#007a87',
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    borderTopColor: "#007a87",
     borderWidth: 16,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: -0.5,
     // marginBottom: -15
   },
@@ -522,4 +841,3 @@ const styles = StyleSheet.create({
         // borderRadius:10
   }
 });
-
