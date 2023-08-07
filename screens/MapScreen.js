@@ -1,9 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import ForFilterCreator from "./components/ForFilterCreator";
-import ForFilterType from "./components/ForFilterType";
-import ForFilterEventName from "./components/ForFilterEventName";
-import ForFilterDate from "./components/ForFilterDate";
 import {
   Image,
   ImageBackground,
@@ -17,30 +12,35 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { setEvents } from "../reducers/events";
-import { setEvent } from "../reducers/event";
-import { storeResearch, resetResearch } from "../reducers/list";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import { DatePickerAndroid } from "@react-native-community/datetimepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import eventData from "../data/data";
-import { format } from "date-fns";
-import formatDate from "./components/formatDate";
+import { useDispatch, useSelector } from "react-redux";
 
+import ForFilterCreator from "./components/ForFilterCreator";
+import ForFilterType from "./components/ForFilterType";
+import ForFilterEventName from "./components/ForFilterEventName";
+import ForFilterDate from "./components/ForFilterDate";
+import formatDate from "./components/formatDate";
+import formatDateToFrenchLocale from "./components/formatageList";
+import { format } from "date-fns";
+import Modale from "./components/Modale";
+
+import { setEvents } from "../reducers/events";
+import { setEvent } from "../reducers/event";
+import { storeResearch, resetResearch } from "../reducers/list";
+import { setOpenModal } from "../reducers/openModal";
+
+import eventData from "../data/data";
 
 const BACKEND_ADDRESS = "https://backend-tendance.vercel.app";
 
-import { setOpenModal } from "../reducers/openModal";
-import Modale from "./components/Modale";
-
-import formatDateToFrenchLocale from "./components/formatageList";
 
 export default function MapScreen(props) {
   const dispatch = useDispatch();
   const events = useSelector((state) => state.events.value);
-  console.log(events);
   const reduxResearch = useSelector((state) => state.list.value);
   const researchLowerCase = reduxResearch.toLowerCase();
 
@@ -616,11 +616,11 @@ const handlePress = (data)=>{
         >
           <Image
           source={getMarkerIconByType(event.type)}
-          style={styles.markerImage}/>
+          style={styles.markerImage}/>*/}
         {currentPosition && 
         <Marker coordinate={currentPosition} title="My position" anchor={{ x: 0.5, y: 0.5 }} >
            <Image source={currentPositionMarker} style={styles.currentPositionIcon} />
-          </Marker>} */}
+          </Marker>} 
 
         {finalDataBase.map((event, i) => (
           <Marker
@@ -630,7 +630,7 @@ const handlePress = (data)=>{
             onPress={() => handleMarkerPress(event)}
           >
             <Image source={getMarkerIconByType(event.type)} style={styles.markerImage} />
-
+            
             <Callout tooltip onPress={() => handlePress(event)} title="Event">
               <View>
               <View style={styles.bubble}> 
@@ -684,7 +684,7 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     position: "absolute",
-    top: 12,
+    top: 15,
     right: 30,
     padding: 10,
   },
