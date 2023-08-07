@@ -18,6 +18,8 @@ export default function ForFilterCreator(data, researchLowerCase) {
             eventName: data[i].eventName,
             hourEnd: data[i].hourEnd,
             hourStart: data[i].hourStart,
+            latitude: data[i].latitude,
+            longitude: data[i].longitude,
             price: data[i].price,
             type: data[i].type,
             users: {
