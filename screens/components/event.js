@@ -22,7 +22,7 @@ export default function Event(props) {
     // if pour les color si cest past or futur 
     let now = new Date();
     let date = new Date(props.data.date)
-    let color = "blue";
+    let color = "black";
     if(date<now){
         color="#d9d9d9";
     }
@@ -35,7 +35,7 @@ export default function Event(props) {
 
 
     return (
-                    <View style={{...styles.event, backgroundColor:color}}> 
+                    <View style={{...styles.event }}> 
                         <View>
                             <Text style={styles.text}>{props.data.eventName}</Text>
                             <Text style={styles.text}>{props.data.address}</Text>

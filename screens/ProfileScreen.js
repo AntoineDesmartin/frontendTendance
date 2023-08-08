@@ -121,7 +121,7 @@ useEffect(() => {
                 <TouchableOpacity onPress={()=>dispatch(logout())}><Text>LOGOUT</Text></TouchableOpacity>
 
 
-                    <FontAwesome name="users" size={30} color={"#1e064e"} />
+                    <FontAwesome name="users" size={25} color={"#1e064e"} />
                     <Text style={styles.textIcon}>Mes amis</Text>
                 </View>
             
@@ -131,7 +131,7 @@ useEffect(() => {
                 </View>
                 
                 <View style={styles.icon}>
-                    <FontAwesome name="heart" size={30}  color={"#1e064e"}/>
+                    <FontAwesome name="heart" size={25}  color={"#1e064e"}/>
                     <Text style={styles.textIcon}>Mes Favoris</Text>
                 </View>
             </View>
