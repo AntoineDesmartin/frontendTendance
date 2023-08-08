@@ -47,18 +47,18 @@ export default function PublishScreen() {
   //ResetAll
   const handleResetAll = () => {
     setAffiche(true);
-    setName('');
-    setAdresse('');
+    setName("");
+    setAdresse("");
     setHourStart(new Date());
     setHourEnd(new Date());
     setShowDatePicker(false);
     setShowTimeStartPicker(false);
     setShowTimeEndPicker(false);
-    setPrice('');
-    setDescription('');
+    setPrice("");
+    setDescription("");
     setSelectedOptionType(null);
     setSelectedOptionAccess(null);
-  }
+  };
 
   const dispatch = useDispatch();
   // Afiiche Modale
@@ -261,7 +261,9 @@ export default function PublishScreen() {
                 borderRadius: 12,
                 borderWidth: 2,
                 borderColor:
-                  selectedOptionAccess === option.id ? "#007BFF" : "rgba(30, 6, 78, 1)",
+                  selectedOptionAccess === option.id
+                    ? "#007BFF"
+                    : "rgba(30, 6, 78, 1)",
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -282,7 +284,9 @@ export default function PublishScreen() {
           </TouchableOpacity>
         ))}
       </View>
-      <Text style={styles.textStyleLine}>_________________________________</Text>
+      <Text style={styles.textStyleLine}>
+        _________________________________
+      </Text>
 
       <View style={styles.viewType}>
         {optionsType.map((option) => (
@@ -298,7 +302,9 @@ export default function PublishScreen() {
                 borderRadius: 12,
                 borderWidth: 2,
                 borderColor:
-                  selectedOptionType === option.id ? "#007BFF" : "rgba(30, 6, 78, 1)",
+                  selectedOptionType === option.id
+                    ? "#007BFF"
+                    : "rgba(30, 6, 78, 1)",
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -344,13 +350,13 @@ export default function PublishScreen() {
 
             <View style={styles.selectDate}>
               <TouchableOpacity onPress={toggleDatePicker}>
-                <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
+                {/* <Text>{dateText ? dateText : "Sélectionner une date"}</Text> */}
               </TouchableOpacity>
             </View>
 
-            {showDatePicker && Platform.OS === "ios" && (
+            {Platform.OS === "ios" && (
               <DateTimePicker
-              style={styles.datePicker}
+                style={styles.datePicker}
                 value={selectedDate}
                 mode="date"
                 display="default"
@@ -358,9 +364,9 @@ export default function PublishScreen() {
               />
             )}
 
-            {showDatePicker && Platform.OS === "android" && (
+            {Platform.OS === "android" && (
               <DateTimePicker
-              style={styles.datePicker}
+                style={styles.datePicker}
                 value={selectedDate}
                 mode="date"
                 display="calendar"
@@ -372,43 +378,43 @@ export default function PublishScreen() {
             <View style={styles.containerDateTwo}>
               <View style={styles.selectTime}>
                 <TouchableOpacity onPress={toggleTimeStartPicker}>
-                  <Text>
+                  {/* <Text>
                     {hourStart
-                      ? `Heure de début : ${hourStart.getHours()}:${hourStart.getMinutes()}`
+                      ? `Heure de début : `
                       : "Choisir l'heure de début"}
-                  </Text>
+                  </Text> */}
                 </TouchableOpacity>
               </View>
 
-              {showTimeStartPicker && (
-                <DateTimePicker
+              {/* {showTimeStartPicker && ( */}
+              <DateTimePicker
                 style={styles.datePickerStart}
-                  value={hourStart || new Date()}
-                  mode="time"
-                  display="default"
-                  onChange={handleTimeStartChange}
-                />
-              )}
+                value={hourStart || new Date()}
+                mode="time"
+                display="default"
+                onChange={handleTimeStartChange}
+              />
+              {/* )} */}
 
               <View style={styles.selectTime}>
                 <TouchableOpacity onPress={toggleTimeEndPicker}>
-                  <Text>
-                    {hourEnd
-                      ? `Heure de fin : ${hourEnd.getHours()}:${hourEnd.getMinutes()}`
-                      : "Choisir l'heure de fin"}
+                  <Text style={styles.hourFin}>
+                    {/* {hourEnd
+                      ? `Heure de fin :`
+                      : "Choisir l'heure de fin"} */}
                   </Text>
                 </TouchableOpacity>
               </View>
 
-              {showTimeEndPicker && (
-                <DateTimePicker
+              {/* {showTimeEndPicker && ( */}
+              <DateTimePicker
                 style={styles.datePickerEnd}
-                  value={hourEnd || new Date()}
-                  mode="time"
-                  display="default"
-                  onChange={handleTimeEndChange}
-                />
-              )}
+                value={hourEnd || new Date()}
+                mode="time"
+                display="default"
+                onChange={handleTimeEndChange}
+              />
+              {/* )} */}
             </View>
           </View>
         </View>
@@ -476,51 +482,46 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center", // Ajout de cette ligne pour centrer verticalement les éléments
   },
-
-  containerDate: {
-  },
-
-  containerDateOne: {
+  hourFin: {
+    marginBottom: 5,
   },
 
   containerDateTwo: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 10,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
 
   datePicker: {
-    backgroundColor: 'rgba(155, 130, 255, 1)',
-    position: 'absolute',
+    position: "absolute",
     borderRadius: 5,
-    borderColor: '#C5C5C5',
+    borderColor: "#C5C5C5",
     borderWidth: 1,
     height: 30,
-    width:100,
+    width: 100,
+    marginLeft: 10,
   },
 
   datePickerStart: {
-    backgroundColor: 'rgba(155, 130, 255, 1)',
-    position: 'absolute',
+    position: "absolute",
     borderRadius: 5,
-    borderColor: '#C5C5C5',
+    borderColor: "#C5C5C5",
     borderWidth: 1,
     height: 30,
-    marginLeft: 110,
-    marginTop: -7,
-    width:70,
+    marginLeft: 140,
+    marginTop: -10,
+    width: 70,
   },
 
   datePickerEnd: {
-    backgroundColor: 'rgba(155, 130, 255, 1)',
-    position: 'absolute',
+    position: "absolute",
     borderRadius: 5,
-    borderColor: '#C5C5C5',
+    borderColor: "#C5C5C5",
     borderWidth: 1,
     height: 30,
-    marginLeft: 250,
-    marginTop: -7,
-    width:70,
+    marginLeft: 240,
+    marginTop: -10,
+    width: 70,
   },
 
   title: {
@@ -546,7 +547,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderWidth: 2,
-    borderColor: 'rgba(30, 6, 78, 1)',
+    borderColor: "rgba(30, 6, 78, 1)",
     borderRadius: 5,
   },
 
@@ -622,13 +623,12 @@ const styles = StyleSheet.create({
   },
 
   textStylePublish: {
-    color: '#ffffff',
+    color: "#ffffff",
   },
 
   textStyleLine: {
-    color: 'rgba(30, 6, 78, 1)',
+    color: "rgba(30, 6, 78, 1)",
   },
-
 
   date: {
     width: "100%",

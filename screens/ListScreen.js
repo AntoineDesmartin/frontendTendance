@@ -11,6 +11,8 @@ import {
   View,
   Pressable,
   ScrollView,
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -376,7 +378,7 @@ export default function ListScreen({ navigation }) {
     setSearchFilter("type");
     dispatch(storeResearch(data.type));
     setIsResearch(true);
-  }
+  };
 
   // constante pour rejoindre la map au onPress---------------------------------------------
   const handleMap = () => {
@@ -399,25 +401,25 @@ export default function ListScreen({ navigation }) {
     if (searchFilter === "creator") {
       setSearchFilter("type");
       dispatch(resetResearch());
-    setIsResearch(false);
+      setIsResearch(false);
     }
     if (searchFilter === "type") {
       setSearchFilter("eventName");
       dispatch(resetResearch());
-    setIsResearch(false);
+      setIsResearch(false);
     }
 
     if (searchFilter === "eventName") {
       setSearchFilter("date");
       dispatch(resetResearch());
-    setIsResearch(false);
+      setIsResearch(false);
       Opaque = 1;
     }
 
     if (searchFilter === "date") {
       setSearchFilter("creator");
       dispatch(resetResearch());
-    setIsResearch(false);
+      setIsResearch(false);
       setTimeToFilter("today");
       Opaque = 0;
     }
@@ -450,7 +452,7 @@ export default function ListScreen({ navigation }) {
     }
   }
 
- // console.log({ BeforeFiltre: finalDataBase });
+  // console.log({ BeforeFiltre: finalDataBase });
   // const test = finalDataBase[0].date;
   // console.log({BeforeFiltre : test});
 
@@ -471,7 +473,7 @@ export default function ListScreen({ navigation }) {
   for (let i = 0; i < sortedEvents.length; i++) {
     dateAllEvent.push(sortedEvents[i].date.slice(0, 10));
   }
-console.log({MesDates: dateAllEvent});
+  console.log({ MesDates: dateAllEvent });
   // constante pour obtenir la date du jour
 
   //renvoie toutes dates des évents à partir de la date du jour et élimine les doublons-------------------------------------------------------
@@ -480,7 +482,7 @@ console.log({MesDates: dateAllEvent});
     (date) => date >= formatDate(today)
   );
 
-  console.log({MesDates: dateAllEvent})
+  console.log({ MesDates: dateAllEvent });
   //fonction principale renvoie toute les views avec le bon style en fonction du type---------------------------------------------------------
 
   const dayList = dateEvents.map((data, i) => {
@@ -528,10 +530,10 @@ console.log({MesDates: dateAllEvent});
                 onPress={() => handlePress(data)}
                 //style={styles.eventBlock}
                 style={{
-                  backgroundColor: 'white',
+                  backgroundColor: "white",
                   borderWidth: 3,
                   width: 300,
-                  height: 'auto',
+                  height: "auto",
                   borderRadius: 20,
                   padding: 20,
                   margin: 20,
@@ -544,12 +546,21 @@ console.log({MesDates: dateAllEvent});
               >
                 <Image source={imageType} style={styles.eventImage} />
                 <View style={styles.containerTop}>
-                <TouchableOpacity onPress={() => handleFilterType(data)}><Text style={styles.eventName}><FontAwesome name={"circle"} size={20} color={stringStyle} /> {data.eventName}</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleFilterType(data)}>
+                    <Text style={styles.eventName}>
+                      <FontAwesome
+                        name={"circle"}
+                        size={20}
+                        color={stringStyle}
+                      />{" "}
+                      {data.eventName}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
 
                 <View style={styles.eventView}>
                   <Text style={styles.eventDate}>
-                  {formatDateToFrenchLocale(data.date.slice(0, 10))} {""}
+                    {formatDateToFrenchLocale(data.date.slice(0, 10))} {""}
                   </Text>
                   <Text>
                     Entre {format(new Date(data.hourStart), "HH'h'mm")} et{" "}
@@ -573,30 +584,6 @@ console.log({MesDates: dateAllEvent});
                   </Text>
                 </View>
               </TouchableOpacity>
-              // <TouchableOpacity key={i} onPress={() => handlePress(data)}>
-              //   <View
-              //     style={{
-              //       backgroundColor: stringStyle,
-              //       width: 350,
-              //       height: 80,
-              //       borderRadius: 100,
-              //       paddingLeft: 30,
-              //       paddingTop: 12,
-              //       margin: 20,
-              //     }}
-              //   >
-              //     <View>
-              //       <Text style={{ color: colorFont }}>
-              //         {data.eventName} {format(new Date (data.hourStart), "HH'h'mm")}-{format(new Date (data.hourEnd), "HH'h'mm")}
-              //       </Text>
-              //       <Text style={{ color: colorFont }}>{data.address} </Text>
-              //       <Text style={{ color: colorFont }}>
-              //         Partcipants: {data.users.partUsers.length} Intéressés:{" "}
-              //         {data.users.interUsers.length}
-              //       </Text>
-              //     </View>
-              //   </View>
-              // </TouchableOpacity>
             );
           })}
         </View>
@@ -616,100 +603,111 @@ console.log({MesDates: dateAllEvent});
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.mainContainer}
-    >
-      <View>
-        <TextInput
-          placeholder="Recherche"
-          onChangeText={(value) => setResearch(value)}
-          value={research}
-          style={styles.input}
-        />
-        <TouchableOpacity
-          onPress={() => handleSearch()}
-          style={styles.searchButton}
-        >
-          <FontAwesome name={"search"} size={30} color={"black"} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleCloseFilter()}
-          style={{
-            position: "absolute",
-            top: 90,
-            right: 40,
-            opacity: opacityChange,
-          }}
-        >
-          <FontAwesome name={"times"} size={30} color={"white"} />
-        </TouchableOpacity>
-      </View>
-      <ScrollView>
-        <View style={styles.scrollContainer}>{dayList}</View>
-      </ScrollView>
-
-      <TouchableOpacity onPress={() => handleMap()} style={styles.mapButton}>
-        <FontAwesome name={"map"} size={40} color={"rgba(89, 215, 207, 1)"} />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => handleFilter()}
-        style={styles.filterButton}
+    <SafeAreaView style={styles.mainContainer}>
+      <StatusBar
+        barStyle="light-content" // Change to "light-content" if you need white status bar content
+        backgroundColor="white" // Set the background color of the status bar
+      />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <Text>{searchFilter}</Text>
-        {/* <FontAwesome name={"circle"} size={20} color={stringStyle} /> for filter*/}
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={toggleDatePicker}>
-        <View
-          style={{
-            opacity: opacityValue,
-            position: "absolute",
-            flexDirection: "row",
-            alignItems: "center",
-            borderWidth: 1,
-            bottom: 35,
-            left: 20,
-            backgroundColor: "white",
-            padding: 10,
-            borderRadius: 30,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 5,
-          }}
-        >
-          <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
+        <View>
+          <TextInput
+            placeholder="Recherche"
+            onChangeText={(value) => setResearch(value)}
+            value={research}
+            style={styles.input}
+          />
+          <TouchableOpacity
+            onPress={() => handleSearch()}
+            style={styles.searchButton}
+          >
+            <FontAwesome name={"search"} size={30} color={"black"} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleCloseFilter()}
+            style={{
+              position: "absolute",
+              top: 90,
+              right: 40,
+              opacity: opacityChange,
+            }}
+          >
+            <FontAwesome name={"times"} size={30} color={"white"} />
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
-      {/* condition de rendu du date picker en fonction du système ios ou android */}
-      {showDatePicker && Platform.OS === "ios" && (
-        <DateTimePicker
-          style={styles.datePicker}
-          value={selectedDate}
-          mode="date"
-          display="default"
-          onChange={handleDateChange}
-        />
-      )}
+        <ScrollView>
+          <View style={styles.scrollContainer}>{dayList}</View>
+        </ScrollView>
 
-      {showDatePicker && Platform.OS === "android" && (
-        <DateTimePicker
-          style={styles.datePicker}
-          value={selectedDate}
-          mode="date"
-          display="calendar"
-          onChange={handleDateChange}
-          onDismiss={hideDatePicker}
-        />
-      )}
-    </KeyboardAvoidingView>
+        <TouchableOpacity onPress={() => handleMap()} style={styles.mapButton}>
+          <FontAwesome
+            name={"globe"}
+            size={40}
+            color={"rgba(22, 21, 25, 1)"}
+          />
+          
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => handleFilter()}
+          style={styles.filterButton}
+        ><FontAwesome name={"filter"} size={20}/>
+          <Text> {searchFilter}</Text>
+          
+          {/* <FontAwesome name={"circle"} size={20} color={stringStyle} /> for filter*/}
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={toggleDatePicker}>
+          <View
+            style={{
+              opacity: opacityValue,
+              position: "absolute",
+              flexDirection: "row",
+              alignItems: "center",
+              borderWidth: 1,
+              bottom: 35,
+              left: 20,
+              backgroundColor: "white",
+              padding: 10,
+              borderRadius: 30,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+            }}
+          >
+            <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
+          </View>
+        </TouchableOpacity>
+        {/* condition de rendu du date picker en fonction du système ios ou android */}
+        {showDatePicker && Platform.OS === "ios" && (
+          <DateTimePicker
+            style={styles.datePicker}
+            value={selectedDate}
+            mode="date"
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
+
+        {showDatePicker && Platform.OS === "android" && (
+          <DateTimePicker
+            style={styles.datePicker}
+            value={selectedDate}
+            mode="date"
+            display="calendar"
+            onChange={handleDateChange}
+            onDismiss={hideDatePicker}
+          />
+        )}
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -720,7 +718,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
     width: "100%",
-    backgroundColor: "#1E064E",
+    backgroundColor: "#161519",
   },
 
   input: {
@@ -745,7 +743,7 @@ const styles = StyleSheet.create({
   },
 
   scrollContainer: {
-    backgroundColor: "#1E064E",
+    backgroundColor: "#161519",
     alignItems: "center",
   },
 
@@ -756,7 +754,7 @@ const styles = StyleSheet.create({
   mapButton: {
     position: "absolute",
     borderWidth: 1,
-    bottom: 30,
+    bottom: 150,
     right: 30,
     backgroundColor: "white",
     padding: 10,
@@ -797,7 +795,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     position: "absolute",
     flexDirection: "row",
-    alignItems: "center",
+    // alignContent: 'center',
+    // justifyContent: 'center',
+    // alignItems: "center",
     top: 110,
     right: 30,
     backgroundColor: "white",
@@ -828,6 +828,7 @@ const styles = StyleSheet.create({
   },
 
   filterButton: {
+    flexDirection: 'row',
     borderWidth: 1,
     position: "absolute",
     top: 117,
