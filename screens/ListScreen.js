@@ -639,74 +639,64 @@ export default function ListScreen({ navigation }) {
         <ScrollView>
           <View style={styles.scrollContainer}>{dayList}</View>
         </ScrollView>
-
-        <TouchableOpacity onPress={() => handleMap()} style={styles.mapButton}>
-          <FontAwesome
-            name={"globe"}
-            size={40}
-            color={"rgba(22, 21, 25, 1)"}
-          />
-          
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => handleFilter()}
-          style={styles.filterButton}
-        ><FontAwesome name={"filter"} size={20}/>
-          <Text> {searchFilter}</Text>
-          
-          {/* <FontAwesome name={"circle"} size={20} color={stringStyle} /> for filter*/}
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={toggleDatePicker}>
-          <View
-            style={{
-              opacity: opacityValue,
-              position: "absolute",
-              flexDirection: "row",
-              alignItems: "center",
-              borderWidth: 1,
-              bottom: 35,
-              left: 20,
-              backgroundColor: "white",
-              padding: 10,
-              borderRadius: 30,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-
-              elevation: 5,
-            }}
-          >
-            <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
-          </View>
-        </TouchableOpacity>
-        {/* condition de rendu du date picker en fonction du système ios ou android */}
-        {showDatePicker && Platform.OS === "ios" && (
-          <DateTimePicker
-            style={styles.datePicker}
-            value={selectedDate}
-            mode="date"
-            display="default"
-            onChange={handleDateChange}
-          />
-        )}
-
-        {showDatePicker && Platform.OS === "android" && (
-          <DateTimePicker
-            style={styles.datePicker}
-            value={selectedDate}
-            mode="date"
-            display="calendar"
-            onChange={handleDateChange}
-            onDismiss={hideDatePicker}
-          />
-        )}
       </KeyboardAvoidingView>
+      <TouchableOpacity onPress={() => handleMap()} style={styles.mapButton}>
+        <FontAwesome name={"globe"} size={40} color={"rgba(22, 21, 25, 1)"} />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => handleFilter()}
+        style={styles.filterButton}
+      >
+        <FontAwesome name={"filter"} size={20} />
+        <Text> {searchFilter}</Text>
+
+        {/* <FontAwesome name={"circle"} size={20} color={stringStyle} /> for filter*/}
+      </TouchableOpacity>
+
+      {/* condition de rendu du date picker en fonction du système ios ou android */}
+      {Platform.OS === "ios" && (
+        <DateTimePicker
+          style={{
+            opacity: opacityValue,
+            position: "absolute",
+            backgroundColor: "white",
+            borderRadius: 5,
+            borderColor: "#C5C5C5",
+            borderWidth: 1,
+            left: 20,
+            top: 600,
+            height: 40,
+            width: 100,
+          }}
+          value={selectedDate}
+          mode="date"
+          display="calendar"
+          onChange={handleDateChange}
+        />
+      )}
+
+      {Platform.OS === "android" && (
+        <DateTimePicker
+        style={{
+          opacity: opacityValue,
+          position: "absolute",
+          backgroundColor: "white",
+          borderRadius: 5,
+          borderColor: "#C5C5C5",
+          borderWidth: 1,
+          left: 20,
+          top: 600,
+          height: 40,
+          width: 100,
+        }}
+        value={selectedDate}
+        mode="date"
+        display="calendar"
+        onChange={handleDateChange}
+          onDismiss={hideDatePicker}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -754,11 +744,11 @@ const styles = StyleSheet.create({
   mapButton: {
     position: "absolute",
     borderWidth: 1,
-    bottom: 150,
+    bottom: 20,
     right: 30,
     backgroundColor: "white",
     padding: 10,
-    borderRadius: 30,
+    borderRadius: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -814,21 +804,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
-  datePicker: {
-    backgroundColor: "rgba(155, 130, 255, 1)",
-    borderRadius: 5,
-    borderColor: "#C5C5C5",
-    borderWidth: 1,
-    right: -20,
-    bottom: 120,
-    opacity: 1,
-
-    height: 40,
-    width: 100,
-  },
+  datePicker: {},
 
   filterButton: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderWidth: 1,
     position: "absolute",
     top: 117,
