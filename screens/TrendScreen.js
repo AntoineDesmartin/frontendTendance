@@ -131,7 +131,7 @@ export default function TrendScreen(props) {
                 {" "}{format(new Date(event.hourEnd), "HH'h'mm")} 
               </Text>
               <Text style={styles.eventAddress}>
-                Point de rdv: {event.address}</Text>
+                Point de rdv : {event.address}</Text>
             </View>
 
             <Text style={styles.eventCreator}>
