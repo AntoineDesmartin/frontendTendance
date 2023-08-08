@@ -19,6 +19,7 @@ import * as Location from "expo-location";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 
+
 import ForFilterCreator from "./components/ForFilterCreator";
 import ForFilterType from "./components/ForFilterType";
 import ForFilterEventName from "./components/ForFilterEventName";
@@ -70,15 +71,15 @@ export default function MapScreen(props) {
       }
     })();
 
-    fetch(`${BACKEND_ADDRESS}/events/events`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data) {
-          const filteredEvents = data.filter((event) => new Date(event.date) >= new Date());
-          dispatch(setEvents(filteredEvents));
-        }
-        //console.log("Fetch des events dans map screen au chargement de la page",data);
-      });
+    // fetch(`${BACKEND_ADDRESS}/events/events`)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     if (data) {
+    //       const filteredEvents = data.filter((event) => new Date(event.date) >= new Date());
+    //       dispatch(setEvents(filteredEvents));
+    //     }
+    //     //console.log("Fetch des events dans map screen au chargement de la page",data);
+    //   });
   }, []);
 
 

@@ -239,6 +239,7 @@ export default function PublishScreen() {
       <Modale></Modale>
     </View>
   ) : affiche ? (
+    
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
@@ -262,8 +263,8 @@ export default function PublishScreen() {
                 borderWidth: 2,
                 borderColor:
                   selectedOptionAccess === option.id
-                    ? "#007BFF"
-                    : "rgba(30, 6, 78, 1)",
+                    ? "rgba(22, 21, 25, 1)"
+                    : "rgba(22, 21, 25, 1)",
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -274,7 +275,7 @@ export default function PublishScreen() {
                     height: 12,
                     width: 12,
                     borderRadius: 6,
-                    backgroundColor: "#007BFF",
+                    backgroundColor: "rgba(22, 21, 25, 1)",
                   }}
                 />
               )}
@@ -303,8 +304,8 @@ export default function PublishScreen() {
                 borderWidth: 2,
                 borderColor:
                   selectedOptionType === option.id
-                    ? "#007BFF"
-                    : "rgba(30, 6, 78, 1)",
+                    ? "rgba(22, 21, 25, 1)"
+                    : "rgba(22, 21, 25, 1)",
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -315,7 +316,7 @@ export default function PublishScreen() {
                     height: 12,
                     width: 12,
                     borderRadius: 6,
-                    backgroundColor: "#007BFF",
+                    backgroundColor: "rgba(22, 21, 25, 1)",
                   }}
                 />
               )}
@@ -478,7 +479,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 50,
     paddingTop: 50,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "rgba(255, 204, 204, 1)",
     alignItems: "center",
     justifyContent: "center", // Ajout de cette ligne pour centrer verticalement les éléments
   },
@@ -495,7 +496,7 @@ const styles = StyleSheet.create({
   datePicker: {
     position: "absolute",
     borderRadius: 5,
-    borderColor: "#C5C5C5",
+    borderColor: "rgba(22, 21, 25, 1)",
     borderWidth: 1,
     height: 30,
     width: 100,
@@ -505,7 +506,7 @@ const styles = StyleSheet.create({
   datePickerStart: {
     position: "absolute",
     borderRadius: 5,
-    borderColor: "#C5C5C5",
+    borderColor: "rgba(22, 21, 25, 1)",
     borderWidth: 1,
     height: 30,
     marginLeft: 140,
@@ -516,7 +517,7 @@ const styles = StyleSheet.create({
   datePickerEnd: {
     position: "absolute",
     borderRadius: 5,
-    borderColor: "#C5C5C5",
+    borderColor: "rgba(22, 21, 25, 1)",
     borderWidth: 1,
     height: 30,
     marginLeft: 240,
@@ -527,7 +528,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#1e064e",
+    color: "rgba(22, 21, 25, 1)",
   },
   viewAccess: {
     width: "80%",
@@ -547,8 +548,9 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderWidth: 2,
-    borderColor: "rgba(30, 6, 78, 1)",
+    borderColor: "rgba(22, 21, 25, 1)",
     borderRadius: 5,
+    backgroundColor: 'white',
   },
 
   description: {
@@ -558,7 +560,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 2,
     borderRadius: 5,
-    borderColor: "rgba(30, 6, 78, 1)",
+    borderColor: "rgba(22, 21, 25, 1)",
+    backgroundColor: 'white',
   },
   viewAjout: {
     flexDirection: "row",
@@ -570,7 +573,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   plus: {
-    backgroundColor: "rgba(30, 6, 78, 1)",
+    backgroundColor: "rgba(22, 21, 25, 1)",
     padding: 10,
     borderRadius: 20,
     shadowColor: "#000",
@@ -584,7 +587,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   btnPublier: {
-    backgroundColor: "rgba(30, 6, 78, 1)",
+    backgroundColor: "rgba(22, 21, 25, 1)",
     marginBottom: 30,
     height: 40,
     width: 120,
@@ -603,7 +606,7 @@ const styles = StyleSheet.create({
   },
 
   btnRePublier: {
-    backgroundColor: "rgba(30, 6, 78, 1)",
+    backgroundColor: "rgba(22, 21, 25, 1)",
     marginTop: 10,
     marginBottom: 30,
     height: 40,
@@ -627,7 +630,7 @@ const styles = StyleSheet.create({
   },
 
   textStyleLine: {
-    color: "rgba(30, 6, 78, 1)",
+    color: "rgba(22, 21, 25, 1)",
   },
 
   date: {

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import {
   Image,
   ImageBackground,
@@ -10,16 +11,37 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { setEvents } from "../reducers/events";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+const BACKEND_ADDRESS = "https://backend-tendance.vercel.app";
+
 
 export default function SelectionScreen() {
+
+  const dispatch = useDispatch(); // Déplacez cette ligne à l'intérieur de la fonction
+
+
+  useEffect(() => {
+    fetch(`${BACKEND_ADDRESS}/events/events`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          const filteredEvents = data.filter((event) => new Date(event.date) >= new Date());
+          dispatch(setEvents(filteredEvents));
+        }
+
+      });
+  }, []);
+
+
   return (
+    
     <SafeAreaView contentContainerStyle={styles.container}>
       <ScrollView contentContainerStyle={styles.container}>
         <TouchableOpacity
-          style={[styles.block, { backgroundColor: "purple" }]}
+          style={[styles.block, { backgroundColor: "rgba(255, 141, 141, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
             // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
@@ -39,7 +61,7 @@ export default function SelectionScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.block, { backgroundColor: "blue" }]}
+          style={[styles.block, { backgroundColor: "rgba(89, 215, 207, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
             // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
@@ -60,7 +82,7 @@ export default function SelectionScreen() {
 
         {/* 4 autres blocs */}
         <TouchableOpacity
-          style={[styles.block, { backgroundColor: "green" }]}
+          style={[styles.block, { backgroundColor: "rgba(243, 200, 243, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
             // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
@@ -80,7 +102,7 @@ export default function SelectionScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.block, { backgroundColor: "red" }]}
+          style={[styles.block, { backgroundColor: "rgba(133, 244, 150, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
             // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
@@ -100,7 +122,7 @@ export default function SelectionScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.block, { backgroundColor: "orange" }]}
+          style={[styles.block, { backgroundColor: "rgba(140, 178, 255, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
             // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
@@ -120,7 +142,7 @@ export default function SelectionScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.block, { backgroundColor: "yellow" }]}
+          style={[styles.block, { backgroundColor: "rgba(250, 189, 132, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
             // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
@@ -140,7 +162,11 @@ export default function SelectionScreen() {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+
+
   );
+
+  
 }
 
 const styles = StyleSheet.create({
