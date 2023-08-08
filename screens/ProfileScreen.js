@@ -18,7 +18,7 @@ import photoProfile from "../assets/photoProfile.jpg"
 import photoBack from "../assets/photoBack.jpg"
 
 
-import Event from './components/event';
+import Event from './components/Event';
 
 //Modal
 import {setOpenModal} from "../reducers/openModal"
@@ -50,7 +50,7 @@ useEffect(() => {
     })
     .then(response => response.json())
     .then(data => {
-        
+        //todo caler une condition
       const eventsFutur = data.map((data, index) => (
         <Pressable onPress={() => handlePress(data)} key={`futur-${index}`}>
           <Event data={data} />

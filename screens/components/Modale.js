@@ -14,8 +14,12 @@ import {
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector,useDispatch } from 'react-redux';
-import {setOpenModal} from "../../reducers/openModal"
-import {login,logout} from "../../reducers/user"
+import {setOpenModal} from "../../reducers/openModal";
+import {login,logout} from "../../reducers/user";
+
+
+import GoogleButton from 'react-google-button';
+
 
 export default function Modale() {
 
@@ -89,7 +93,7 @@ return (
                     <TouchableOpacity onPress={() => setMode("s'inscrire")} style={styles.buttonModal} activeOpacity={0.8}>
                         <Text style={styles.textButtonModal}>S'inscrire</Text>
                     </TouchableOpacity>
-
+                    {/* <GoogleButton/> */}
                 </View>
                 
                 </>}
@@ -110,6 +114,7 @@ return (
                     <TouchableOpacity onPress={() => handleSeConnecter()} style={styles.buttonModal} activeOpacity={0.8}>
                         <Text style={styles.textButtonModal}>Se connecter</Text>
                     </TouchableOpacity>
+                    {/* <GoogleButton></GoogleButton> */}
                 </>}
                 
 
