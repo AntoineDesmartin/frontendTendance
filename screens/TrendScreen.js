@@ -18,6 +18,7 @@ import formatDateToFrenchLocale from "./components/formatageList";
 import { login, logout } from "../reducers/user";
 import { useDispatch, useSelector } from "react-redux";
 import { setEvent } from "../reducers/event";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TrendScreen(props) {
   const [top, setTop] = useState("");
@@ -41,13 +42,38 @@ export default function TrendScreen(props) {
   //! on modifie on gere le reducer par ordre
   const events = useSelector((state) => state.events.value);
 
+  const foodImg = require("../assets/joseph-gonzalez-fdlZBWIP0aM-unsplash.jpg");
+  const musicImg = require("../assets/marcela-laskoski-YrtFlrLo2DQ-unsplash.jpg");
+  const natureImg = require("../assets/tim-swaan-eOpewngf68w-unsplash.jpg");
+  const scienceImg = require("../assets/milad-fakurian-58Z17lnVS4U-unsplash.jpg");
+  const artImg = require("../assets/sebastian-svenson-d2w-_1LJioQ-unsplash.jpg");
+  const sportImg = require("../assets/august-phlieger-CREqtqgBFcU-unsplash.jpg");
+
+  const getImageByType = (eventType) => {
+    switch (eventType) {
+      case 'Food':
+        return foodImg;
+      case 'Music':
+        return musicImg;
+      case 'Nature':
+        return natureImg;
+      case 'Science':
+        return scienceImg;
+      case 'Art':
+        return artImg;
+      case 'Sport':
+        return sportImg;
+    }
+  };
+
+
   useEffect(() => {
     //! qui va trier les events 10 les plus cotés
 
     const sortedEvents = events.slice().sort(function (a, b) {
       console.log("a :", a.users.interUsers.length);
       console.log("b :", b.users.interUsers.length);
-      return a.users.interUsers.length - b.users.interUsers.length;
+      return b.users.interUsers.length - a.users.interUsers.length;
     });
 
     // Garde les 10 premiers éléments triés
@@ -64,22 +90,31 @@ export default function TrendScreen(props) {
   }, []);
 
   return (
+
+    
+    <SafeAreaView>
     <ScrollView contentContainerStyle={styles.container}>
       <Modale></Modale>
+      <View>
+          <Text style={styles.styleTop}>TENDANCE</Text>
+        </View>
       {!top ? (
         <View>
-          <Text>Bite</Text>
+          <Text>Nite</Text>
         </View>
       ) : (
+        
         top.map((event, index) => (
-          
+          <View>
+            
+            <Text style={styles.styleTopTitle}>#{index+1}.</Text>
           <TouchableOpacity
             onPress={() => handlePress(event)}
             key={index}
             style={styles.eventBlock}
           >
             <Image
-              source={require("../assets/campusfrance2017-21.jpg")}
+              source={getImageByType(event.type)}
               style={styles.eventImage}
             />
             <View style={styles.containerTop}>
@@ -107,19 +142,22 @@ export default function TrendScreen(props) {
 
             <View style={styles.partUsers}>
               <Text style={styles.eventCreator}>Interresé.e.s : {event.users.interUsers.length} </Text>
-              <Text style={styles.eventCreator}>Participant.e.s : {event.users.partUsers.length}</Text>
+              {/* <Text style={styles.eventCreator}>Participant.e.s : {event.users.partUsers.length}</Text> */}
             </View>
           </TouchableOpacity>
+          </View>
         ))
       )}
     </ScrollView>
+    </SafeAreaView>
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#F9F9F9",
+    backgroundColor: "rgba(255, 204, 204, 1)",
     paddingHorizontal: 16,
     paddingTop: Platform.OS === "ios" ? 40 : 20,
   },
@@ -194,5 +232,22 @@ const styles = StyleSheet.create({
   containerTop: {
     flexDirection: "row",
     borderBottomWidth: 1,
+  },
+
+  styleTopTitle: {
+    // flexDirection: 'row',
+    justifyContent: 'center',
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'rgba(22, 21, 25, 1)',
+    marginBottom: 10,
+  },
+  styleTop: {
+    flex: 1,
+    
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'rgba(22, 21, 25, 1)',
+    marginBottom: 30,
   },
 });

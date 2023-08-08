@@ -482,7 +482,7 @@ const handlePress = (data)=>{
   };
 
   
-  const foodImg = require("../assets/marcela-laskoski-YrtFlrLo2DQ-unsplash.jpg");
+  const foodImg = require("../assets/joseph-gonzalez-fdlZBWIP0aM-unsplash.jpg");
   const musicImg = require("../assets/marcela-laskoski-YrtFlrLo2DQ-unsplash.jpg");
   const natureImg = require("../assets/tim-swaan-eOpewngf68w-unsplash.jpg");
   const scienceImg = require("../assets/milad-fakurian-58Z17lnVS4U-unsplash.jpg");
