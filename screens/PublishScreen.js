@@ -351,7 +351,7 @@ export default function PublishScreen() {
 
             <View style={styles.selectDate}>
               <TouchableOpacity onPress={toggleDatePicker}>
-                {/* <Text>{dateText ? dateText : "Sélectionner une date"}</Text> */}
+                <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
               </TouchableOpacity>
             </View>
 
@@ -365,7 +365,7 @@ export default function PublishScreen() {
               />
             )}
 
-            {Platform.OS === "android" && (
+            {showDatePicker && Platform.OS === "android" && (
               <DateTimePicker
                 style={styles.datePicker}
                 value={selectedDate}
@@ -379,15 +379,15 @@ export default function PublishScreen() {
             <View style={styles.containerDateTwo}>
               <View style={styles.selectTime}>
                 <TouchableOpacity onPress={toggleTimeStartPicker}>
-                  {/* <Text>
+                  <Text>
                     {hourStart
                       ? `Heure de début : `
                       : "Choisir l'heure de début"}
-                  </Text> */}
+                  </Text>
                 </TouchableOpacity>
               </View>
 
-              {/* {showTimeStartPicker && ( */}
+              {showTimeStartPicker && (
               <DateTimePicker
                 style={styles.datePickerStart}
                 value={hourStart || new Date()}
@@ -395,19 +395,19 @@ export default function PublishScreen() {
                 display="default"
                 onChange={handleTimeStartChange}
               />
-              {/* )} */}
+              )}
 
               <View style={styles.selectTime}>
                 <TouchableOpacity onPress={toggleTimeEndPicker}>
                   <Text style={styles.hourFin}>
-                    {/* {hourEnd
+                    {hourEnd
                       ? `Heure de fin :`
-                      : "Choisir l'heure de fin"} */}
+                      : "Choisir l'heure de fin"}
                   </Text>
                 </TouchableOpacity>
               </View>
 
-              {/* {showTimeEndPicker && ( */}
+              {showTimeEndPicker && ( 
               <DateTimePicker
                 style={styles.datePickerEnd}
                 value={hourEnd || new Date()}
@@ -415,7 +415,7 @@ export default function PublishScreen() {
                 display="default"
                 onChange={handleTimeEndChange}
               />
-              {/* )} */}
+              )} 
             </View>
           </View>
         </View>

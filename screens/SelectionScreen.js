@@ -38,7 +38,7 @@ export default function SelectionScreen() {
 
   return (
     
-    <SafeAreaView contentContainerStyle={styles.container}>
+    <View contentContainerStyle={styles.container}>
       <ScrollView contentContainerStyle={styles.container}>
         <TouchableOpacity
           style={[styles.block, { backgroundColor: "rgba(255, 141, 141, 1)" }]}
@@ -161,7 +161,7 @@ export default function SelectionScreen() {
           </ImageBackground>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </View>
 
 
   );

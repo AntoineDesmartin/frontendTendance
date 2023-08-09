@@ -92,7 +92,7 @@ export default function TrendScreen(props) {
   return (
 
     
-    <SafeAreaView>
+    <View>
     <ScrollView contentContainerStyle={styles.container}>
       <Modale></Modale>
       <View>
@@ -149,7 +149,7 @@ export default function TrendScreen(props) {
         ))
       )}
     </ScrollView>
-    </SafeAreaView>
+    </View>
 
   );
 }
