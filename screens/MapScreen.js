@@ -36,7 +36,7 @@ import { storeResearch, resetResearch } from "../reducers/list";
 import { setOpenModal } from "../reducers/openModal";
 
 import eventData from "../data/data";
-import { resetSelectionType } from "../reducers/typeSelection";
+
 
 const BACKEND_ADDRESS = "https://backend-tendance.vercel.app";
 
@@ -165,7 +165,7 @@ const handlePress = (data)=>{
   const handleCloseFilter = () => {
     dispatch(resetResearch());
     setIsResearch(false);
-    resetSelectionType();
+
     //console.log(isResearch);
   };
 

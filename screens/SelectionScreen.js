@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { setEvents } from "../reducers/events";
-import { setSelectionType } from "../reducers/typeSelection";
+
 import { storeResearch } from "../reducers/list";
 
 
@@ -49,7 +49,7 @@ export default function SelectionScreen({ navigation }) {
           activeOpacity={0.8}
           onPress={() => {
             dispatch(storeResearch('art'))
-            navigation.navigate("Map", { screen: "MapScreen" })
+            navigation.navigate("TabNavigator", { screen: "TabNavigator" });
           }}
         >
           <ImageBackground
@@ -70,7 +70,7 @@ export default function SelectionScreen({ navigation }) {
           activeOpacity={0.8}
           onPress={() => {
             dispatch(storeResearch('music'))
-            navigation.navigate("Map", { screen: "MapScreen" })
+            navigation.navigate("TabNavigator", { screen: "TabNavigator" });
           }}
         >
           <ImageBackground
@@ -92,7 +92,7 @@ export default function SelectionScreen({ navigation }) {
           activeOpacity={0.8}
           onPress={() => {
             dispatch(storeResearch('food'))
-            navigation.navigate("Map", { screen: "MapScreen" })
+            navigation.navigate("TabNavigator", { screen: "TabNavigator" });
           }}
         >
           <ImageBackground
@@ -113,7 +113,7 @@ export default function SelectionScreen({ navigation }) {
           activeOpacity={0.8}
           onPress={() => {
             dispatch(storeResearch('nature'))
-            navigation.navigate("Map", { screen: "MapScreen" })
+            navigation.navigate("TabNavigator", { screen: "TabNavigator" });
           }}
         >
           <ImageBackground
@@ -154,7 +154,7 @@ export default function SelectionScreen({ navigation }) {
           activeOpacity={0.8}
           onPress={() => {
             dispatch(storeResearch('sport'))
-            navigation.navigate("Map", { screen: "MapScreen" })
+            navigation.navigate("TabNavigator", { screen: "TabNavigator" });
           }}
         >
           <ImageBackground
