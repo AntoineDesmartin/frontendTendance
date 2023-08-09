@@ -29,6 +29,7 @@ import formatDateToFrenchLocale from "./components/formatageList";
 import { format } from "date-fns";
 import Modale from "./components/Modale";
 
+
 import { setEvents } from "../reducers/events";
 import { setEvent } from "../reducers/event";
 import { storeResearch, resetResearch } from "../reducers/list";
@@ -36,10 +37,11 @@ import { setOpenModal } from "../reducers/openModal";
 
 import eventData from "../data/data";
 
+
 const BACKEND_ADDRESS = "https://backend-tendance.vercel.app";
 
 
-export default function MapScreen(props) {
+export default function MapScreen(props, navigation) {
   const dispatch = useDispatch();
   const events = useSelector((state) => state.events.value);
   const reduxResearch = useSelector((state) => state.list.value);
@@ -54,10 +56,18 @@ export default function MapScreen(props) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+
   const [currentPosition, setCurrentPosition] = useState(null);
   const currentPositionMarker = require("../assets/photoProfile.jpg");
   const [initialRegion, setInitialRegion] = useState(null);
   const mapRef = useRef(null); //! constante pour utiliser handleMarkerPress et se centrer sur l'event qui pop up
+
+
+  const handleSearch = () => {
+    dispatch(storeResearch(research));
+    setResearch("");
+    setIsResearch(true);
+  };
 
   useEffect(() => {
     (async () => {
@@ -70,16 +80,11 @@ export default function MapScreen(props) {
         });
       }
     })();
+  
+  setSearchFilter("type");
+  setResearch(reduxResearch);
+  setIsResearch(true);
 
-    // fetch(`${BACKEND_ADDRESS}/events/events`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data) {
-    //       const filteredEvents = data.filter((event) => new Date(event.date) >= new Date());
-    //       dispatch(setEvents(filteredEvents));
-    //     }
-    //     //console.log("Fetch des events dans map screen au chargement de la page",data);
-    //   });
   }, []);
 
 
@@ -144,11 +149,7 @@ const handleMarkerPress = (event) => {
   };
 
 
-  const handleSearch = () => {
-    dispatch(storeResearch(research));
-    setResearch("");
-    setIsResearch(true);
-  };
+  
 
 const handlePress = (data)=>{
   
@@ -164,6 +165,7 @@ const handlePress = (data)=>{
   const handleCloseFilter = () => {
     dispatch(resetResearch());
     setIsResearch(false);
+
     //console.log(isResearch);
   };
 
@@ -241,6 +243,7 @@ const handlePress = (data)=>{
 
   const user = useSelector((state) => state.user.value);
   const isModalOpen = useSelector((state) => state.openModal.value);
+  
 
   // const handlePress = (data) => {
   //   if (user === null) {
@@ -531,6 +534,8 @@ const handlePress = (data)=>{
         return sportColor;
     }
   };
+
+
 
   return (
     <View style={styles.container}>

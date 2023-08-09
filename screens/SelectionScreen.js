@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   Image,
@@ -13,14 +13,17 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { setEvents } from "../reducers/events";
 
+import { storeResearch } from "../reducers/list";
+
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const BACKEND_ADDRESS = "https://backend-tendance.vercel.app";
 
 
-export default function SelectionScreen() {
+export default function SelectionScreen({ navigation }) {
 
-  const dispatch = useDispatch(); // Déplacez cette ligne à l'intérieur de la fonction
+  const dispatch = useDispatch(); 
 
 
   useEffect(() => {
@@ -35,6 +38,7 @@ export default function SelectionScreen() {
       });
   }, []);
 
+ 
 
   return (
     
@@ -44,7 +48,8 @@ export default function SelectionScreen() {
           style={[styles.block, { backgroundColor: "rgba(255, 141, 141, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
-            // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+            dispatch(storeResearch('art'))
+            navigation.navigate("TabNavigator", { screen: "TabNavigator" });
           }}
         >
           <ImageBackground
@@ -64,7 +69,8 @@ export default function SelectionScreen() {
           style={[styles.block, { backgroundColor: "rgba(89, 215, 207, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
-            // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+            dispatch(storeResearch('music'))
+            navigation.navigate("TabNavigator", { screen: "TabNavigator" });
           }}
         >
           <ImageBackground
@@ -85,7 +91,8 @@ export default function SelectionScreen() {
           style={[styles.block, { backgroundColor: "rgba(243, 200, 243, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
-            // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+            dispatch(storeResearch('food'))
+            navigation.navigate("TabNavigator", { screen: "TabNavigator" });
           }}
         >
           <ImageBackground
@@ -105,7 +112,8 @@ export default function SelectionScreen() {
           style={[styles.block, { backgroundColor: "rgba(133, 244, 150, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
-            // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+            dispatch(storeResearch('nature'))
+            navigation.navigate("TabNavigator", { screen: "TabNavigator" });
           }}
         >
           <ImageBackground
@@ -125,7 +133,7 @@ export default function SelectionScreen() {
           style={[styles.block, { backgroundColor: "rgba(140, 178, 255, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
-            // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+      
           }}
         >
           <ImageBackground
@@ -145,7 +153,8 @@ export default function SelectionScreen() {
           style={[styles.block, { backgroundColor: "rgba(250, 189, 132, 1)" }]}
           activeOpacity={0.8}
           onPress={() => {
-            // Ajoute ici le code à exécuter lorsqu'un bloc est cliqué (si nécessaire)
+            dispatch(storeResearch('sport'))
+            navigation.navigate("TabNavigator", { screen: "TabNavigator" });
           }}
         >
           <ImageBackground
