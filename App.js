@@ -50,7 +50,7 @@ const TabNavigator = () => {
           }
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#1E064E",
+        tabBarActiveTintColor: "rgba(22, 21, 25, 1)",
         tabBarInactiveTintColor: "#b2b2b2",
         headerShown: false,
       })}
@@ -79,3 +79,4 @@ export default function App() {
     </Provider>
   );
 }
+

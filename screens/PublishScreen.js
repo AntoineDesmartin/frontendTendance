@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   ImageBackground,
@@ -12,13 +12,12 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DatePickerAndroid } from "@react-native-community/datetimepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Modale from "./components/Modale";
-import {setOpenModal} from "../reducers/openModal"
-
+import { setOpenModal } from "../reducers/openModal";
 
 export default function PublishScreen() {
   //todo style mieux !
@@ -42,35 +41,35 @@ export default function PublishScreen() {
   const [selectedOptionType, setSelectedOptionType] = useState(null);
   const [selectedOptionAccess, setSelectedOptionAccess] = useState(null);
 
-  // Afficher si event publish ou pas 
-  const [affiche,setAffiche]=useState(true);
-  
+  // Afficher si event publish ou pas
+  const [affiche, setAffiche] = useState(true);
 
-const dispatch =useDispatch()
-// Afiiche Modale 
-useEffect(() => {
-  if (user) {
-    console.log("useEffect parti1");
-    
-  } else {
-    console.log("useEffect parti2");
-    dispatch(setOpenModal(true));
-  }
-}, [user]);
+  //ResetAll
+  const handleResetAll = () => {
+    setAffiche(true);
+    setName("");
+    setAdresse("");
+    setHourStart(new Date());
+    setHourEnd(new Date());
+    setShowDatePicker(false);
+    setShowTimeStartPicker(false);
+    setShowTimeEndPicker(false);
+    setPrice("");
+    setDescription("");
+    setSelectedOptionType(null);
+    setSelectedOptionAccess(null);
+  };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  const dispatch = useDispatch();
+  // Afiiche Modale
+  useEffect(() => {
+    if (user) {
+      console.log("useEffect parti1");
+    } else {
+      console.log("useEffect parti2");
+      dispatch(setOpenModal(true));
+    }
+  }, [user]);
 
   const optionsType = [
     { id: 1, label: "Art" },
@@ -172,7 +171,7 @@ useEffect(() => {
   //     description: 'Lorem ipsum dolor sit amet. Qui voluptates internos nam inventore atque aut culpa repellendus ut velit officia. Et velit vero sed velit reiciendis ut accusantium dolorem cum voluptates corporis sit quidem architecto.',
   //     eventCover: '',
 
-const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.user.value);
 
   const handlePublish = () => {
     let type;
@@ -202,12 +201,12 @@ const user = useSelector((state) => state.user.value);
         access = "Public";
         break;
     }
-
+    console.log(user._id);
     let event = {
       creatorName: user._id,
       eventName: name,
       type: type,
-      access:access,
+      access: access,
       date: selectedDate,
       hourStart: hourStart,
       hourEnd: hourEnd,
@@ -216,87 +215,38 @@ const user = useSelector((state) => state.user.value);
       description: description,
       eventCover: "",
       amis: "",
-      latitude:null,
-      longitude:null
+      latitude: null,
+      longitude: null,
     };
     // {"access": "Privée", "address": "Paris", "amis": "", "creator": "64c9035431ebd1b0f73873ee", "date": "2023-08-03T08:57:00.000Z", "description": "", "eventCover": "", "eventName": "a", "hourEnd": "2023-08-02T09:57:00.000Z", "hourStart": "2023-08-02T08:57:21.230Z", "price": "12", "type": "Food"}
-    console.log("event",event);
+    console.log("event", event);
     // todo fetch post pour publier dans la data ...
-    setAffiche(false)
+    setAffiche(false);
     // /publishEvent
-    fetch('https://backend-tendance.vercel.app/events/publishEvent', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(event),
-                }).then(response => response.json()).then(data => {
-                    console.log("pas mal",data); // je renvoie {"result": true}
-                })
-
-   
+    fetch("https://backend-tendance.vercel.app/events/publishEvent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(event),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("pas mal", data); // je renvoie {"result": true}
+      });
   };
 
-  return (
-    !user?(<View><Modale></Modale></View>):affiche?
-    (<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.container}>
+  return !user ? (
+    <View>
+      <Modale></Modale>
+    </View>
+  ) : affiche ? (
+    
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <StatusBar backgroundColor="#f1f1f1" barStyle="dark-content" />
+      <ScrollView></ScrollView>
       <Text style={styles.title}>Créer un event</Text>
-
-      {/* Bouton sélection date calendrier */}
-
-      <View style={styles.selectDate}>
-        <TouchableOpacity onPress={toggleDatePicker}>
-          <FontAwesome name="calendar" size={30} color={"#1e064e"} />
-        </TouchableOpacity>
-        <Text>{dateText ? dateText : "Sélectionner une date"}</Text>
-      </View>
-
-      {/* condition de rendu du date picker en fonction du système ios ou android */}
-      {showDatePicker && Platform.OS === "ios" && (
-        <DateTimePicker value={selectedDate} mode="date" display="default" onChange={handleDateChange} />
-      )}
-
-      {showDatePicker && Platform.OS === "android" && (
-        <DateTimePicker
-          value={selectedDate}
-          mode="date"
-          display="calendar"
-          onChange={handleDateChange}
-          onDismiss={hideDatePicker}
-        />
-      )}
-
-      <View style={styles.selectTime}>
-        <TouchableOpacity onPress={toggleTimeStartPicker}>
-          {/* <FontAwesome name="rocket" size={30} color={"#1e064e"} /> */}
-          <Text>Test</Text>
-        </TouchableOpacity>
-        <Text>
-          {hourStart ? `Heure de début : ${hourStart.getHours()}:${hourStart.getMinutes()}` : "Choisir l'heure de début"}
-        </Text>
-      </View>
-
-      {showTimeStartPicker && (
-        <DateTimePicker
-          value={hourStart || new Date()}
-          mode="time"
-          display="default"
-          onChange={handleTimeStartChange}
-        />
-      )}
-      
-      <View style={styles.selectTime}>
-      <TouchableOpacity onPress={toggleTimeEndPicker}>
-        <FontAwesome name="times" size={30} color={"#1e064e"} />
-      </TouchableOpacity>
-      <Text>
-          {hourEnd ? `Heure de fin : ${hourEnd.getHours()}:${hourEnd.getMinutes()}` : "Choisir l'heure de fin"}
-        </Text>
-      </View>
-
-
-      {showTimeEndPicker && (
-        <DateTimePicker value={hourEnd || new Date()} mode="time" display="default" onChange={handleTimeEndChange} />
-      )}
 
       <View style={styles.viewAccess}>
         {optionsAccess.map((option) => (
@@ -307,11 +257,14 @@ const user = useSelector((state) => state.user.value);
           >
             <View
               style={{
-                height: 24,
-                width: 24,
+                height: 18,
+                width: 18,
                 borderRadius: 12,
                 borderWidth: 2,
-                borderColor: selectedOptionAccess === option.id ? "#007BFF" : "#000",
+                borderColor:
+                  selectedOptionAccess === option.id
+                    ? "rgba(22, 21, 25, 1)"
+                    : "rgba(22, 21, 25, 1)",
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -322,7 +275,7 @@ const user = useSelector((state) => state.user.value);
                     height: 12,
                     width: 12,
                     borderRadius: 6,
-                    backgroundColor: "#007BFF",
+                    backgroundColor: "rgba(22, 21, 25, 1)",
                   }}
                 />
               )}
@@ -332,7 +285,9 @@ const user = useSelector((state) => state.user.value);
           </TouchableOpacity>
         ))}
       </View>
-      <Text>_________________________________</Text>
+      <Text style={styles.textStyleLine}>
+        _________________________________
+      </Text>
 
       <View style={styles.viewType}>
         {optionsType.map((option) => (
@@ -343,11 +298,14 @@ const user = useSelector((state) => state.user.value);
           >
             <View
               style={{
-                height: 24,
-                width: 24,
+                height: 18,
+                width: 18,
                 borderRadius: 12,
                 borderWidth: 2,
-                borderColor: selectedOptionType === option.id ? "#007BFF" : "#000",
+                borderColor:
+                  selectedOptionType === option.id
+                    ? "rgba(22, 21, 25, 1)"
+                    : "rgba(22, 21, 25, 1)",
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -358,7 +316,7 @@ const user = useSelector((state) => state.user.value);
                     height: 12,
                     width: 12,
                     borderRadius: 6,
-                    backgroundColor: "#007BFF",
+                    backgroundColor: "rgba(22, 21, 25, 1)",
                   }}
                 />
               )}
@@ -368,112 +326,313 @@ const user = useSelector((state) => state.user.value);
           </TouchableOpacity>
         ))}
       </View>
+      <View style={styles.containerInput}>
+        <View>
+          <TextInput
+            placeholder="Name"
+            onChangeText={(value) => setName(value)}
+            value={name}
+            style={styles.input}
+          />
+        </View>
 
-      <TextInput placeholder="Name" onChangeText={(value) => setName(value)} value={name} style={styles.input} />
+        <View>
+          <TextInput
+            placeholder="Adresse"
+            onChangeText={(value) => setAdresse(value)}
+            value={addresse}
+            style={styles.input}
+          />
+        </View>
 
-      <TextInput
-        placeholder="Adresse"
-        onChangeText={(value) => setAdresse(value)}
-        value={addresse}
-        style={styles.input}
-      />
+        <View style={styles.containerDate}>
+          <View style={styles.containerDateOne}>
+            {/* Bouton sélection date calendrier */}
 
-      <TextInput placeholder="price" onChangeText={(value) => setPrice(value)} value={price} style={styles.input} />
+            <View style={styles.selectDate}>
+              <TouchableOpacity onPress={toggleDatePicker}>
+                {/* <Text>{dateText ? dateText : "Sélectionner une date"}</Text> */}
+              </TouchableOpacity>
+            </View>
 
-      <TextInput
-        placeholder="description"
-        onChangeText={(value) => setDescription(value)}
-        value={description}
-        style={styles.input}
-      />
+            {Platform.OS === "ios" && (
+              <DateTimePicker
+                style={styles.datePicker}
+                value={selectedDate}
+                mode="date"
+                display="default"
+                onChange={handleDateChange}
+              />
+            )}
 
-      {/* <View style={styles.viewAjout}>
+            {Platform.OS === "android" && (
+              <DateTimePicker
+                style={styles.datePicker}
+                value={selectedDate}
+                mode="date"
+                display="calendar"
+                onChange={handleDateChange}
+                onDismiss={hideDatePicker}
+              />
+            )}
+
+            <View style={styles.containerDateTwo}>
+              <View style={styles.selectTime}>
+                <TouchableOpacity onPress={toggleTimeStartPicker}>
+                  {/* <Text>
+                    {hourStart
+                      ? `Heure de début : `
+                      : "Choisir l'heure de début"}
+                  </Text> */}
+                </TouchableOpacity>
+              </View>
+
+              {/* {showTimeStartPicker && ( */}
+              <DateTimePicker
+                style={styles.datePickerStart}
+                value={hourStart || new Date()}
+                mode="time"
+                display="default"
+                onChange={handleTimeStartChange}
+              />
+              {/* )} */}
+
+              <View style={styles.selectTime}>
+                <TouchableOpacity onPress={toggleTimeEndPicker}>
+                  <Text style={styles.hourFin}>
+                    {/* {hourEnd
+                      ? `Heure de fin :`
+                      : "Choisir l'heure de fin"} */}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* {showTimeEndPicker && ( */}
+              <DateTimePicker
+                style={styles.datePickerEnd}
+                value={hourEnd || new Date()}
+                mode="time"
+                display="default"
+                onChange={handleTimeEndChange}
+              />
+              {/* )} */}
+            </View>
+          </View>
+        </View>
+
+        <View>
+          <TextInput
+            placeholder="price"
+            onChangeText={(value) => setPrice(value)}
+            value={price}
+            style={styles.input}
+          />
+        </View>
+
+        <View style={styles.description}>
+          <TextInput
+            placeholder="description"
+            onChangeText={(value) => setDescription(value)}
+            value={description}
+          />
+        </View>
+      </View>
+
+      <View style={styles.viewAjout}>
         <TouchableOpacity style={styles.btnAjout}>
           <View style={styles.plus}>
-            <FontAwesome name="plus" size={15} color={"#1e064e"} />
+            <FontAwesome name="plus" size={15} color={"white"} />
           </View>
           <Text>Ajouter des amis</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.btnAjout}>
           <View style={styles.plus}>
-            <FontAwesome name="plus" size={15} color={"#1e064e"} />
+            <FontAwesome name="plus" size={15} color={"white"} />
           </View>
           <Text>Ajouter une photo</Text>
         </TouchableOpacity>
-      </View> */}
+      </View>
 
-      <TouchableOpacity style={styles.btnPublier} onPress={() => handlePublish()}>
-        <Text> Publier</Text>
+      <TouchableOpacity
+        style={styles.btnPublier}
+        onPress={() => handlePublish()}
+      >
+        <Text style={styles.textStylePublish}>Publier</Text>
       </TouchableOpacity>
-    </KeyboardAvoidingView>):(<View style={styles.container}>
-          <Text>Evenement Publer !</Text>
-          <TouchableOpacity onPress={()=>setAffiche(true)} style={styles.btnPublier}><Text>Publier de nouveau !</Text></TouchableOpacity>
-      </View>)
+    </KeyboardAvoidingView>
+  ) : (
+    <View style={styles.container}>
+      <Text>Événement créé d^_^b</Text>
+      <TouchableOpacity
+        onPress={() => handleResetAll()}
+        style={styles.btnRePublier}
+      >
+        <Text style={styles.textStylePublish}>Publier de nouveau !</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f2f2f2",
+    paddingBottom: 50,
+    paddingTop: 50,
+    backgroundColor: "rgba(255, 204, 204, 1)",
     alignItems: "center",
+    justifyContent: "center", // Ajout de cette ligne pour centrer verticalement les éléments
   },
+  hourFin: {
+    marginBottom: 5,
+  },
+
+  containerDateTwo: {
+    flexDirection: "row",
+    marginTop: 10,
+    justifyContent: "space-between",
+  },
+
+  datePicker: {
+    position: "absolute",
+    borderRadius: 5,
+    borderColor: "rgba(22, 21, 25, 1)",
+    borderWidth: 1,
+    height: 30,
+    width: 100,
+    marginLeft: 10,
+  },
+
+  datePickerStart: {
+    position: "absolute",
+    borderRadius: 5,
+    borderColor: "rgba(22, 21, 25, 1)",
+    borderWidth: 1,
+    height: 30,
+    marginLeft: 140,
+    marginTop: -10,
+    width: 70,
+  },
+
+  datePickerEnd: {
+    position: "absolute",
+    borderRadius: 5,
+    borderColor: "rgba(22, 21, 25, 1)",
+    borderWidth: 1,
+    height: 30,
+    marginLeft: 240,
+    marginTop: -10,
+    width: 70,
+  },
+
   title: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "blue",
+    color: "rgba(22, 21, 25, 1)",
   },
   viewAccess: {
-    width: "100%",
+    width: "80%",
     flexDirection: "row",
-    margin: 20,
+    marginTop: 10,
     justifyContent: "space-around",
   },
   viewType: {
-    width: "100%",
+    width: "90%",
     flexDirection: "row",
-    margin: 20,
+    margin: 10,
     justifyContent: "space-around",
   },
+
   input: {
+    width: 300,
     margin: 10,
     padding: 10,
-    backgroundColor: "red",
+    borderWidth: 2,
+    borderColor: "rgba(22, 21, 25, 1)",
+    borderRadius: 5,
+    backgroundColor: 'white',
+  },
+
+  description: {
+    height: 70,
+    width: 300,
+    margin: 10,
+    padding: 10,
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: "rgba(22, 21, 25, 1)",
+    backgroundColor: 'white',
   },
   viewAjout: {
     flexDirection: "row",
-    marginLeft: "auto",
   },
   btnAjout: {
-    // backgroundColor:"red",
-    margin: 30,
+    margin: 5,
     padding: 5,
     alignItems: "center",
     borderRadius: 8,
   },
   plus: {
-    backgroundColor: "red",
+    backgroundColor: "rgba(22, 21, 25, 1)",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   btnPublier: {
-    backgroundColor: "red",
-    // margin:30,
+    backgroundColor: "rgba(22, 21, 25, 1)",
+    marginBottom: 30,
     height: 40,
-    width: 100,
+    width: 120,
     padding: 10,
     alignItems: "center",
     borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
-  time: {
-    width: "100%",
-    flexDirection: "row",
-    backgroundColor: "red",
-    alignContent: "center",
-    justifyContent: "space-around",
-    margin: 10,
+
+  btnRePublier: {
+    backgroundColor: "rgba(22, 21, 25, 1)",
+    marginTop: 10,
+    marginBottom: 30,
+    height: 40,
+    width: 150,
+    padding: 10,
+    alignItems: "center",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
+
+  textStylePublish: {
+    color: "#ffffff",
+  },
+
+  textStyleLine: {
+    color: "rgba(22, 21, 25, 1)",
+  },
+
   date: {
     width: "100%",
     flexDirection: "row",

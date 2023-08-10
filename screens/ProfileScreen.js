@@ -109,7 +109,7 @@ useEffect(() => {
            
             <View style={styles.viewParam}>
                 
-                <FontAwesome name="gears" size={30} color={"#1e064e"} />
+                <FontAwesome name="gears" size={30} color={"#161519"} />
             </View>
             
             <View style={styles.viewName}>
@@ -125,18 +125,20 @@ useEffect(() => {
                     <Text>LOGOUT</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.icon} onPress={()=>handleMesAmis()}>
-                    <FontAwesome name="users" size={30} color={"#1e064e"} />
+                <TouchableOpacity onPress={()=>dispatch(logout())}><Text>LOGOUT</Text></TouchableOpacity>
+
+
+                    <FontAwesome name="users" size={25} color={"#161519"} />
                     <Text style={styles.textIcon}>Mes amis</Text>
                 </TouchableOpacity>
             
                 <View style={styles.icon}>
-                    <FontAwesome name="rocket" size={30} color={"#1e064e"} />
+                    <FontAwesome name="rocket" size={30} color={"#161519"} />
                     <Text style={styles.textIcon}>Messagerie</Text>
                 </View>
                 
                 <View style={styles.icon}>
-                    <FontAwesome name="heart" size={30}  color={"#1e064e"}/>
+                    <FontAwesome name="heart" size={25}  color={"#161519"}/>
                     <Text style={styles.textIcon}>Mes Favoris</Text>
                 </View>
             </View>
@@ -199,14 +201,14 @@ const styles = StyleSheet.create({
         justifyContent:"center"
     },
     textIcon : {
-        color:"#1e064e"
+        color:"#161519"
     },
     // ! EVENTS
 
     events:{
         width:"100%",
         height:"auto",
-        backgroundColor:"#1e064e",
+        backgroundColor:"#161519",
         padding:10
     },
     event:{

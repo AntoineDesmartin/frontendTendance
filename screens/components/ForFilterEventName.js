@@ -9,7 +9,7 @@ export default function ForFilterEventName(data, researchLowerCase) {
         let CompareData = data[i].eventName.toLowerCase().replace(/\s/g, '');
         if (CompareData.includes(regexPattern)) {
           const newObject = {
-            //creator: data[i].creator,
+            creatorName: data[i].creatorName,
             _id: data[i]._id,
             address: data[i].address,
             date: data[i].date,
@@ -18,6 +18,8 @@ export default function ForFilterEventName(data, researchLowerCase) {
             eventName: data[i].eventName,
             hourEnd: data[i].hourEnd,
             hourStart: data[i].hourStart,
+            latitude: data[i].latitude,
+            longitude: data[i].longitude,
             price: data[i].price,
             type: data[i].type,
             users: {

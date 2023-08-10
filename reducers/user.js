@@ -20,19 +20,19 @@ export const userSlice = createSlice({
 
 
      addParticipant :(state, action) =>  {
-      // console.log(action.payload); //todo on doit push l'id de l'event
+      console.log(action.payload); //todo on doit push l'id de l'event
       // ? cest grace a ce reducer quon va pouvoir savoir si un utilisateur a deja ete interresé par un event ou pas
-    //   state.value.events.partEvents.push(action.payload);
+      state.value.events.partEvents.push(action.payload);
     },
     removeParticipant :(state, action) =>  {
         // state.value.events.partEvents.filter(el => el!== action.payload) //? on filtre avec l'id de l'event
     },
     addInter :(state, action) =>  {
-        // console.log(action.payload); //todo on doit push l'id de l'even
-        // state.value.events.interEvents.push(action.payload); 
+        console.log(action.payload); //todo on doit push l'id de l'event
+        state.value.events.interEvents.push(action.payload); 
     },
     removeInter :(state, action) =>  {
-        // state.value.events.interEvents.filter(el => el!== action.payload) //? on filtre avec l'id de l'event
+        state.value.events.interEvents.filter(el => el!== action.payload) //? on filtre avec l'id de l'event
 }
 
   },

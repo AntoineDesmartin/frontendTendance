@@ -16,7 +16,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import photoEvent from '../assets/event.jpg'
 import { useSelector,useDispatch } from 'react-redux';
 import { resetEvent } from '../reducers/event';
-import {setOpenModal} from "../reducers/openModal"
+import {setOpenModal} from "../reducers/openModal";
+import { format } from 'date-fns'
+import formatDateToFrenchLocale from './components/formatageList';
 
 
 import {addParticipant,removeParticipant,addInter,removeInter} from '../reducers/user';
@@ -137,8 +139,8 @@ const user = useSelector((state) => state.user.value);
                 <Text style={styles.name}>{dataEvent.creator}</Text>
                 <Text style={styles.site}>{dataEvent.website}</Text> 
                 <Text style={styles.type}>{dataEvent.type}</Text>
-                <Text style={styles.date}>{date}</Text>
-                <Text style={styles.horraire}>{dataEvent.hourStart}-{dataEvent.hourEnd}</Text>
+                <Text style={styles.date}>{formatDateToFrenchLocale(date)}</Text>
+                <Text style={styles.horraire}>{format(new Date (dataEvent.hourStart), "HH'h'mm")}-{format(new Date (dataEvent.hourEnd), "HH'h'mm")}</Text>
                 <Text style={styles.adresse}>{dataEvent.address}</Text>
                 <Text style={styles.prix}>Entrée : {dataEvent.price}$</Text>
             </View>
