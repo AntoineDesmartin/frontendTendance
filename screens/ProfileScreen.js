@@ -18,7 +18,7 @@ import photoProfile from "../assets/photoProfile.jpg"
 import photoBack from "../assets/photoBack.jpg"
 
 
-import Event from './components/Event';
+import Event from './components/event';
 
 //Modal
 import {setOpenModal} from "../reducers/openModal"
@@ -99,57 +99,54 @@ useEffect(() => {
             
 
            
-            <View style={styles.viewPhotoBack}>
-                <Image source={photoBack} style={styles.photoBack} size={100} />
-                <Image source={photoProfile} style={styles.photoProfile} size={100} />
-            </View>
+             <View style={styles.viewPhotoBack}>
+                 <Image source={photoBack} style={styles.photoBack} size={100} />
+                 <Image source={photoProfile} style={styles.photoProfile} size={100} />
+             </View>
 
 
-
+ 
            
-            <View style={styles.viewParam}>
+             <View style={styles.viewParam}>
                 
-                <FontAwesome name="gears" size={30} color={"#161519"} />
+                 <FontAwesome name="gears" size={30} color={"#161519"} />
             </View>
             
-            <View style={styles.viewName}>
-                <Text>{user.username}</Text>
-            </View>
+             <View style={styles.viewName}>
+                 <Text>{user.username}</Text>
+             </View>
             
 
+          
+             <View style={styles.viewIcon}>
 
-            
-            <View style={styles.viewIcon}>
+    
+                 <TouchableOpacity onPress={()=>dispatch(logout())}><Text>LOGOUT</Text></TouchableOpacity>
 
-                <TouchableOpacity onPress={()=>dispatch(logout())}>
-                    <Text>LOGOUT</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={()=>dispatch(logout())}><Text>LOGOUT</Text></TouchableOpacity>
-
-
+  
                     <FontAwesome name="users" size={25} color={"#161519"} />
                     <Text style={styles.textIcon}>Mes amis</Text>
-                </TouchableOpacity>
-            
-                <View style={styles.icon}>
-                    <FontAwesome name="rocket" size={30} color={"#161519"} />
-                    <Text style={styles.textIcon}>Messagerie</Text>
-                </View>
+              
+          
+                 <View style={styles.icon}>
+                     <FontAwesome name="rocket" size={30} color={"#161519"} />
+                     <Text style={styles.textIcon}>Messagerie</Text>
+                 </View>
                 
-                <View style={styles.icon}>
-                    <FontAwesome name="heart" size={25}  color={"#161519"}/>
-                    <Text style={styles.textIcon}>Mes Favoris</Text>
-                </View>
-            </View>
+                 <View style={styles.icon}>
+                     <FontAwesome name="heart" size={25}  color={"#161519"}/>
+                     <Text style={styles.textIcon}>Mes Favoris</Text>
+                 </View>
+    
+         </View>
             
             <ScrollView style={styles.events}>
 
-                <View style={styles.futurEvents}>
-                    <Text style={styles.text}> ____________________ Events ______________________</Text>
+                 <View style={styles.futurEvents}>
+                     <Text style={styles.text}> ____________________ Events ______________________</Text>
                     {futurEvents}
                 </View>
-            </ScrollView>
+             </ScrollView> 
             
 
             
