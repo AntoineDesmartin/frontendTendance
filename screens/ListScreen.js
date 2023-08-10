@@ -603,7 +603,7 @@ export default function ListScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <View style={styles.mainContainer}>
       <StatusBar
         barStyle="light-content" // Change to "light-content" if you need white status bar content
         backgroundColor="white" // Set the background color of the status bar
@@ -697,7 +697,7 @@ export default function ListScreen({ navigation }) {
           onDismiss={hideDatePicker}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
